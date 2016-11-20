@@ -5,208 +5,204 @@ window.addEventListener("load", () => {
 class Main {
 
     constructor() {
-        this.hiddenOptions = false;
-        this.drawing = false;
-        this.dragging = false;
+        this.initListeners();
+    }
 
-        document.addEventListener('deviceready', () => {
-            this.onDeviceReady();
-        }, false);
+    initListeners() {
 
+        let self = this;
+
+        /* Listeners that require a function without parameters */
         document.getElementById("options-toggle").addEventListener("touchstart", () => {
-            this.toggleOptions();
+            self.toggleOptionsPalette(self);
         });
 
-        let options = document.getElementsByClassName("palette-option");
+        /* Splash screen */
+        document.addEventListener('deviceready', () => {
+            self.fadeOut(document.getElementById('deviceready'));
+        }, false);
+
+        /* Option palette listeners that require a parameter */
+        let options = document.getElementsByClassName("palette-item");
 
         for (let i = 0; i < options.length; i++) {
             options[i].addEventListener("touchstart", () => {
-               this.toggleDialog(options[i].dataset.toggle, options[i].id);
+                self.toggleDialog(options[i].dataset.toggle, options[i].id);
             });
         }
 
+        /* Dialog close listeners that require parameters */
         let dialogCloses = document.getElementsByClassName("dialog-close");
 
         for (let i = 0; i < dialogCloses.length; i++) {
             dialogCloses[i].addEventListener("touchstart", () => {
-               this.hideDialog(dialogCloses[i].parentElement);
+                self.closeDialog(dialogCloses[i].parentElement);
             });
         }
 
-        this.canvas_container = document.getElementById("canvas");
-        this.canvas = document.getElementById("actual-canvas");
-        this.context = this.canvas.getContext("2d");
-
-        this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
-        this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
-
-        this.context.strokeStyle = "#000000";
-        this.context.fillStyle = "#000000";
-        this.context.scale(1.0, 1.0);
-
-        this.canvas.addEventListener("touchstart", (e) => {
-            this.beginDrawing(e);
+        /* When a dialog is open, we don't want the body to be scrollable - iOS fix */
+        document.getElementsByTagName("body")[0].addEventListener("touchmove", (e) => {
+            if (self.getActiveDialog() != null) {
+                e.preventDefault();
+            }
         });
 
-        this.canvas.addEventListener("touchmove", (e) => {
-            this.drawPoint(e);
-        });
-
-        this.canvas.addEventListener("touchend", (e) => {
-            this.endDrawing(e);
-        });
-
-        console.log("STM Custom Script Initialized");
     }
 
-    onDeviceReady() {
-        let parentElement = document.getElementById('deviceready');
-
-        this.fadeOut(parentElement);
-    }
-
-    toggleOptions() {
+    toggleOptionsPalette(self) {
         let toggle = document.getElementById("options-toggle").querySelector("span");
         let palette = document.getElementById("options-palette");
 
-        if (this.hiddenOptions) {
+        if (palette.classList.contains("options-hidden")) {
             toggle.classList.remove("rotate");
-            palette.className = "options-shown";
-            this.hiddenOptions = false;
+            palette.className = "options-visible";
+            if (self.getActiveDialog() != null) {
+                self.getActiveDialog().classList.remove("dialog-visible-slide-down");
+            }
         } else {
             toggle.classList.add("rotate");
             palette.className = "options-hidden";
-            this.hiddenOptions = true;
+            if (self.getActiveDialog() != null) {
+                self.getActiveDialog().classList.add("dialog-visible-slide-down");
+            }
         }
     }
 
-        toggleDialog(target, originID) {
-            let dialog = document.getElementById(target);
-            let origin = document.getElementById(originID);
+    toggleDialog(targetDialog, paletteItem) {
+        let dialog = document.getElementById(targetDialog);
+        let option = document.getElementById(paletteItem);
 
-            if (target == "menu") {
-                let canvas = document.getElementById("canvas");
-                let palette = document.getElementById("options-palette");
-                if (dialog.dataset.visible == "true") {
-                    dialog.dataset.visible = "false";
+        if (targetDialog == "menu") {
 
-                    dialog.classList.remove("normal");
-                    dialog.classList.add("menu-shifted");
+            let canvas = document.getElementById("canvas");
+            let palette = document.getElementById("options-palette");
 
-                    canvas.classList.add("normal");
-                    canvas.classList.remove("shifted");
+            /*
+            Logic:
+                Third, we must make the menu item highlighted
+                Fourth, we must literally shift everything...
+                    -Slide the menu over
+                    -Slide the options palette over
+                    -Slide the canvas over
+             */
 
-                    this.resetOptions(this.getActiveDialogButton());
-                    origin.classList.remove("active-menu-dialog");
+            /* Using raw data for testing because the menu is a special case */
+            if (dialog.dataset.visible == "true") {
+                // Hide menu
 
-                    if (this.activeDialog()) {
-                        this.getActiveDialog().classList.remove("dialog-shown-shifted");
-                    }
+                this.resetActivePaletteItem(option);
+                this.slideElementHome(canvas);
+                this.slideElementHome(palette);
 
-                    palette.className = "normal";
-                } else if (dialog.dataset.visible == "false") {
-                    dialog.dataset.visible = "true";
+                dialog.classList.remove("normal");
+                dialog.classList.add("menu-slide-left");
+                dialog.dataset.visible = "false";
 
-                    dialog.classList.add("normal");
-                    dialog.classList.remove("menu-shifted");
-
-                    canvas.classList.remove("normal");
-                    canvas.classList.add("shifted");
-
-                    this.resetOptions(this.getActiveDialogButton());
-                    origin.classList.add("active-menu-dialog");
-
-                    if (this.activeDialog()) {
-                        this.getActiveDialog().classList.add("dialog-shown-shifted");
-                    }
-
-                    palette.className = "shifted";
+                if (this.getActiveDialog() != null) {
+                    this.getActiveDialog().classList.remove("dialog-visible-slide-right");
                 }
+
             } else {
-                if (dialog.dataset.visible == "true") {
-                    dialog.dataset.visible = "false";
-                    this.resetAllOptions();
-                    origin.classList.remove("active-dialog");
-                    this.resetDialog(dialog);
-                    dialog.classList.add("dialog-hidden");
-                    dialog.classList.remove("dialog-shown");
-                } else if (dialog.dataset.visible == "false") {
-                    dialog.dataset.visible = "true";
-                    this.resetAllOptions();
-                    origin.classList.add("active-dialog");
-                    this.resetDialog(dialog);
-                    dialog.classList.remove("dialog-hidden");
-                    dialog.classList.add("dialog-shown");
-                }
+                // Show menu
+                this.setActivePaletteItem(option);
+                this.slideElementRight(canvas);
+                this.slideElementRight(palette);
 
-                if (target == "edit") {
-                    if (this.drawing) {
-                        this.drawing = false;
-                    } else {
-                        this.drawing = true;
-                    }
+                dialog.classList.remove("menu-slide-left");
+                dialog.classList.add("normal");
+                dialog.dataset.visible = "true";
+
+                if (this.getActiveDialog() != null) {
+                    this.getActiveDialog().classList.add("dialog-visible-slide-right");
                 }
 
             }
-        }
 
-    resetAllOptions() {
-        let options = document.getElementsByClassName("palette-option");
+        } else {
 
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].classList.contains("active-dialog")) {
-                options[i].classList.remove("active-dialog");
+            if (targetDialog == "edit") {
+                // Put the canvas into editing mode
             }
-        }
-    }
 
-    resetOptions(exception1) {
-        let options = document.getElementsByClassName("palette-option");
-
-        for (let i = 0; i < options.length; i++) {
-            if (exception1 != null) {
-                if (options[i].id != exception1.id) {
-                    if (options[i].classList.contains("active-dialog")) {
-                        options[i].classList.remove("active-dialog");
-                    }
-                }
+            if (this.getActiveDialog() == dialog) {
+                this.closeDialog(this.getActiveDialog());
+                this.resetActivePaletteItem(this.getActivePaletteItem());
+                this.setCanvasMode(null);
+            } else if (this.getActivePaletteItem() == option) {
+                this.resetActivePaletteItem(this.getActivePaletteItem());
+                this.setCanvasMode(null);
             } else {
-                if (options[i].classList.contains("active-dialog")) {
-                    options[i].classList.remove("active-dialog");
+                if (this.getActiveDialog() != null) {
+                    this.closeDialog(this.getActiveDialog());
                 }
+
+                if (this.getActivePaletteItem() != null) {
+                    this.resetActivePaletteItem(this.getActivePaletteItem());
+                }
+
+                this.setActivePaletteItem(option);
+                this.openDialog(dialog);
+                this.setCanvasMode(targetDialog);
             }
+
         }
     }
 
-    resetDialog(exception1) {
-        let dialogs = document.getElementsByClassName("dialog");
-
-        for (let i = 0; i < dialogs.length; i++) {
-            if (dialogs[i].id != exception1.id) {
-                dialogs[i].dataset.visible = "false";
-                dialogs[i].classList.add("dialog-hidden");
-                dialogs[i].classList.remove("dialog-shown");
-            }
+    setCanvasMode(mode) {
+        if (mode == null) {
+            document.getElementById("actual-canvas").dataset.mode = "view";
+        } else {
+            document.getElementById("actual-canvas").dataset.mode = mode;
         }
     }
 
-    activeDialog() {
-        let dialogs = document.getElementsByClassName("dialog");
-
-        for (let i = 0; i < dialogs.length; i++) {
-            if (dialogs[i].dataset.visible == "true") {
-                return true;
-            }
-        }
-
-        return false;
+    slideElementRight(e) {
+        e.classList.remove("normal");
+        e.classList.add("slide-right");
     }
 
-    getActiveDialogButton() {
-        let options = document.getElementsByClassName("palette-option");
+    slideElementHome(e) {
+        e.classList.remove("slide-right");
+        e.classList.add("normal");
+    }
+
+    openDialog(dialog) {
+        dialog.dataset.visible = "true";
+
+        dialog.classList.add("dialog-visible");
+        dialog.classList.remove("dialog-hidden");
+
+        document.getElementsByTagName("body")[0].classList.remove("show-y");
+        document.getElementsByTagName("body")[0].classList.add("hide-y");
+    }
+
+    closeDialog(dialog) {
+        dialog.dataset.visible = "false";
+
+        if (dialog.classList.contains("dialog-visible-slide-down")) {
+            dialog.classList.remove("dialog-visible-slide-down");
+        }
+
+        dialog.classList.remove("dialog-visible");
+        dialog.classList.add("dialog-hidden");
+
+        document.getElementsByTagName("body")[0].classList.add("show-y");
+        document.getElementsByTagName("body")[0].classList.remove("hide-y");
+    }
+
+    resetActivePaletteItem(e) {
+        e.classList.remove("active-palette-item");
+    }
+
+    setActivePaletteItem(e) {
+        e.classList.add("active-palette-item");
+    }
+
+    getActivePaletteItem() {
+        let options = document.getElementsByClassName("palette-item");
 
         for (let i = 0; i < options.length; i++) {
-            if (options[i].classList.contains("active-dialog")) {
+            if (options[i].classList.contains("active-palette-item")) {
                 return options[i];
             }
         }
@@ -224,81 +220,8 @@ class Main {
         return null;
     }
 
-    hideDialog(dialog) {
-        dialog.classList.remove("dialog-shown");
-        dialog.classList.add("dialog-hidden");
-    }
-
-    drawPoint(e) {
-        if (this.drawing && this.dragging) {
-            e.preventDefault();
-            let x = e.touches[0].pageX;
-            let y = e.touches[0].pageY - this.canvas.offsetTop;
-            let r = document.getElementById("brush-size").value;
-            this.context.lineTo(x, y);
-            this.context.stroke();
-            this.context.beginPath();
-            this.context.arc(x, y, r, 0, Math.PI*2);
-            this.context.fill();
-            this.context.beginPath();
-            this.context.moveTo(x, y);
-        }
-    }
-
-    beginDrawing(e) {
-        this.dragging = true;
-        this.drawPoint(e);
-    }
-
-    endDrawing(e) {
-        this.dragging = false;
-        this.context.beginPath();
-    }
-
-    slide(e, start, end, axis, transposition, time) {
-        let curPos = start;
-        let pos = start;
-        let ticks = 0;
-        let distance = Math.abs(start - end);
-        let slide = setInterval(() => {
-
-            if (end > start) {
-                if (curPos >= end) {
-                    e.style.transform = "translate" + axis + "(" + end + "%)";
-                    clearInterval(slide);
-                }
-            } else {
-                if (curPos <= end) {
-                    e.style.transform = "translate" + axis + "(" + end + "%)";
-                    clearInterval(slide);
-                }
-            }
-
-            let interpolation = this.transition(0, time, ticks);
-
-            pos = transposition + (distance * interpolation);
-
-            if (end > start) {
-                curPos = pos;
-            } else {
-                if (start < 0) {
-                    curPos = (start + pos);
-                } else {
-                    curPos = (start - pos);
-                }
-            }
-
-            e.style.transform = "translate" + axis + "(" + curPos + "%)";
-
-            ticks++;
-        }, 0);
-    }
-
-    transition(start, end, point) {
-        if(point <= start) { return 0; }
-        if(point >= end) { return 1; }
-        let x = (point - start) / (end - start);
-        return x*x*(3 - 2*x);
+    getPaletteItemTarget(paletteItem) {
+        return document.getElementById(paletteItem.dataset.target);
     }
 
     fadeIn(elem) {

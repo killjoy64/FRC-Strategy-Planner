@@ -35,7 +35,7 @@
     <title>FRC Strategy Planner</title>
 </head>
 
-<body>
+<body class="show-y">
     <div id="deviceready">
         <div class="event listening">
             <div>
@@ -52,7 +52,7 @@
 
     <div id="canvas">
         <img src="images/2016-field-small.png" class="fill-w">
-        <canvas id="actual-canvas">
+        <canvas id="actual-canvas" data-mode="view" >
             Nope.
         </canvas>
     </div>
@@ -67,29 +67,29 @@
         </div>
         <div class="row mar-top-10 pad-left-10 pad-right-10">
             <div class="col-xs-3 col-sm-3 col-md-2">
-                <div id="menu-dialog" class="palette-option palette-menu hidden" data-toggle="menu">
+                <div id="menu-dialog" class="palette-item palette-menu hidden" data-toggle="menu">
                     <span class="fa fa-bars fill"></span>
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-2">
-                <div id="edit-dialog" class="palette-option hidden" data-toggle="edit">
+                <div id="edit-dialog" class="palette-item hidden" data-toggle="edit">
                     <img src="images/option-pencil.png" class="fill" />
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-2">
-                <div id="field-dialog" class="palette-option hidden" data-toggle="field">
+                <div id="field-dialog" class="palette-item hidden" data-toggle="field">
                     <img src="images/option-field.png" class="fill" />
                 </div>
             </div>
             <div class="col-xs-3 col-sm-3 col-md-2">
-                <div id="robots-dialog" class="palette-option hidden" data-toggle="robots">
+                <div id="robots-dialog" class="palette-item hidden" data-toggle="robots">
                     <img src="images/option-robots.png" class="fill" />
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="menu" class="menu-shifted" data-visible="false">
+    <div id="menu" class="menu-slide-left" data-visible="false">
         <div class="container-fluid fill">
             <div class="row">
                 <div class="col-xs-2 col-sm-2">
@@ -110,7 +110,7 @@
         </div>
     </div>
 
-    <div id="edit" data-visible="false" class="pad-top-5 container dialog dialog-hidden">
+    <div id="edit" data-visible="false" class="pad-top-5 pad-bot-10 container dialog dialog-hidden">
 
         <div class="dialog-close">
             <span class="fa fa-times"></span>
@@ -171,10 +171,10 @@
 
                     <div class="col-xs-12 col-sm-12 col-md-12 text-xs-left text-sm-left text-md-left">
                         <div class="row">
-                            <div class="col-xs-7 col-sm-6 col-md-6">
+                            <div class="col-xs-7 col-sm-4 col-md-3">
                                 <span>Current Color:</span>
                             </div>
-                            <div id="brush-color" class="col-xs-5 col-sm-6 col-md-6">
+                            <div id="brush-color" class="col-xs-3 col-sm-2 col-md-2">
                             </div>
                         </div>
                     </div>
@@ -196,6 +196,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <button id="brush-style-line" type="button" class="btn btn-primary">Line</button>
                         <button id="brush-style-free" type="button" class="btn btn-primary">Free</button>
+                        <button id="brush-style-eraser" type="button" class="btn btn-primary">Eraser</button>
                     </div>
                 </div>
             </div>

@@ -7,6 +7,14 @@ body {
 	overflow-x: hidden;
 }
 
+.hide-y {
+	overflow-y: hidden;
+}
+
+.show-y {
+	overflow-y: scroll;
+}
+
 #deviceready {
 	background-color: #1d2bd2;
 	position: fixed;
@@ -87,7 +95,7 @@ body {
 	transition: all 0.4s ease;
 }
 
-.palette-option {
+.palette-item {
 	width: 100%;
 	height: 10vh;
 	padding: 10px;
@@ -109,7 +117,7 @@ body {
 	justify-content: center;
 }
 
-.active-dialog {
+.active-palette-item {
 	background: #deefff; /* Old browsers */
 	background: -moz-linear-gradient(top, #deefff 0%, #98bede 100%); /* FF3.6-15 */
 	background: -webkit-linear-gradient(top, #deefff 0%,#98bede 100%); /* Chrome10-25,Safari5.1-6 */
@@ -161,7 +169,7 @@ body {
 	transform: translateX(0%);
 }
 
-.shifted {
+.slide-right {
 	-webkit-transition: all 0.85s ease;
 	-moz-transition: all 0.85s ease;
 	-ms-transition: all 0.85s ease;
@@ -174,7 +182,7 @@ body {
 	transform: translateX(80%);
 }
 
-.menu-shifted {
+.menu-slide-left {
 	-webkit-transition: all 0.85s ease;
 	-moz-transition: all 0.85s ease;
 	-ms-transition: all 0.85s ease;
@@ -187,7 +195,7 @@ body {
 	transform: translateX(-100%);
 }
 
-.options-shown {
+.options-visible {
 	-webkit-transition: all 0.6s ease;
 	-moz-transition: all 0.6s ease;
 	-ms-transition: all 0.6s ease;
@@ -237,7 +245,7 @@ body {
 	transform: translateY(150%);
 }
 
-.dialog-shown {
+.dialog-visible {
 	-webkit-transition: all 0.825s ease;
 	-moz-transition: all 0.825s ease;
 	-ms-transition: all 0.825s ease;
@@ -250,7 +258,20 @@ body {
 	transform: translateY(0%);
 }
 
-.dialog-shown-shifted {
+.dialog-visible-slide-down {
+	-webkit-transition: all 0.6s ease;
+	-moz-transition: all 0.6s ease;
+	-ms-transition: all 0.6s ease;
+	-o-transition: all 0.6s ease;
+	transition: all 0.6s ease;
+	-webkit-transform: translateY(22%);
+	-moz-transform: translateY(22%);
+	-ms-transform: translateY(22%);
+	-o-transform: translateY(22%);
+	transform: translateY(22%);
+}
+
+.dialog-visible-slide-right {
 	-webkit-transition: all 0.825s ease;
 	-moz-transition: all 0.825s ease;
 	-ms-transition: all 0.825s ease;

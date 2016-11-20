@@ -1,9 +1,19 @@
 @media (min-width:320px) {
-	/* smartphones, iPhone, portrait 480x320 phones */
+	/* smartphones, iPhone 5, portrait 480x320 phones */
 	#mobile-info-bar {
 		display: block;
 	}
-	#canvas {
+	.dialog {
+		height: 70vh;
+	}
+}
+@media (min-width:375px) {
+	/* smartphones, iPhone 6 */
+	#mobile-info-bar {
+		display: block;
+	}
+	.dialog {
+		height: 60vh;
 	}
 }
 @media (min-width:481px) {

@@ -16,7 +16,7 @@ class Canvas {
         this.r = 0;
         this.g = 0;
         this.b = 0;
-        this.style = 0; // 0 will be line | 1 will be free
+        this.style = 0; // 0 will be line | 1 will be free | 2 will be eraser
 
         /* Make sure our values init */
         this.setBrushSize();
@@ -45,11 +45,14 @@ class Canvas {
             self.setColorB();
             self.updateColor();
         });
-        document.getElementById("brush-style-line").addEventListener("click", () => {
+        document.getElementById("brush-style-line").addEventListener("touchstart", () => {
             self.setToLineStyle();
         });
-        document.getElementById("brush-style-free").addEventListener("click", () => {
+        document.getElementById("brush-style-free").addEventListener("touchstart", () => {
             self.setToFreeStyle();
+        });
+        document.getElementById("brush-style-eraser").addEventListener("touchstart", () => {
+            self.setToEraserStyle();
         });
     }
 
@@ -90,6 +93,10 @@ class Canvas {
 
     setToFreeStyle() {
         this.style = 1;
+    }
+
+    setToEraserStyle() {
+        this.style = 2;
     }
 
 }
