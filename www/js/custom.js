@@ -40,13 +40,6 @@ class Main {
             });
         }
 
-        /* When a dialog is open, we don't want the body to be scrollable - iOS fix */
-        document.getElementsByTagName("body")[0].addEventListener("touchmove", (e) => {
-            if (self.getActiveDialog() != null) {
-                e.preventDefault();
-            }
-        });
-
     }
 
     toggleOptionsPalette(self) {
@@ -77,19 +70,9 @@ class Main {
             let canvas = document.getElementById("canvas");
             let palette = document.getElementById("options-palette");
 
-            /*
-            Logic:
-                Third, we must make the menu item highlighted
-                Fourth, we must literally shift everything...
-                    -Slide the menu over
-                    -Slide the options palette over
-                    -Slide the canvas over
-             */
-
             /* Using raw data for testing because the menu is a special case */
             if (dialog.dataset.visible == "true") {
                 // Hide menu
-
                 this.resetActivePaletteItem(option);
                 this.slideElementHome(canvas);
                 this.slideElementHome(palette);
@@ -218,10 +201,6 @@ class Main {
             }
         }
         return null;
-    }
-
-    getPaletteItemTarget(paletteItem) {
-        return document.getElementById(paletteItem.dataset.target);
     }
 
     fadeIn(elem) {

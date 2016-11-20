@@ -11,12 +11,22 @@ class Canvas {
         this.canvas = this.canvas_container.querySelector("canvas");
         this.context = this.canvas.getContext("2d");
 
+        /* Default properties for our canvas */
+        this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
+        this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
+
+        this.context.strokeStyle = "#000000";
+        this.context.fillStyle = "#000000";
+        this.context.scale(1.0, 1.0);
+
         /* Initialize our drawing variables */
         this.size = 1;
         this.r = 0;
         this.g = 0;
         this.b = 0;
         this.style = 0; // 0 will be line | 1 will be free | 2 will be eraser
+        this.mode = "NULL";
+        this.drawing = false;
 
         /* Make sure our values init */
         this.setBrushSize();
@@ -24,6 +34,7 @@ class Canvas {
         this.setColorG();
         this.setColorB();
         this.updateColor();
+        this.updateMode();
 
         /* Initialize all of our editable parameters */
         this.initListeners();
@@ -32,7 +43,7 @@ class Canvas {
     initListeners() {
         let self = this;
 
-        document.getElementById("brush-size").addEventListener("input", this.setBrushSize);
+        document.getElementById("brush-size").addEventListener("input", self.setBrushSize);
         document.getElementById("brush-color-r").addEventListener("input", () => {
             self.setColorR();
             self.updateColor();
@@ -54,6 +65,25 @@ class Canvas {
         document.getElementById("brush-style-eraser").addEventListener("touchstart", () => {
             self.setToEraserStyle();
         });
+
+        self.canvas.addEventListener("touchstart", (e) => {
+            self.updateMode();
+            self.beginDrawing(e);
+        });
+
+        self.canvas.addEventListener("touchmove", (e) => {
+            self.updateMode();
+            self.drawPoint(e);
+        });
+
+        self.canvas.addEventListener("touchend", (e) => {
+            self.updateMode();
+            self.endDrawing(e);
+        });
+    }
+
+    updateMode() {
+        this.mode = document.getElementById("actual-canvas").dataset.mode;
     }
 
     updateColor() {
@@ -97,6 +127,35 @@ class Canvas {
 
     setToEraserStyle() {
         this.style = 2;
+    }
+
+    drawPoint(e) {
+        if (this.mode == "edit") {
+            if (this.drawing) {
+                e.preventDefault();
+                let x = e.touches[0].pageX;
+                let y = e.touches[0].pageY - this.canvas.offsetTop;
+                let r = this.size;
+                this.context.lineTo(x, y);
+                this.context.stroke();
+                this.context.beginPath();
+                this.context.lineWidth = r * 2;
+                this.context.arc(x, y, r, 0, Math.PI*2);
+                this.context.fill();
+                this.context.beginPath();
+                this.context.moveTo(x, y);
+            }
+        }
+    }
+
+    beginDrawing(e) {
+        this.drawing = true;
+        this.drawPoint(e);
+    }
+
+    endDrawing(e) {
+        this.drawing = false;
+        this.context.beginPath();
     }
 
 }
