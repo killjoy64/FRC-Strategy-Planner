@@ -27,6 +27,8 @@ class Canvas {
         this.style = 0; // 0 will be line | 1 will be free | 2 will be eraser
         this.mode = "NULL";
         this.drawing = false;
+        this.saves = [];
+        this.redos = [];
 
         /* Make sure our values init */
         this.setBrushSize();
@@ -35,6 +37,7 @@ class Canvas {
         this.setColorB();
         this.updateColor();
         this.updateMode();
+        this.setToFreeStyle();
 
         /* Initialize all of our editable parameters */
         this.initListeners();
@@ -65,6 +68,12 @@ class Canvas {
         document.getElementById("brush-style-eraser").addEventListener("touchstart", () => {
             self.setToEraserStyle();
         });
+        document.getElementById("undo").addEventListener("touchstart", () => {
+            self.undo();
+        });
+        document.getElementById("redo").addEventListener("touchstart", () => {
+            self.redo();
+        });
 
         self.canvas.addEventListener("touchstart", (e) => {
             self.updateMode();
@@ -80,6 +89,38 @@ class Canvas {
             self.updateMode();
             self.endDrawing(e);
         });
+    }
+
+    undo() {
+        this.context.globalCompositeOperation = "source-over";
+        if (this.saves.length > 0) {
+            let self = this;
+            let undo = self.saves.pop();
+            let img = document.createElement('img');
+            img.setAttribute("src", undo);
+            img.addEventListener("load", () => {
+                self.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
+                self.context.drawImage(img, 0, 0);
+            });
+            self.redos.push(undo);
+        } else {
+            this.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
+        }
+    }
+
+    redo() {
+        this.context.globalCompositeOperation = "source-over";
+        if (this.redos.length > 0) {
+            let self = this;
+            let redo = self.redos.pop();
+            let img = document.createElement('img');
+            img.setAttribute("src", redo);
+            img.addEventListener("load", () => {
+                self.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
+                self.context.drawImage(img, 0, 0);
+            });
+            self.saves.push(redo);
+        }
     }
 
     updateMode() {
@@ -119,19 +160,40 @@ class Canvas {
 
     setToLineStyle() {
         this.style = 0;
+        document.getElementById("brush-style").innerHTML = "Line";
     }
 
     setToFreeStyle() {
         this.style = 1;
+        document.getElementById("brush-style").innerHTML = "Free";
     }
 
     setToEraserStyle() {
         this.style = 2;
+        document.getElementById("brush-style").innerHTML = "Eraser";
+    }
+
+    checkLineStyle() {
+        const LINE = 0;
+        const PENCIL = 1;
+        const ERASE = 2;
+
+        if (this.style == PENCIL) {
+            this.context.globalCompositeOperation = "source-over";
+        }
+        if (this.style == LINE) {
+
+        }
+        if (this.style == ERASE) {
+            this.context.globalCompositeOperation = "destination-out";
+        }
     }
 
     drawPoint(e) {
         if (this.mode == "edit") {
-            if (this.drawing) {
+            if (this.drawing && this.getActiveDialog() == null && !this.isMenuActive()) {
+                this.setBrushSize();
+                this.checkLineStyle();
                 e.preventDefault();
                 let x = e.touches[0].pageX;
                 let y = e.touches[0].pageY - this.canvas.offsetTop;
@@ -148,7 +210,12 @@ class Canvas {
         }
     }
 
+    saveState() {
+        this.saves.push(this.canvas.toDataURL());
+    }
+
     beginDrawing(e) {
+        this.saveState();
         this.drawing = true;
         this.drawPoint(e);
     }
@@ -156,6 +223,21 @@ class Canvas {
     endDrawing(e) {
         this.drawing = false;
         this.context.beginPath();
+    }
+
+    isMenuActive() {
+        return document.getElementById("menu").classList.contains("normal");
+    }
+
+    getActiveDialog() {
+        let dialogs = document.getElementsByClassName("dialog");
+
+        for (let i = 0; i < dialogs.length; i++) {
+            if (dialogs[i].dataset.visible == "true") {
+                return dialogs[i];
+            }
+        }
+        return null;
     }
 
 }

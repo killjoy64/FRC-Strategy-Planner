@@ -85,6 +85,9 @@ class Main {
                     this.getActiveDialog().classList.remove("dialog-visible-slide-right");
                 }
 
+                document.getElementsByTagName("body")[0].classList.remove("hide-y");
+                document.getElementsByTagName("body")[0].classList.add("show-y");
+
             } else {
                 // Show menu
                 this.setActivePaletteItem(option);
@@ -95,17 +98,20 @@ class Main {
                 dialog.classList.add("normal");
                 dialog.dataset.visible = "true";
 
+                if (palette.classList.contains("options-visible")) {
+                    palette.classList.remove("options-visible");
+                }
+
                 if (this.getActiveDialog() != null) {
                     this.getActiveDialog().classList.add("dialog-visible-slide-right");
                 }
 
+                document.getElementsByTagName("body")[0].classList.remove("show-y");
+                document.getElementsByTagName("body")[0].classList.add("hide-y");
+
             }
 
         } else {
-
-            if (targetDialog == "edit") {
-                // Put the canvas into editing mode
-            }
 
             if (this.getActiveDialog() == dialog) {
                 this.closeDialog(this.getActiveDialog());
