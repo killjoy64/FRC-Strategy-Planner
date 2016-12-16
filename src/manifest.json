@@ -1,6 +1,6 @@
 {
-  "name": "Ionic",
-  "short_name": "Ionic",
+  "name": "FRC Strategy Planner",
+  "short_name": "FRCSP",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{

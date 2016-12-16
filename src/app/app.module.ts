@@ -1,32 +1,32 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
-import { MyApp } from './app.component';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
+import { FRCSP } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { TabsPage } from '../pages/tabs/tabs';
-import { LoginPage } from "../pages/login/login";
+import { LoginPage } from '../pages/login/login';
+import { StatsPage } from '../pages/stats/stats';
+import { FieldPage } from '../pages/field/field';
+import { TabsPage } from '../pages/tab-directory/tab-directory';
 
 @NgModule({
   declarations: [
-    MyApp,
-    AboutPage,
-    ContactPage,
+    FRCSP,
     HomePage,
-    TabsPage,
-    LoginPage
+    StatsPage,
+    FieldPage,
+    LoginPage,
+    TabsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(FRCSP)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp,
-    AboutPage,
-    ContactPage,
+    FRCSP,
     HomePage,
-    TabsPage,
-    LoginPage
+    StatsPage,
+    FieldPage,
+    LoginPage,
+    TabsPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

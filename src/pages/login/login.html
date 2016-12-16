@@ -1,1 +1,27 @@
-<p>Hello World!</p>
+<div id="login-logo" class="load-header">
+  <img src="assets/FIRST_transparent_logo.gif"/>
+</div>
+<div id="pre-loader" class="load-header">
+  <img src="assets/preloader.gif"/>
+</div>
+<ion-card id="login-credentials" class="hidden">
+  <ion-card-header>
+    Login
+  </ion-card-header>
+  <ion-list inset>
+    <ion-item>
+      <ion-input type="text" placeholder="Username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="password" placeholder="Password"></ion-input>
+    </ion-item>
+    <div class="buttons">
+      <button id="login-btn" ion-button block (tap)="login(false);">
+        Login
+      </button>
+      <button id="offline-btn" ion-button block color="danger" (tap)="login(true);">
+        Go Offline
+      </button>
+    </div>
+  </ion-list>
+</ion-card>

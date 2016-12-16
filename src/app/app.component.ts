@@ -1,29 +1,33 @@
 import { Component } from '@angular/core';
-import { Platform, NavController } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
 
 import { LoginPage } from '../pages/login/login';
 
-// import { TabsPage } from '../pages/tabs/tabs';
-
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class FRCSP {
   rootPage = LoginPage;
 
-  private nav:NavController;
-
-  constructor(platform: Platform, public navCtrl: NavController) {
-
-    this.nav = navCtrl;
-
-    this.nav.setRoot(LoginPage);
-
+  constructor(platform: Platform) {
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
+
+      setTimeout(function () {
+        document.getElementById("login-logo").classList.add("slid-up");
+        document.getElementById("pre-loader").classList.add("fadeOut");
+        document.getElementById("pre-loader").addEventListener("transitionend", function() {
+          document.getElementById("login-credentials").classList.remove("hidden");
+          document.getElementById("login-credentials").classList.add("fadeIn");
+        });
+        document.getElementById("login-btn").addEventListener("touchstart", function() {
+        });
+        document.getElementById("offline-btn").addEventListener("touchstart", function() {
+          // TODO - Verify account information
+        });
+      }, 1000);
+
     });
   }
 }

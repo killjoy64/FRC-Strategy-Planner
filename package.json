@@ -1,7 +1,7 @@
 {
   "name": "FRC-Strategy-Planner",
   "author": "Kyle Flynn",
-  "homepage": "http://stacktracemusic.com/",
+  "homepage": "http://kyleflynn.com/",
   "private": true,
   "scripts": {
     "ionic:build": "ionic-app-scripts build",
@@ -30,11 +30,12 @@
   },
   "cordovaPlugins": [
     "cordova-plugin-whitelist",
-    "cordova-plugin-console",
     "cordova-plugin-statusbar",
+    "cordova-plugin-console",
     "cordova-plugin-device",
+    "cordova-plugin-splashscreen",
     "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [],
-  "description": "FRCSP: An Ionic project"
+  "description": "FRCSP-Ionic: An Ionic project"
 }
