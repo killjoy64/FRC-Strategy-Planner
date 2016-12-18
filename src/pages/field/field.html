@@ -1,5 +1,28 @@
 <ion-content>
-
+  <ion-grid id="canvas-menu">
+    <ion-row>
+      <ion-col id="draw-menu" class="canvas-menu-item active-item" (click)="toggleMenu(0)">
+        <button ion-button clear color="light" class="canvas-menu-item" full>
+          <span class="fa fa-pencil fa-2x"></span>
+        </button>
+      </ion-col>
+      <ion-col id="field-menu" class="canvas-menu-item" (click)="toggleMenu(1)">
+        <button ion-button clear color="light" class="canvas-menu-item" full>
+          <span class="fa fa-futbol-o fa-2x"></span>
+        </button>
+      </ion-col>
+      <ion-col id="clear-menu" class="canvas-menu-item" (click)="toggleMenu(2)">
+        <button ion-button clear color="light" class="canvas-menu-item" full>
+          <span class="fa fa-trash fa-2x"></span>
+        </button>
+      </ion-col>
+      <ion-col id="save-menu" class="canvas-menu-item" (click)="toggleMenu(3)">
+        <button ion-button clear color="light" class="canvas-menu-item" full>
+          <span class="fa fa-save fa-2x"></span>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
   <div id="canvas">
     <ion-img src="assets/2016-field-large.png"></ion-img>
     <canvas id="actual-canvas">

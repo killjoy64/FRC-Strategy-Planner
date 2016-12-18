@@ -1,3 +1,21 @@
+#canvas-menu {
+  position: fixed;
+  z-index: 10;
+  background-color: #2e74eb;
+  text-align: center;
+  padding: 0;
+}
+
+.canvas-menu-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.active-item {
+  background-color: #1a5087;
+}
+
 #canvas {
   z-index: 1;
   overflow-x: hidden;
@@ -24,4 +42,8 @@
   z-index: 2;
   width: 100%;
   height: inherit;
+}
+
+#main-palette {
+  position: fixed;
 }

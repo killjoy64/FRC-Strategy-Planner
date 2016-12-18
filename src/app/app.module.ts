@@ -17,7 +17,7 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     TabsPage
   ],
   imports: [
-    IonicModule.forRoot(FRCSP)
+    IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
