@@ -1,11 +1,13 @@
-import {Component} from '@angular/core';
-import {PopoverController, NavController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {PopoverController, NavController, Content} from 'ionic-angular';
 
 @Component({
   selector: 'page-field',
   templateUrl: 'field.html'
 })
 export class FieldPage {
+
+  @ViewChild(Content) canvasContent: Content;
 
   EDIT: number;
   FIELD: number;
@@ -14,11 +16,13 @@ export class FieldPage {
   VIEW: number;
 
   main_palette: any;
+  canvas_scroll: any;
   canvas_container: any;
   canvas: any;
   context: any;
   drawing: boolean;
   dragging: boolean;
+  canEdit: boolean;
 
   /* Color declarations */
   red: number;
@@ -28,6 +32,8 @@ export class FieldPage {
   /* Brush declarations */
   size: number;
   color: string;
+
+  currentMode: number;
 
   constructor(public navCtrl: NavController, private popoverCtrl: PopoverController) {
   }
@@ -44,12 +50,14 @@ export class FieldPage {
 
   ionViewDidEnter() {
     this.main_palette = document.getElementById("main-palette");
+    this.canvas_scroll = document.getElementById("canvas-scroll");
     this.canvas_container = document.getElementById("canvas");
     this.canvas = this.canvas_container.querySelector("canvas");
     this.context = this.canvas.getContext("2d");
 
     this.dragging = false;
-    this.drawing = false;
+    this.drawing = true;
+    this.canEdit = true;
 
     this.size = 4;
     this.color = "rgb(0,0,0)";
@@ -60,15 +68,21 @@ export class FieldPage {
     this.SAVE = 3;
     this.VIEW = 4;
 
+    this.currentMode = 0;
+
     this.setDimensions();
     this.clearVisiblePalettes();
     this.bindListeners();
   }
 
   setDimensions() {
+    // let tabbar = document.getElementsByClassName("tabbar")[0];
+    let height = window.innerHeight - (document.getElementById("canvas-menu").offsetHeight);
+
+    this.canvas_scroll.style.marginTop = document.getElementById("canvas-menu").offsetHeight + "px";
+    this.canvas_scroll.style.height = height + "px";
+
     /* Default properties for our canvas */
-    this.canvas_container.style.marginTop = document.getElementById("canvas-menu").offsetHeight + "px";
-    this.canvas.style.marginTop = document.getElementById("canvas-menu").offsetHeight + "px";
     this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
     this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
   }
@@ -96,17 +110,20 @@ export class FieldPage {
 
   beginDrawing(e) {
     // this.saveState();
-    this.drawing = false;
-    this.drawPoint(e);
+    if (this.canEdit) {
+      this.drawing = true;
+      this.drawPoint(e);
+    }
   }
 
   drawPoint(e) {
-    if (this.drawing) {
+    // console.log("DRAWING: " + this.drawing + " | MODE: " + this.currentMode + " | EDITABLE: "  + this.canEdit);
+    if (this.drawing && this.currentMode == this.EDIT && this.canEdit) {
       // this.setBrushSize();
       // this.checkLineStyle();
       e.preventDefault();
       let x = e.touches[0].pageX;
-      let y = e.touches[0].pageY;
+      let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
       let r = this.size;
       this.context.lineTo(x, y);
       this.context.stroke();
@@ -120,8 +137,10 @@ export class FieldPage {
   }
 
   endDrawing(e) {
-    this.drawing = false;
-    this.context.beginPath();
+    if (this.canEdit) {
+      this.drawing = false;
+      this.context.beginPath();
+    }
   }
 
   clearVisiblePalettes() {
@@ -133,6 +152,7 @@ export class FieldPage {
       palettes[i].setAttribute("style", "transform: translateY(-100%)");
     }
 
+    this.canEdit = true;
   }
 
   isActiveItem(e) {
@@ -160,26 +180,34 @@ export class FieldPage {
       case this.EDIT:
         e = "draw-menu";
         pal = "draw-palette";
+        this.currentMode = this.EDIT;
         break;
 
       case this.FIELD:
         e = "field-menu";
         pal = "field-palette";
+        this.currentMode = this.FIELD;
         break;
 
       case this.CLEAR:
         e = "clear-menu";
         pal = null;
+        this.currentMode = null;
+        // call method
         break;
 
       case this.SAVE:
         e = "save-menu";
         pal = null;
+        this.currentMode = null;
+        // call method
         break;
 
       case this.VIEW:
         e = "view-menu";
         pal = null;
+        this.currentMode = this.VIEW;
+        // call method
         break;
     }
 
@@ -192,19 +220,18 @@ export class FieldPage {
       palette = null;
     }
 
-    console.log(item);
-    console.log(palette);
-
     if (palette) {
       if (this.isActiveItem(item)) {
         if (this.isItemVisible(palette)) {
           palette.style.transform = "translateY(-100%)";
           palette.classList.remove("visible");
           palette.classList.add("hidden");
+          this.canEdit = true;
         } else {
           palette.style.transform = "translateY(" + offset + "px)";
           palette.classList.remove("hidden");
           palette.classList.add("visible");
+          this.canEdit = false;
         }
       } else {
         this.resetActiveItems();
@@ -213,6 +240,7 @@ export class FieldPage {
         palette.style.transform = "translateY(" + offset + "px)";
         palette.classList.remove("hidden");
         palette.classList.add("visible");
+        this.canEdit = false;
       }
     } else {
       this.resetActiveItems();
