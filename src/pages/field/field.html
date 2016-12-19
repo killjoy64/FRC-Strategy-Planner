@@ -65,6 +65,33 @@
       <!--<ion-badge item-right id="blue-val" color="primary"></ion-badge>-->
     </ion-item>
   </ion-list>
+  <ion-list>
+    <ion-segment [(ngModel)]="drawingValue" color="primary">
+      <ion-segment-button value="pencil" (ionSelect)="changeMode(0)">
+        Pencil
+      </ion-segment-button>
+      <ion-segment-button value="line" (ionSelect)="changeMode(1)">
+        Line
+      </ion-segment-button>
+      <ion-segment-button value="eraser" (ionSelect)="changeMode(2)">
+        Eraser
+      </ion-segment-button>
+    </ion-segment>
+  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col width-20 center>
+        <div>
+          Result:
+        </div>
+      </ion-col>
+      <ion-col width-80>
+        <div id="color-val">
+
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </div>
 
 <div id="field-palette" class="palette hidden" padding>

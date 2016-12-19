@@ -17,6 +17,10 @@ export class FieldPage {
   SAVE: number;
   VIEW: number;
 
+  PENCIL: number;
+  LINE: number;
+  ERASER: number;
+
   main_palette: any;
   canvas_scroll: any;
   canvas_container: any;
@@ -25,6 +29,9 @@ export class FieldPage {
   drawing: boolean;
   dragging: boolean;
   canEdit: boolean;
+
+  drawingType: number;
+  drawingValue: string;
 
   /* Color declarations */
   red: number;
@@ -38,16 +45,7 @@ export class FieldPage {
   currentMode: number;
 
   constructor(private alert : AlertController) {
-  }
-
-  ngOnInit() {
-    this.red = 0;
-    this.green = 0;
-    this.blue = 0;
-
-    this.updateRed();
-    this.updateGreen();
-    this.updateBlue();
+    this.drawingValue = "pencil";
   }
 
   ionViewDidEnter() {
@@ -57,12 +55,20 @@ export class FieldPage {
     this.canvas = this.canvas_container.querySelector("canvas");
     this.context = this.canvas.getContext("2d");
 
+    /* Control variables */
     this.dragging = false;
     this.drawing = true;
     this.canEdit = true;
 
+    /* Brush defaults */
     this.size = 4;
-    this.color = "rgb(0,0,0)";
+    this.red = 0;
+    this.green = 0;
+    this.blue = 0;
+
+    this.updateRed();
+    this.updateGreen();
+    this.updateBlue();
 
     this.EDIT = 0;
     this.FIELD = 1;
@@ -70,7 +76,12 @@ export class FieldPage {
     this.SAVE = 3;
     this.VIEW = 4;
 
+    this.PENCIL = 0;
+    this.LINE = 1;
+    this.ERASER = 2;
+
     this.currentMode = 0;
+    this.drawingType = 0;
 
     this.setDimensions();
     this.clearVisiblePalettes();
@@ -149,6 +160,20 @@ export class FieldPage {
     if (this.canEdit) {
       this.drawing = false;
       this.context.beginPath();
+    }
+  }
+
+  changeMode(ID) {
+    switch (ID) {
+      case this.PENCIL:
+        this.drawingType = this.PENCIL;
+        break;
+      case this.LINE:
+        this.drawingType = this.LINE;
+        break;
+      case this.ERASER:
+        this.drawingType = this.ERASER;
+        break;
     }
   }
 
@@ -277,7 +302,8 @@ export class FieldPage {
 
   updateColor() {
     this.color = "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
-    console.log("Updated color: " + this.color);
+    this.context.strokeStyle = this.color;
+    this.context.fillStyle = this.color;
   }
 
 }
