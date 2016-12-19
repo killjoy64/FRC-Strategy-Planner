@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {PopoverController, NavController, Content} from 'ionic-angular';
+import {AlertController, Content} from 'ionic-angular';
 
 @Component({
   selector: 'page-field',
@@ -8,6 +8,8 @@ import {PopoverController, NavController, Content} from 'ionic-angular';
 export class FieldPage {
 
   @ViewChild(Content) canvasContent: Content;
+
+  initialized: boolean;
 
   EDIT: number;
   FIELD: number;
@@ -35,7 +37,7 @@ export class FieldPage {
 
   currentMode: number;
 
-  constructor(public navCtrl: NavController, private popoverCtrl: PopoverController) {
+  constructor(private alert : AlertController) {
   }
 
   ngOnInit() {
@@ -85,14 +87,21 @@ export class FieldPage {
     /* Default properties for our canvas */
     this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
     this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
+
   }
 
   bindListeners() {
     let self = this;
 
+    this.initialized = false;
+
     /* Canvas drawing events */
     self.canvas.addEventListener("touchstart", (e) => {
       // self.updateMode();
+      if (this.initialized == false) {
+        this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
+        this.initialized = true;
+      }
       self.beginDrawing(e);
     });
 
