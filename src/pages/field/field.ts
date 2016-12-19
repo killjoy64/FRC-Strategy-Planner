@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
-
-import {NavController} from 'ionic-angular';
+import {PopoverController, NavController} from 'ionic-angular';
 
 @Component({
   selector: 'page-field',
@@ -12,6 +11,7 @@ export class FieldPage {
   FIELD: number;
   CLEAR: number;
   SAVE: number;
+  VIEW: number;
 
   main_palette: any;
   canvas_container: any;
@@ -19,9 +19,27 @@ export class FieldPage {
   context: any;
   drawing: boolean;
   dragging: boolean;
-  size: number;
 
-  constructor(public navCtrl: NavController) {
+  /* Color declarations */
+  red: number;
+  green: number;
+  blue: number;
+
+  /* Brush declarations */
+  size: number;
+  color: string;
+
+  constructor(public navCtrl: NavController, private popoverCtrl: PopoverController) {
+  }
+
+  ngOnInit() {
+    this.red = 0;
+    this.green = 0;
+    this.blue = 0;
+
+    this.updateRed();
+    this.updateGreen();
+    this.updateBlue();
   }
 
   ionViewDidEnter() {
@@ -32,14 +50,18 @@ export class FieldPage {
 
     this.dragging = false;
     this.drawing = false;
+
     this.size = 4;
+    this.color = "rgb(0,0,0)";
 
     this.EDIT = 0;
     this.FIELD = 1;
     this.CLEAR = 2;
     this.SAVE = 3;
+    this.VIEW = 4;
 
     this.setDimensions();
+    this.clearVisiblePalettes();
     this.bindListeners();
   }
 
@@ -68,6 +90,7 @@ export class FieldPage {
       // self.updateMode();
       self.endDrawing(e);
     });
+
   }
 
   beginDrawing(e) {
@@ -100,25 +123,23 @@ export class FieldPage {
     this.context.beginPath();
   }
 
-  toggleMenu(ID) {
-    this.resetActiveItems();
-    switch(ID) {
-      case this.EDIT:
-        document.getElementById("draw-menu").classList.add("active-item");
-            break;
+  clearVisiblePalettes() {
+    let palettes = document.getElementsByClassName("palette");
 
-      case this.FIELD:
-        document.getElementById("field-menu").classList.add("active-item");
-            break;
-
-      case this.CLEAR:
-        document.getElementById("clear-menu").classList.add("active-item");
-            break;
-
-      case this.SAVE:
-        document.getElementById("save-menu").classList.add("active-item");
-            break;
+    for (let i = 0; i < palettes.length; i++) {
+      palettes[i].classList.remove("visible");
+      palettes[i].classList.add("hidden");
+      palettes[i].setAttribute("style", "transform: translateY(-100%)");
     }
+
+  }
+
+  isActiveItem(e) {
+    return e.classList.contains("active-item");
+  }
+
+  isItemVisible(e) {
+    return e.classList.contains("visible");
   }
 
   resetActiveItems() {
@@ -127,6 +148,98 @@ export class FieldPage {
     for (let i = 0; i < menuItems.length; i++) {
       menuItems[i].classList.remove("active-item");
     }
+  }
+
+  togglePalette(ID) {
+    let offset = document.getElementById("canvas-menu").offsetHeight;
+    let e = "";
+    let pal = ""
+
+    switch(ID) {
+      case this.EDIT:
+        e = "draw-menu";
+        pal = "draw-palette";
+        break;
+
+      case this.FIELD:
+        e = "field-menu";
+        pal = "field-palette";
+        break;
+
+      case this.CLEAR:
+        e = "clear-menu";
+        pal = null;
+        break;
+
+      case this.SAVE:
+        e = "save-menu";
+        pal = null;
+        break;
+
+      case this.VIEW:
+        e = "view-menu";
+        pal = null;
+        break;
+    }
+
+    let item = document.getElementById(e);
+    let palette = null;
+
+    try {
+      palette = document.getElementById(pal);
+    } catch(e) {
+      palette = null;
+    }
+
+    console.log(item);
+    console.log(palette);
+
+    if (palette) {
+      if (this.isActiveItem(item)) {
+        if (this.isItemVisible(palette)) {
+          palette.style.transform = "translateY(-100%)";
+          palette.classList.remove("visible");
+          palette.classList.add("hidden");
+        } else {
+          palette.style.transform = "translateY(" + offset + "px)";
+          palette.classList.remove("hidden");
+          palette.classList.add("visible");
+        }
+      } else {
+        this.resetActiveItems();
+        this.clearVisiblePalettes();
+        item.classList.add("active-item");
+        palette.style.transform = "translateY(" + offset + "px)";
+        palette.classList.remove("hidden");
+        palette.classList.add("visible");
+      }
+    } else {
+      this.resetActiveItems();
+      this.clearVisiblePalettes();
+      item.classList.add("active-item");
+    }
+
+
+  }
+
+  updateRed() {
+    document.getElementById("red-val").innerHTML = this.red + "";
+    this.updateColor();
+  }
+
+  updateGreen() {
+    document.getElementById("green-val").innerHTML = this.green + "";
+    this.updateColor();
+  }
+
+  updateBlue() {
+    document.getElementById("blue-val").innerHTML = this.blue + "";
+    this.updateColor();
+  }
+
+  updateColor() {
+    this.color = "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
+    console.log("Updated color: " + this.color);
   }
 
 }
