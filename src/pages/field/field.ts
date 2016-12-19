@@ -68,6 +68,7 @@ export class FieldPage {
   setDimensions() {
     /* Default properties for our canvas */
     this.canvas_container.style.marginTop = document.getElementById("canvas-menu").offsetHeight + "px";
+    this.canvas.style.marginTop = document.getElementById("canvas-menu").offsetHeight + "px";
     this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
     this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
   }
