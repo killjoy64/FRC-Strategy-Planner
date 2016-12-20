@@ -29,6 +29,12 @@
 </ion-grid>
 
 <ion-content id="canvas-scroll" scrollY="true">
+  <ion-fab id="undo" right top class="fixed-fab">
+    <button ion-fab mini color="light" (click)="undoState()"><span class="fa fa-undo"></span></button>
+  </ion-fab>
+  <!--<ion-fab id="redo" right top class="fixed-fab flip-x">-->
+    <!--<button ion-fab mini color="light" (click)="redoState()"><span class="fa fa-undo"></span></button>-->
+  <!--</ion-fab>-->
   <div id="canvas" (click)="clearVisiblePalettes()">
     <ion-img id="canvas-bg" src="assets/2016-field-large.png"></ion-img>
     <canvas id="actual-canvas">

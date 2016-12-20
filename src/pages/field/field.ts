@@ -9,40 +9,46 @@ export class FieldPage {
 
   @ViewChild(Content) canvasContent: Content;
 
-  initialized: boolean;
-
+  /* Palette constants */
   EDIT: number;
   FIELD: number;
   CLEAR: number;
   SAVE: number;
   VIEW: number;
 
+  /* Brush type constants */
   PENCIL: number;
   LINE: number;
   ERASER: number;
 
+  /* Element declarations */
   main_palette: any;
   canvas_scroll: any;
   canvas_container: any;
   canvas: any;
   context: any;
+
+  /* Control variables */
   drawing: boolean;
   dragging: boolean;
   canEdit: boolean;
+  initialized: boolean;
 
+  /* Brush property declarations */
   drawingType: number;
   drawingValue: string;
+  currentMode: number;
+  size: number;
+  color: string;
 
   /* Color declarations */
   red: number;
   green: number;
   blue: number;
 
-  /* Brush declarations */
-  size: number;
-  color: string;
-
-  currentMode: number;
+  /* Stack declarations */
+  saves: any;
+  redos: any;
 
   constructor(private alert : AlertController) {
     this.drawingValue = "pencil";
@@ -70,7 +76,7 @@ export class FieldPage {
     this.updateGreen();
     this.updateBlue();
     this.updateBrushSize();
-    
+
     this.EDIT = 0;
     this.FIELD = 1;
     this.CLEAR = 2;
@@ -84,13 +90,15 @@ export class FieldPage {
     this.currentMode = 0;
     this.drawingType = 0;
 
+    this.saves = [];
+    this.redos = [];
+
     this.setDimensions();
     this.clearVisiblePalettes();
     this.bindListeners();
   }
 
   setDimensions() {
-    // let tabbar = document.getElementsByClassName("tabbar")[0];
     let height = window.innerHeight - (document.getElementById("canvas-menu").offsetHeight);
 
     this.canvas_scroll.style.marginTop = document.getElementById("canvas-menu").offsetHeight + "px";
@@ -99,7 +107,6 @@ export class FieldPage {
     /* Default properties for our canvas */
     this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
     this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
-
   }
 
   bindListeners() {
@@ -129,8 +136,52 @@ export class FieldPage {
 
   }
 
+  saveState() {
+    this.saves.push(this.canvas.toDataURL());
+  }
+
+  undoState() {
+    /* Must be source-over so that we are writing over the image */
+    // TODO - Update mode after it's done so that user can keep erasing/drawing
+    this.context.globalCompositeOperation = "source-over";
+    if (this.saves.length > 0) {
+      let self = this;
+      let undo = self.saves.pop();
+
+      /* Since context is defined within canvas, we replaced it's image with our saved one */
+      let img = document.createElement('img');
+      img.setAttribute("src", undo);
+      img.addEventListener("load", () => {
+        self.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
+        self.context.drawImage(img, 0, 0);
+      });
+      self.redos.push(undo);
+    } else {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }
+
+  redoState() {
+    /* Must be source-over so that we are writing over the image */
+    // TODO - Update mode after it's done so that user can keep erasing/drawing
+    this.context.globalCompositeOperation = "source-over";
+    if (this.redos.length > 0) {
+      let self = this;
+      let redo = self.redos.pop();
+
+      /* Since context is defined within canvas, we replaced it's image with our saved one */
+      let img = document.createElement('img');
+      img.setAttribute("src", redo);
+      img.addEventListener("load", () => {
+        self.context.clearRect(0, 0, self.canvas.width, self.canvas.height);
+        self.context.drawImage(img, 0, 0);
+      });
+      self.saves.push(redo);
+    }
+  }
+
   beginDrawing(e) {
-    // this.saveState();
+    this.saveState();
     if (this.canEdit) {
       this.drawing = true;
       this.drawPoint(e);
@@ -140,8 +191,6 @@ export class FieldPage {
   drawPoint(e) {
     // console.log("DRAWING: " + this.drawing + " | MODE: " + this.currentMode + " | EDITABLE: "  + this.canEdit);
     if (this.drawing && this.currentMode == this.EDIT && this.canEdit) {
-      // this.setBrushSize();
-      // this.checkLineStyle();
       e.preventDefault();
       let x = e.touches[0].pageX;
       let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
@@ -311,6 +360,7 @@ export class FieldPage {
     this.color = "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
     this.context.strokeStyle = this.color;
     this.context.fillStyle = this.color;
+    document.getElementById("color-val").style.background = this.color;
   }
 
 }
