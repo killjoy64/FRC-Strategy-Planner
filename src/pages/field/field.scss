@@ -58,9 +58,13 @@
   position: fixed;
   top: 0;
   width: 100vw;
-  height: 60vh;
+  min-height: 60vh;
   background-color: #FFFFFF;
   z-index: 9;
+}
+
+.range {
+  padding: 0 !important;
 }
 
 .item-inner {

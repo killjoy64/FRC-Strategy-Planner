@@ -69,7 +69,8 @@ export class FieldPage {
     this.updateRed();
     this.updateGreen();
     this.updateBlue();
-
+    this.updateBrushSize();
+    
     this.EDIT = 0;
     this.FIELD = 1;
     this.CLEAR = 2;
@@ -167,12 +168,14 @@ export class FieldPage {
     switch (ID) {
       case this.PENCIL:
         this.drawingType = this.PENCIL;
+        this.context.globalCompositeOperation = "source-over";
         break;
       case this.LINE:
         this.drawingType = this.LINE;
         break;
       case this.ERASER:
         this.drawingType = this.ERASER;
+        this.context.globalCompositeOperation = "destination-out";
         break;
     }
   }
@@ -283,6 +286,10 @@ export class FieldPage {
     }
 
 
+  }
+
+  updateBrushSize() {
+    document.getElementById("size-val").innerHTML = this.size + "";
   }
 
   updateRed() {

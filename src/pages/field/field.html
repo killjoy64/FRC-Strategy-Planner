@@ -65,20 +65,28 @@
       <!--<ion-badge item-right id="blue-val" color="primary"></ion-badge>-->
     </ion-item>
   </ion-list>
-  <ion-list>
-    <ion-segment [(ngModel)]="drawingValue" color="primary">
-      <ion-segment-button value="pencil" (ionSelect)="changeMode(0)">
-        Pencil
-      </ion-segment-button>
-      <ion-segment-button value="line" (ionSelect)="changeMode(1)">
-        Line
-      </ion-segment-button>
-      <ion-segment-button value="eraser" (ionSelect)="changeMode(2)">
-        Eraser
-      </ion-segment-button>
-    </ion-segment>
-  </ion-list>
   <ion-grid>
+    <ion-row>
+      <ion-segment [(ngModel)]="drawingValue" color="primary">
+        <ion-segment-button value="pencil" (ionSelect)="changeMode(0)">
+          Pencil
+        </ion-segment-button>
+        <ion-segment-button value="line" (ionSelect)="changeMode(1)">
+          Line
+        </ion-segment-button>
+        <ion-segment-button value="eraser" (ionSelect)="changeMode(2)">
+          Eraser
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-range min="1" max="10" [(ngModel)]="size" (ionChange)="updateBrushSize()">
+          <ion-label range-left color="primary">Size</ion-label>
+          <ion-label range-right color="primary" id="size-val"></ion-label>
+        </ion-range>
+      </ion-col>
+    </ion-row>
     <ion-row>
       <ion-col width-20 center>
         <div>
