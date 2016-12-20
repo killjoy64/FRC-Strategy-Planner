@@ -7,10 +7,13 @@
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
+  <allow-intent href="https://www.thebluealliance.com/*" />
   <allow-intent href="tel:*"/>
   <allow-intent href="sms:*"/>
   <allow-intent href="mailto:*"/>
   <allow-intent href="geo:*"/>
+  <allow-navigation href="http://*/*" />
+  <allow-navigation href="https://www.thebluealliance.com/*" />
   <platform name="android">
     <allow-intent href="market:*"/>
     <icon src="resources\android\icon\drawable-ldpi-icon.png" density="ldpi"/>

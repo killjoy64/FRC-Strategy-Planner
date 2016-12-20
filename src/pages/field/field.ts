@@ -127,6 +127,7 @@ export class FieldPage {
     self.canvas.addEventListener("touchmove", (e) => {
       // self.updateMode();
       self.drawPoint(e);
+      console.log(self.context.strokeStyle)
     });
 
     self.canvas.addEventListener("touchend", (e) => {
@@ -192,6 +193,7 @@ export class FieldPage {
     // console.log("DRAWING: " + this.drawing + " | MODE: " + this.currentMode + " | EDITABLE: "  + this.canEdit);
     if (this.drawing && this.currentMode == this.EDIT && this.canEdit) {
       e.preventDefault();
+      this.updateColor();
       let x = e.touches[0].pageX;
       let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
       let r = this.size;
@@ -360,6 +362,7 @@ export class FieldPage {
     this.color = "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
     this.context.strokeStyle = this.color;
     this.context.fillStyle = this.color;
+    console.log(this.color);
     document.getElementById("color-val").style.background = this.color;
   }
 
