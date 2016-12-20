@@ -1,0 +1,115 @@
+<ion-grid id="canvas-menu">
+  <ion-row>
+    <ion-col id="view-menu" class="canvas-menu-item" (click)="togglePalette(4)">
+      <button ion-button clear color="light" class="canvas-menu-item" full>
+        <span class="fa fa-hand-paper-o fa-2x"></span>
+      </button>
+    </ion-col>
+    <ion-col id="draw-menu" class="canvas-menu-item active-item" (click)="togglePalette(0)">
+      <button ion-button clear color="light" class="canvas-menu-item" full>
+        <span class="fa fa-pencil fa-2x"></span>
+      </button>
+    </ion-col>
+    <ion-col id="field-menu" class="canvas-menu-item" (click)="togglePalette(1)">
+      <button ion-button clear color="light" class="canvas-menu-item" full>
+        <span class="fa fa-futbol-o fa-2x"></span>
+      </button>
+    </ion-col>
+    <ion-col id="clear-menu" class="canvas-menu-item" (click)="togglePalette(2)">
+      <button ion-button clear color="light" class="canvas-menu-item" full>
+        <span class="fa fa-trash fa-2x"></span>
+      </button>
+    </ion-col>
+    <ion-col id="save-menu" class="canvas-menu-item" (click)="togglePalette(3)">
+      <button ion-button clear color="light" class="canvas-menu-item" full>
+        <span class="fa fa-save fa-2x"></span>
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-content id="canvas-scroll" scrollY="true">
+  <ion-fab id="undo" right top class="fixed-fab">
+    <button ion-fab mini color="light" (click)="undoState()"><span class="fa fa-undo"></span></button>
+  </ion-fab>
+  <!--<ion-fab id="redo" right top class="fixed-fab flip-x">-->
+    <!--<button ion-fab mini color="light" (click)="redoState()"><span class="fa fa-undo"></span></button>-->
+  <!--</ion-fab>-->
+  <div id="canvas" (click)="clearVisiblePalettes()">
+    <ion-img id="canvas-bg" src="assets/2016-field-large.png"></ion-img>
+    <canvas id="actual-canvas">
+      Nope.
+    </canvas>
+  </div>
+</ion-content>
+
+<div id="draw-palette" class="palette hidden" padding>
+  <div class="popover-header">
+    <h3>Draw Options</h3>
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <ion-range min="0" max="255" [(ngModel)]="red" color="red" (ionChange)="updateRed()" color="danger">
+        <ion-label range-left color="danger">R</ion-label>
+        <ion-label range-right color="danger" id="red-val"></ion-label>
+      </ion-range>
+      <!--<ion-badge item-right id="red-val" color="danger"></ion-badge>-->
+    </ion-item>
+    <ion-item>
+      <ion-range min="0" max="255" [(ngModel)]="green" color="green" (ionChange)="updateGreen()" color="secondary">
+        <ion-label range-left color="secondary">G</ion-label>
+        <ion-label range-right color="secondary" id="green-val"></ion-label>
+      </ion-range>
+      <!--<ion-badge item-right id="green-val" color="secondary"></ion-badge>-->
+    </ion-item>
+    <ion-item>
+      <ion-range min="0" max="255" [(ngModel)]="blue" color="blue" (ionChange)="updateBlue()" color="primary">
+        <ion-label range-left color="primary">B</ion-label>
+        <ion-label range-right color="primary" id="blue-val"></ion-label>
+      </ion-range>
+      <!--<ion-badge item-right id="blue-val" color="primary"></ion-badge>-->
+    </ion-item>
+  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-segment [(ngModel)]="drawingValue" color="primary">
+        <ion-segment-button value="pencil" (ionSelect)="changeMode(0)">
+          Pencil
+        </ion-segment-button>
+        <ion-segment-button value="line" (ionSelect)="changeMode(1)">
+          Line
+        </ion-segment-button>
+        <ion-segment-button value="eraser" (ionSelect)="changeMode(2)">
+          Eraser
+        </ion-segment-button>
+      </ion-segment>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-range min="1" max="10" [(ngModel)]="size" (ionChange)="updateBrushSize()">
+          <ion-label range-left color="primary">Size</ion-label>
+          <ion-label range-right color="primary" id="size-val"></ion-label>
+        </ion-range>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col width-20 center>
+        <div>
+          Result:
+        </div>
+      </ion-col>
+      <ion-col width-80>
+        <div id="color-val">
+
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+
+<div id="field-palette" class="palette hidden" padding>
+  <div>
+    <h3>Field Menu</h3>
+  </div>
+</div>
