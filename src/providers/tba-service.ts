@@ -26,48 +26,86 @@ export class TBAService {
     }).map((response:Response) => response.json());
   }
 
-  // requestCompleteTeamInfo(team) {
-  //   let authHeader = new Headers();
-  //   authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
-  //
-  //   return Observable.forkJoin(
-  //     this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team, {
-  //       headers: authHeader
-  //     }).map(response => response.json()),
-  //
-  //     this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team, {
-  //       headers: authHeader
-  //     }).map(response => response.json())
-  //   );
-  //
-  //   return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team, {
-  //     headers: authHeader
-  //   }).map(response => response.json());
-  // }
-
-  sendRequest(url) {
-
-    if (this.data) {
-      console.log("HERE IT IS ALREADY DONE");
-      return Promise.resolve(this.data);
-    }
-
+  requestTeamEvents(team, year) {
     let authHeader = new Headers();
-
     authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
 
-    return new Promise(resolve => {
-      this.http.get("https://www.thebluealliance.com/api/v2/" + url, {
-        headers: authHeader
-      })
-        .map(res => res.json())
-        .subscribe(data => {
-          this.data = data;
-          resolve(this.data);
-        }, error => {
-        });
-    });
+    return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team + "/" + year + "/events", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
 
+  requestTeamEventAwards(team, event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team + "/event/" + event + "/awards", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestTeamEventMatches(team, event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team + "/event/" + event + "/matches", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestTeamYears(team) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team + "/years_participated", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestTeamEventHistory(team) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team + "/history/events", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestTeamAwardHistory(team) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team + "/history/awards", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestTeamRobotHistory(team) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team + "/history/robots", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestTeamDistrictHistory(team) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/team/frc" + team + "/history/districts", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestCompleteTeamInfo(team) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return Observable.forkJoin(
+      this.requestTeamInfo(team),
+      this.requestTeamYears(team)
+    );
   }
 
 }

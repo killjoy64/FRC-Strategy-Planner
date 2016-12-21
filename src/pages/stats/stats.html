@@ -20,13 +20,13 @@
 <ion-content>
 
   <div [ngSwitch]="viewType">
-    <ion-list *ngSwitchCase="'my_comp'">
+    <div *ngSwitchCase="'my_comp'">
         Event key
-    </ion-list>
+    </div>
 
-    <ion-list *ngSwitchCase="'event'">
+    <div *ngSwitchCase="'event'">
       Show events for year
-    </ion-list>
+    </div>
 
     <div *ngSwitchCase="'team'">
       <ion-card>
@@ -38,6 +38,9 @@
       </ion-card>
       <ion-card>
         <ion-card-header>{{ team?.nickname || "Click the search button and find a team" }}</ion-card-header>
+        <ion-card-content>
+          <span>Years Participated - {{ team?.years || "N/A" }}</span>
+        </ion-card-content>
       </ion-card>
     </div>
   </div>

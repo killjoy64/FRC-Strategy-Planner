@@ -6,8 +6,9 @@ FRC Strategy Planner is a cross-platform web application that will allow FRC use
 
 # TODO
 ### Desired upcoming features and house-keeping things
+- [ ] Finish Field page functions (clear, save, open)
 - [ ] Design features to go along with the stats page
-- [ ] Design look for the home page
+- [ ] Decide to keep the home page or switch to settings page
 - [ ] Add capabilities to save/load strategy plans - serialize this information
 - [ ] Add capabilities to add robots/team numbers to canvas - feed match list?
 - [ ] Add capabilities to add field elements to the canvas
