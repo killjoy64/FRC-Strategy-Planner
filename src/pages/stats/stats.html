@@ -2,10 +2,72 @@
   <ion-navbar>
     <ion-title>Statistics</ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="viewType">
+      <ion-segment-button value="my_comp">
+        My Event
+      </ion-segment-button>
+      <ion-segment-button value="event">
+        Events
+      </ion-segment-button>
+      <ion-segment-button value="team">
+        Teams
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  Stats page content!
-  <div id="res">
+<ion-content>
+
+  <div [ngSwitch]="viewType">
+    <ion-list *ngSwitchCase="'my_comp'">
+        Event key
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'event'">
+      Show events for year
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'team'">
+      <ion-item>
+        <ion-card>
+          <ion-header>{{team.nickname}}</ion-header>
+        </ion-card>
+      </ion-item>
+    </ion-list>
   </div>
+
+
+  <!--<ion-list [virtualScroll]="events">-->
+    <!--<ion-item *virtualItem="let event">-->
+      <!--<ion-card>-->
+        <!--<ion-card-header>-->
+          <!--<div class="event-header">-->
+            <!--<span class="event-name">Week {{event.week}} - {{event.name}}</span>-->
+          <!--</div>-->
+        <!--</ion-card-header>-->
+        <!--<ion-card-content>-->
+          <!--<ion-grid>-->
+            <!--<ion-row>-->
+              <!--<ion-col>-->
+                <!--Start Date: {{event.start_date}}-->
+              <!--</ion-col>-->
+              <!--<ion-col>-->
+                <!--{{event.location}}-->
+              <!--</ion-col>-->
+            <!--</ion-row>-->
+            <!--<ion-row>-->
+              <!--<ion-col>-->
+                <!--End Date: {{event.end_date}}-->
+              <!--</ion-col>-->
+              <!--<ion-col>-->
+                <!--{{eventTeamLength}}-->
+              <!--</ion-col>-->
+            <!--</ion-row>-->
+          <!--</ion-grid>-->
+        <!--</ion-card-content>-->
+      <!--</ion-card>-->
+    <!--</ion-item>-->
+  <!--</ion-list>-->
+
 </ion-content>

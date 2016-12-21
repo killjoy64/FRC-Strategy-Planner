@@ -12,9 +12,14 @@ export class TBAService {
     console.log('Hello TBAService Provider');
   }
 
-  load() {
+  reset() {
+    this.data = null;
+  }
+
+  sendRequest(url) {
 
     if (this.data) {
+      console.log("HERE IT IS ALREADY DONE");
       return Promise.resolve(this.data);
     }
 
@@ -23,7 +28,7 @@ export class TBAService {
     authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
 
     return new Promise(resolve => {
-      this.http.get("https://www.thebluealliance.com/api/v2/team/frc3618", {
+      this.http.get("https://www.thebluealliance.com/api/v2/" + url, {
         headers: authHeader
       })
         .map(res => res.json())
