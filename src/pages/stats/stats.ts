@@ -29,29 +29,6 @@ export class StatsPage {
     this.requestID = 0;
     this.viewType = 'my_comp';
     this.teamNumber = 254;
-    // this.getAllEvents("events/2016");
-    this.getAllTeams("team/frc254");
-  }
-
-  searchForTeam(team) {
-    this.tba.reset();
-    this.getAllTeams("team/frc" + team);
-  }
-
-  showLoading(msg) {
-
-    this.load = this.loadingCtrl.create({
-      content: msg
-    });
-
-    this.load.present();
-
-    setTimeout(() => {
-      if (this.load != null) {
-        this.showAlert("Timeout", "Took to long to retrieve data from TBA.");
-        this.load.dismiss();
-      }
-    }, 5000);
   }
 
   showAlert(title, msg) {
@@ -63,49 +40,78 @@ export class StatsPage {
     alert.present();
   }
 
-  getAllTeams(url) {
-    if (!this.load) {
-      this.showLoading('Loading Please Wait...');
-    }
-
-    this.requestID++;
-    this.openRequests++;
-
-    this.tba.sendRequest(url)
-      .then(response => {
-        this.openRequests--;
-        if (this.load && this.openRequests == 0) {
-          this.load.dismiss();
-          this.load = null;
-        }
-        if (this.team != response) {
+  getTeamInfo(team) {
+    this.tba.requestTeamInfo(team)
+      .subscribe(
+        data => {
+          this.team = data;
+        },
+        err => {
           this.team = null;
+          this.showAlert("Error", "Did not find any team matching that number.");
         }
-        this.team = response;
-      }, error => {
-        this.showAlert("Error", "Did not find any results for that team number.");
-      });
+      );
   }
 
-  getAllEvents(url) {
-    if (!this.load) {
-      this.showLoading('Loading Please Wait...');
-    }
+  // showLoading(msg) {
+  //
+  //   this.load = this.loadingCtrl.create({
+  //     content: msg
+  //   });
+  //
+  //   this.load.present();
+  //
+  //   setTimeout(() => {
+  //     if (this.load != null) {
+  //       this.showAlert("Timeout", "Took to long to retrieve data from TBA.");
+  //       this.load.dismiss();
+  //     }
+  //   }, 5000);
+  // }
 
-    this.requestID++;
-    this.openRequests++;
-
-    this.tba.sendRequest(url)
-      .then(response => {
-        this.openRequests--;
-        if (this.load && this.openRequests == 0) {
-          this.load.dismiss();
-          this.load = null;
-        }
-        this.events = response;
-      }, error => {
-        this.showAlert("Error", "Error requesting The Blue Alliance Data!");
-    });
-  }
+  // getAllTeams(url) {
+  //   if (!this.load) {
+  //     this.showLoading('Loading Please Wait...');
+  //   }
+  //
+  //   this.requestID++;
+  //   this.openRequests++;
+  //
+  //   this.tba.sendRequest(url)
+  //     .then(response => {
+  //       this.openRequests--;
+  //       if (this.load && this.openRequests == 0) {
+  //         this.load.dismiss();
+  //         this.load = null;
+  //       }
+  //       if (this.team != response) {
+  //         this.team = null;
+  //       }
+  //       this.team = response;
+  //     }, error => {
+  //       this.showAlert("Error", "Did not find any results for that team number.");
+  //     });
+  // }
+  //
+  // getAllEvents(url) {
+  //   if (!this.load) {
+  //     this.showLoading('Loading Please Wait...');
+  //   }
+  //
+  //   this.requestID++;
+  //   this.openRequests++;
+  //
+  //   this.tba.sendRequest(url)
+  //     .then(response => {
+  //       this.openRequests--;
+  //       if (this.load && this.openRequests == 0) {
+  //         this.load.dismiss();
+  //         this.load = null;
+  //       }
+  //       this.events = response;
+  //     }, error => {
+  //       this.showAlert("Error", "Error requesting The Blue Alliance Data!");
+  //   });
+  // }
 
 }
