@@ -28,13 +28,18 @@
       Show events for year
     </ion-list>
 
-    <ion-list *ngSwitchCase="'team'">
-      <ion-item>
-        <ion-card>
-          <ion-header>{{team.nickname}}</ion-header>
-        </ion-card>
-      </ion-item>
-    </ion-list>
+    <div *ngSwitchCase="'team'">
+      <ion-card>
+        <ion-card-header>Search For an FRC Team</ion-card-header>
+        <ion-card-content>
+          <ion-input left type="number" [(ngModel)]="teamNumber" placeholder="e.g. 4003"></ion-input>
+          <button ion-button (click)="searchForTeam(teamNumber)">Search</button>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+        <ion-card-header>{{team.nickname}}</ion-card-header>
+      </ion-card>
+    </div>
   </div>
 
 

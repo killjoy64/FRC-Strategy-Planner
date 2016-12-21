@@ -22,10 +22,13 @@ export class StatsPage {
   /* Data bindings */
   viewType: string;
 
+  teamNumber: number;
+
   constructor(private tba: TBAService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.openRequests = 0;
     this.requestID = 0;
     this.viewType = 'my_comp';
+    this.teamNumber = 254;
     // this.getAllEvents("events/2016");
     this.getAllTeams("team/frc254");
   }
@@ -75,12 +78,10 @@ export class StatsPage {
           this.load.dismiss();
           this.load = null;
         }
-        console.log(url);
         if (this.team != response) {
           this.team = null;
         }
         this.team = response;
-        console.log(response);
       }, error => {
         this.showAlert("Error", "Did not find any results for that team number.");
       });
