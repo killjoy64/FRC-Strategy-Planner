@@ -52,6 +52,10 @@ export class FieldPage {
 
   constructor(private alertCtrl: AlertController) {
     this.drawingValue = "pencil";
+
+    // We initialize these first so that they aren't destroyed whenever we exit the DOM
+    this.saves = [];
+    this.redos = [];
   }
 
   ionViewDidEnter() {
@@ -90,12 +94,22 @@ export class FieldPage {
     this.currentMode = 0;
     this.drawingType = 0;
 
-    this.saves = [];
-    this.redos = [];
-
     this.setDimensions();
     this.clearVisiblePalettes();
     this.bindListeners();
+
+    if (this.saves.length >= 1) {
+      this.undoState();
+      console.log("Successfully reloaded cached canvas");
+    }
+
+  }
+
+  ionViewDidLeave() {
+    if (this.saves.length >= 1) {
+      this.saveState();
+      console.log("Saved current canvas");
+    }
   }
 
   setDimensions() {
@@ -127,7 +141,6 @@ export class FieldPage {
     self.canvas.addEventListener("touchmove", (e) => {
       // self.updateMode();
       self.drawPoint(e);
-      console.log(self.context.strokeStyle)
     });
 
     self.canvas.addEventListener("touchend", (e) => {
@@ -214,7 +227,6 @@ export class FieldPage {
   }
 
   drawPoint(e) {
-    // console.log("DRAWING: " + this.drawing + " | MODE: " + this.currentMode + " | EDITABLE: "  + this.canEdit);
     if (this.drawing && this.currentMode == this.EDIT && this.canEdit) {
       e.preventDefault();
       this.updateColor();
@@ -391,6 +403,8 @@ export class FieldPage {
   }
 
   clearCanvas() {
+    this.saves = [];
+    this.redos = [];
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
