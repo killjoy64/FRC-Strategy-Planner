@@ -10,7 +10,7 @@ export class TBAService {
   data: any;
 
   constructor(public http: Http, private alertCtrl: AlertController) {
-    console.log('Hello TBAService Provider');
+    console.log('TBA Service Provider Initialized');
   }
 
   reset() {
@@ -107,7 +107,7 @@ export class TBAService {
       this.requestTeamYears(team),
       this.requestTeamRobotHistory(team),
       this.requestTeamEventHistory(team),
-      this.requestTeamAwardHistory(team),
+      this.requestTeamAwardHistory(team)
     );
   }
 

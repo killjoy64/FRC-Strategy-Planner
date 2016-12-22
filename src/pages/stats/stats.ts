@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { LoadingController, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { AlertController, Content } from 'ionic-angular';
 import { TBAService } from '../../providers/tba-service'
 
 @Component({
@@ -8,6 +8,8 @@ import { TBAService } from '../../providers/tba-service'
   providers: [TBAService]
 })
 export class StatsPage {
+
+  @ViewChild(Content) content: Content;
 
   /* AJAX Request Variables */
   openRequests: any;
@@ -30,7 +32,7 @@ export class StatsPage {
   /* Dummy Array */
   dummy: any;
 
-  constructor(private tba: TBAService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+  constructor(private tba: TBAService, private alertCtrl: AlertController) {
     this.openRequests = 0;
     this.requestID = 0;
     this.viewType = 'my_comp';
@@ -44,6 +46,26 @@ export class StatsPage {
         "dummy": 1
       }
     ];
+  }
+
+  ngAfterViewInit() {
+    this.content.addScrollListener((e) => {
+      if (e.target.scrollTop >= 150) {
+        if (document.getElementById("scroll-top").classList.contains("hidden")) {
+          document.getElementById("scroll-top").classList.remove("hidden");
+          document.getElementById("scroll-top").classList.add("visible");
+        }
+      } else {
+        if (document.getElementById("scroll-top").classList.contains("visible")) {
+          document.getElementById("scroll-top").classList.remove("visible");
+          document.getElementById("scroll-top").classList.add("hidden");
+        }
+      }
+    });
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop(800);
   }
 
   bindListeners() {
@@ -100,7 +122,7 @@ export class StatsPage {
           data => {
             this.requestOpen = false;
             this.team = data[0];
-            this.team.years = data[1].length;
+            this.team.years = data[0].length;
             this.team.robots = data[2];
             this.team.events = data[3];
             this.team.awards = data[4];

@@ -52,51 +52,26 @@
         <ion-card-header>{{ team?.nickname || "Click the search button and find a team" }}</ion-card-header>
         <ion-card-content>
           <span>Years Participated - {{ team?.years || "N/A" }}</span>
-          <div class="space-holder"></div>
-          <ion-card class="team-events" *ngFor="let event of (team?.events || dummy)">
-            <ion-list>
-              <ion-item text-wrap class="team-event">
-                <div class="team-event-item">Event: {{ event?.year || "N/A" }} {{ event?.name || "N/A" }}</div>
-                <div>Location: {{ event?.location || "N/A" }}</div>
-              </ion-item>
-            </ion-list>
-          </ion-card>
         </ion-card-content>
       </ion-card>
+      <ion-card class="team-awards" *ngFor="let award of (team?.awards || dummy)">
+        <ion-card-header>
+          {{ award?.year || "N/A" }} {{ award?.name || "N/A" }}
+        </ion-card-header>
+      </ion-card>
+      <ion-card class="team-events" *ngFor="let event of (team?.events || dummy)">
+        <ion-card-header>
+          {{ event?.year || "N/A" }} {{ event?.name || "N/A" }}
+        </ion-card-header>
+        <ion-card-content text-wrap class="team-event">
+          <div>Location: {{ event?.location || "N/A" }}</div>
+        </ion-card-content>
+      </ion-card>
+
+      <button ion-button icon-only id="scroll-top" (click)="scrollToTop()" class="hidden">
+        <ion-icon name="arrow-up"></ion-icon>
+      </button>
     </div>
   </div>
-
-
-  <!--<ion-list [virtualScroll]="events">-->
-    <!--<ion-item *virtualItem="let event">-->
-      <!--<ion-card>-->
-        <!--<ion-card-header>-->
-          <!--<div class="event-header">-->
-            <!--<span class="event-name">Week {{event.week}} - {{event.name}}</span>-->
-          <!--</div>-->
-        <!--</ion-card-header>-->
-        <!--<ion-card-content>-->
-          <!--<ion-grid>-->
-            <!--<ion-row>-->
-              <!--<ion-col>-->
-                <!--Start Date: {{event.start_date}}-->
-              <!--</ion-col>-->
-              <!--<ion-col>-->
-                <!--{{event.location}}-->
-              <!--</ion-col>-->
-            <!--</ion-row>-->
-            <!--<ion-row>-->
-              <!--<ion-col>-->
-                <!--End Date: {{event.end_date}}-->
-              <!--</ion-col>-->
-              <!--<ion-col>-->
-                <!--{{eventTeamLength}}-->
-              <!--</ion-col>-->
-            <!--</ion-row>-->
-          <!--</ion-grid>-->
-        <!--</ion-card-content>-->
-      <!--</ion-card>-->
-    <!--</ion-item>-->
-  <!--</ion-list>-->
 
 </ion-content>
