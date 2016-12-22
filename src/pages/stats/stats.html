@@ -32,10 +32,22 @@
       <ion-card>
         <ion-card-header>Search For an FRC Team</ion-card-header>
         <ion-card-content>
-          <ion-input left type="number" [(ngModel)]="teamNumber" placeholder="e.g. 4003"></ion-input>
-          <button ion-button (click)="getTeamInfo(teamNumber)">Search</button>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-input left type="number" [(ngModel)]="teamNumber" placeholder="e.g. 4003"></ion-input>
+              </ion-col>
+              <ion-col center>
+                <button ion-button (click)="getTeamInfo(teamNumber)">Search</button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
         </ion-card-content>
       </ion-card>
+      <div id="loading" class="loading hidden" style="display: none;">
+        <ion-spinner></ion-spinner>
+        <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
+      </div>
       <ion-card>
         <ion-card-header>{{ team?.nickname || "Click the search button and find a team" }}</ion-card-header>
         <ion-card-content>

@@ -104,7 +104,11 @@ export class TBAService {
 
     return Observable.forkJoin(
       this.requestTeamInfo(team),
-      this.requestTeamYears(team)
+      this.requestTeamYears(team),
+      this.requestTeamRobotHistory(team),
+      this.requestTeamEventHistory(team),
+      this.requestTeamAwardHistory(team),
+      this.requestTeamEventHistory(team)
     );
   }
 
