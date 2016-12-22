@@ -12,6 +12,29 @@
   text-align: center;
 }
 
+.space-holder {
+  height: 30px !important;
+  width: 100%;
+}
+
+.label {
+  margin: 0 !important;
+}
+
+.team-event {
+  margin: 8px 0 0 0 !important;
+  padding-left: 5px !important;
+  border-left: 4px solid #bd2c00;
+}
+
+.alt-bg:nth-child(even) {
+  background-color: #b0b0b0;
+}
+
+.alt-bg:nth-child(odd) {
+  background-color: #d3d3d3;
+}
+
 @keyframes blink {
   0% {
     opacity: .2;

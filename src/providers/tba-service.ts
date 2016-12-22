@@ -108,7 +108,6 @@ export class TBAService {
       this.requestTeamRobotHistory(team),
       this.requestTeamEventHistory(team),
       this.requestTeamAwardHistory(team),
-      this.requestTeamEventHistory(team)
     );
   }
 

@@ -27,6 +27,9 @@ export class StatsPage {
   /* Page initialized booleans */
   initialized: boolean;
 
+  /* Dummy Array */
+  dummy: any;
+
   constructor(private tba: TBAService, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
     this.openRequests = 0;
     this.requestID = 0;
@@ -34,6 +37,13 @@ export class StatsPage {
     this.requestOpen = false;
     this.teamNumber = 254;
     this.initialized = false;
+
+    // We fill a dummy array to have default values to resort to when our data variables are uninitialized/undefined.
+    this.dummy = [
+      {
+        "dummy": 1
+      }
+    ];
   }
 
   bindListeners() {
@@ -91,6 +101,10 @@ export class StatsPage {
             this.requestOpen = false;
             this.team = data[0];
             this.team.years = data[1].length;
+            this.team.robots = data[2];
+            this.team.events = data[3];
+            this.team.awards = data[4];
+
             this.hideLoading();
           },
           err => {

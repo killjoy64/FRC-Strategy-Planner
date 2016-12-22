@@ -52,6 +52,15 @@
         <ion-card-header>{{ team?.nickname || "Click the search button and find a team" }}</ion-card-header>
         <ion-card-content>
           <span>Years Participated - {{ team?.years || "N/A" }}</span>
+          <div class="space-holder"></div>
+          <ion-card class="team-events" *ngFor="let event of (team?.events || dummy)">
+            <ion-list>
+              <ion-item text-wrap class="team-event">
+                <div class="team-event-item">Event: {{ event?.year || "N/A" }} {{ event?.name || "N/A" }}</div>
+                <div>Location: {{ event?.location || "N/A" }}</div>
+              </ion-item>
+            </ion-list>
+          </ion-card>
         </ion-card-content>
       </ion-card>
     </div>
