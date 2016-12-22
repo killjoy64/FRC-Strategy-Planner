@@ -50,7 +50,7 @@ export class FieldPage {
   saves: any;
   redos: any;
 
-  constructor(private alert : AlertController) {
+  constructor(private alertCtrl: AlertController) {
     this.drawingValue = "pencil";
   }
 
@@ -135,6 +135,30 @@ export class FieldPage {
       self.endDrawing(e);
     });
 
+  }
+
+  confirmClear() {
+    let self = this;
+    let alert = this.alertCtrl.create({
+      title: 'Confirm',
+      message: 'Are you sure you want to clear the field of ALL drawings? This cannot be undone.',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            self.clearCanvas();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   saveState() {
@@ -281,7 +305,7 @@ export class FieldPage {
         e = "clear-menu";
         pal = null;
         this.currentMode = null;
-        // call method
+        this.confirmClear();
         break;
 
       case this.SAVE:
@@ -364,6 +388,10 @@ export class FieldPage {
     this.context.fillStyle = this.color;
     console.log(this.color);
     document.getElementById("color-val").style.background = this.color;
+  }
+
+  clearCanvas() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
 }
