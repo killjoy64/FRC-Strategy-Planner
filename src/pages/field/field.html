@@ -74,13 +74,13 @@
   <ion-grid>
     <ion-row>
       <ion-segment [(ngModel)]="drawingValue" color="primary">
-        <ion-segment-button value="pencil" (ionSelect)="changeMode(0)">
+        <ion-segment-button value="pencil" (ionSelect)="changeDrawMode(0)">
           Pencil
         </ion-segment-button>
-        <ion-segment-button value="line" (ionSelect)="changeMode(1)">
+        <ion-segment-button value="line" (ionSelect)="changeDrawMode(1)">
           Line
         </ion-segment-button>
-        <ion-segment-button value="eraser" (ionSelect)="changeMode(2)">
+        <ion-segment-button value="eraser" (ionSelect)="changeDrawMode(2)">
           Eraser
         </ion-segment-button>
       </ion-segment>
@@ -113,7 +113,10 @@
     <h3>Field Menu</h3>
   </div>
   <div class="field-item-row">
-    <div class="field-item">
+    <div class="field-item" (click)="selectFieldObject($event)">
+      <img src="assets/objects/2016/ball.png"/>
+    </div>
+    <div class="field-item" (click)="selectFieldObject($event)">
       <img src="assets/objects/2016/ball.png"/>
     </div>
   </div>

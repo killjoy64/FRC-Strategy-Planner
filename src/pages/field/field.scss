@@ -93,6 +93,8 @@
 .field-item {
   width: 75px;
   height: 75px;
+  padding: 3px;
+  border: 2px solid #FFFFFF;
 }
 
 .field-item > img {
@@ -101,7 +103,8 @@
 }
 
 .selected {
-  border: 2px solid #0d81ff;
+  border: 2px solid #0d81ff !important;
+  border-radius: 5px;
 }
 
 .fixed-fab {

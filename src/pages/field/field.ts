@@ -130,21 +130,22 @@ export class FieldPage {
 
     /* Canvas drawing events */
     self.canvas.addEventListener("touchstart", (e) => {
-      // self.updateMode();
       if (this.initialized == false) {
         this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
         this.initialized = true;
       }
-      self.beginDrawing(e);
+      if (this.currentMode == this.FIELD) {
+        self.drawSelectedImage(e);
+      } else {
+        self.beginDrawing(e);
+      }
     });
 
     self.canvas.addEventListener("touchmove", (e) => {
-      // self.updateMode();
       self.drawPoint(e);
     });
 
     self.canvas.addEventListener("touchend", (e) => {
-      // self.updateMode();
       self.endDrawing(e);
     });
 
@@ -167,6 +168,8 @@ export class FieldPage {
           text: 'Yes',
           handler: () => {
             self.clearCanvas();
+            self.togglePalette(this.EDIT);
+            self.togglePalette(this.EDIT);
           }
         }
       ]
@@ -180,7 +183,6 @@ export class FieldPage {
 
   undoState() {
     /* Must be source-over so that we are writing over the image */
-    // TODO - Update mode after it's done so that user can keep erasing/drawing
     this.context.globalCompositeOperation = "source-over";
     if (this.saves.length > 0) {
       let self = this;
@@ -201,7 +203,6 @@ export class FieldPage {
 
   redoState() {
     /* Must be source-over so that we are writing over the image */
-    // TODO - Update mode after it's done so that user can keep erasing/drawing
     this.context.globalCompositeOperation = "source-over";
     if (this.redos.length > 0) {
       let self = this;
@@ -247,20 +248,47 @@ export class FieldPage {
   endDrawing(e) {
     if (this.canEdit) {
       this.drawing = false;
-      this.context.beginPath();
+      if (this.currentMode == this.EDIT) {
+        this.context.beginPath();
+      }
     }
   }
 
-  changeMode(ID) {
+  drawSelectedImage(e) {
+    this.saveState();
+    this.changeDrawMode(this.PENCIL);
+    if (this.canEdit) {
+      let selected = document.getElementsByClassName("selected")[0];
+      let selectedImg = selected.querySelector("img");
+      let self = this;
+      let x = e.touches[0].pageX;
+      let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
+
+      /* Since context is defined within canvas, we replaced it's image with our saved one */
+      let img = document.createElement('img');
+      img.setAttribute("src", selectedImg.getAttribute("src"));
+      img.addEventListener("load", () => {
+        console.log(x + " | " + y + " WIDTH/HEIGHT: " + img.width + ", " + img.height);
+        let w = img.height * .1;
+        let h = img.height * .1;
+        self.context.drawImage(img, x - (w/2), y - (h/2), w, h);
+      });
+    }
+  }
+
+  changeDrawMode(ID) {
     switch (ID) {
       case this.PENCIL:
+        this.drawingValue = "pencil";
         this.drawingType = this.PENCIL;
         this.context.globalCompositeOperation = "source-over";
         break;
       case this.LINE:
+        this.drawingValue = "line";
         this.drawingType = this.LINE;
         break;
       case this.ERASER:
+        this.drawingValue = "eraser";
         this.drawingType = this.ERASER;
         this.context.globalCompositeOperation = "destination-out";
         break;
@@ -298,7 +326,7 @@ export class FieldPage {
   togglePalette(ID) {
     let offset = document.getElementById("canvas-menu").offsetHeight;
     let e = "";
-    let pal = ""
+    let pal = "";
 
     switch(ID) {
       case this.EDIT:
@@ -373,6 +401,18 @@ export class FieldPage {
     }
 
 
+  }
+
+  selectFieldObject(e) {
+    let items = document.getElementsByClassName("field-item");
+    for (let i = 0; i < items.length; i++) {
+      items[i].classList.remove("selected");
+    }
+    let item = e.path[1];
+    if (!item.classList.contains("field-item-row")) {
+      item.classList.add("selected");
+    }
+    this.togglePalette(this.FIELD);
   }
 
   updateBrushSize() {

@@ -65,7 +65,7 @@ export class StatsPage {
   }
 
   scrollToTop() {
-    this.content.scrollToTop(800);
+    this.content.scrollToTop(1200);
   }
 
   bindListeners() {
@@ -122,7 +122,7 @@ export class StatsPage {
           data => {
             this.requestOpen = false;
             this.team = data[0];
-            this.team.years = data[0].length;
+            this.team.years = data[1].length;
             this.team.robots = data[2];
             this.team.events = data[3];
             this.team.awards = data[4];
