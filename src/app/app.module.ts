@@ -5,6 +5,7 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { StatsPage } from '../pages/stats/stats';
 import { FieldPage } from '../pages/field/field';
+import { OpenFilePage } from '../pages/open-file/open-file';
 import { TabsPage } from '../pages/tab-directory/tab-directory';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     HomePage,
     StatsPage,
     FieldPage,
+    OpenFilePage,
     LoginPage,
     TabsPage
   ],
@@ -25,6 +27,7 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     HomePage,
     StatsPage,
     FieldPage,
+    OpenFilePage,
     LoginPage,
     TabsPage
   ],

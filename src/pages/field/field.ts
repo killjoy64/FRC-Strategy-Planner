@@ -1,5 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
-import {AlertController, Content} from 'ionic-angular';
+import {NavController, AlertController, Content} from 'ionic-angular';
+import {OpenFilePage} from '../open-file/open-file';
 
 @Component({
   selector: 'page-field',
@@ -14,6 +15,7 @@ export class FieldPage {
   FIELD: number;
   CLEAR: number;
   SAVE: number;
+  OPEN: number;
   VIEW: number;
 
   /* Brush type constants */
@@ -50,7 +52,7 @@ export class FieldPage {
   saves: any;
   redos: any;
 
-  constructor(private alertCtrl: AlertController) {
+  constructor(private alertCtrl: AlertController, private navCtrl: NavController) {
     this.drawingValue = "pencil";
 
     // We initialize these first so that they aren't destroyed whenever we exit the DOM
@@ -86,6 +88,7 @@ export class FieldPage {
     this.CLEAR = 2;
     this.SAVE = 3;
     this.VIEW = 4;
+    this.OPEN = 5;
 
     this.PENCIL = 0;
     this.LINE = 1;
@@ -353,6 +356,14 @@ export class FieldPage {
         pal = null;
         this.currentMode = null;
         // call method
+        break;
+
+      case this.OPEN:
+        e = "open-menu";
+        pal = null;
+        this.currentMode = null;
+        // call method
+        this.navCtrl.push(OpenFilePage);
         break;
 
       case this.VIEW:
