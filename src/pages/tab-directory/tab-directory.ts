@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { HomePage } from '../home/home';
+import { NotesPage } from '../notes/notes';
 import { StatsPage } from '../stats/stats';
 import { FieldPage } from '../field/field';
+import { SettingsPage } from '../settings/settings';
 
 @Component({
   selector: 'page-tabs',
@@ -9,9 +10,10 @@ import { FieldPage } from '../field/field';
 })
 export class TabsPage {
 
-  home: any = HomePage;
+  notes: any = NotesPage;
   stats: any = StatsPage;
   field: any = FieldPage;
+  settings: any = SettingsPage;
 
   constructor() {
 

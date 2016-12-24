@@ -1,19 +1,21 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { FRCSP } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { NotesPage } from '../pages/notes/notes';
 import { LoginPage } from '../pages/login/login';
 import { StatsPage } from '../pages/stats/stats';
 import { FieldPage } from '../pages/field/field';
+import { SettingsPage } from '../pages/settings/settings';
 import { OpenFilePage } from '../pages/open-file/open-file';
 import { TabsPage } from '../pages/tab-directory/tab-directory';
 
 @NgModule({
   declarations: [
     FRCSP,
-    HomePage,
+    NotesPage,
     StatsPage,
     FieldPage,
+    SettingsPage,
     OpenFilePage,
     LoginPage,
     TabsPage
@@ -24,9 +26,10 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
   bootstrap: [IonicApp],
   entryComponents: [
     FRCSP,
-    HomePage,
+    NotesPage,
     StatsPage,
     FieldPage,
+    SettingsPage,
     OpenFilePage,
     LoginPage,
     TabsPage

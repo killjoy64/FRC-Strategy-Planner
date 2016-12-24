@@ -449,7 +449,6 @@ export class FieldPage {
     this.color = "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
     this.context.strokeStyle = this.color;
     this.context.fillStyle = this.color;
-    console.log(this.color);
     document.getElementById("color-val").style.background = this.color;
   }
 
