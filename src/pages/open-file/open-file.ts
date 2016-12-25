@@ -25,9 +25,12 @@ export class OpenFilePage {
     } else if (this.platform.is("windows")) {
 
     }
+  }
 
+  ionViewWillLoad() {
     File.listDir(this.fs, "strategy-saves").then((entries:Entry[]) => {
       this.files = entries;
+      console.log(this.files.length + " FILES FOUND IN SAVES DIRECTORY");
     }).catch(err => {
       File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
         console.log("Free space after dir: " + freeSpace);
@@ -38,13 +41,55 @@ export class OpenFilePage {
   }
 
   ionViewDidEnter() {
+
     OpenFilePage.hasData = false;
+
+    let files = document.getElementsByClassName("file-item");
+
+    for (let i = 0; i < files.length; i++) {
+      files[i].setAttribute("id", "file-" + i);
+      console.log("Assigning an ID: " + files[i].id);
+    }
+
+    console.log("Number of Entries: " + files.length);
+
   }
 
   openFile(event) {
     OpenFilePage.hasData = true;
-    FieldPage.savedStrat = event.target.innerHTML;
-    this.navCtrl.pop();
+
+    let files = document.getElementsByClassName("file-item");
+
+    for (let i = 0; i < files.length; i++) {
+      console.log("ID: " + files[i].id);
+      let btn = document.getElementById(files[i].id);
+      let txt = btn.getElementsByClassName("file")[0];
+      console.log("INNER HTML: " + txt.innerHTML);
+
+      let fileName = null;
+
+      // Not sure why this is sometimes undefined
+      if (event.target.getElementsByClassName("file")[0]) {
+        fileName = event.target.getElementsByClassName("file")[0].innerHTML;
+      } else {
+        fileName = event.target.innerHTML;
+      }
+
+      console.log("TARGET ID: " + event.target.id + " | " + fileName);
+
+      if (fileName == txt.innerHTML) {
+        console.log("FOUND TARGET ID: " + fileName + " == " + txt.innerHTML);
+        FieldPage.savedStrat = this.files[i];
+        this.navCtrl.pop();
+      }
+
+      // console.log(files[i].innerHTML + " | " + event.target.innerHTML);
+      // if (files[i].innerHTML == event.target.innerHTML) {
+      //   console.log("Found: " + event.target.innerHTML);
+      //   FieldPage.savedStrat = this.files[i];
+      //   this.navCtrl.pop();
+      // }
+    }
   }
 
 }

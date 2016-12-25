@@ -5,10 +5,10 @@
 </ion-header>
 
 <ion-content no-padding>
-  <ion-list *ngFor="let file of files">
-    <ion-item>
-      <button ion-button full clear (click)="openFile($event)">
-        {{ file.name }}
+  <ion-list>
+    <ion-item *ngFor="let file of files">
+      <button ion-button full clear (click)="openFile($event)" class="file-item">
+        <span class="file">{{ file.name }}</span>
       </button>
     </ion-item>
   </ion-list>
