@@ -6,7 +6,7 @@ FRC Strategy Planner is a cross-platform web application that will allow FRC use
 
 # TODO
 ### Desired upcoming features and house-keeping things
-- [ ] Literally refactor everything and make more classes. I feel sloppy looking at it.
+- [ ] Literally refactor everything and make more classes. I feel disgusting looking at it.
 - [ ] Design features to go along with the stats page
 - [ ] Decide to keep the home page or switch to settings page
 - [ ] Add capabilities to save/load strategy plans - serialize this information

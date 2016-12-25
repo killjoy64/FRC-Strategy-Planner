@@ -4,6 +4,12 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  Hello World!
+<ion-content no-padding>
+  <ion-list *ngFor="let file of files">
+    <ion-item>
+      <button ion-button full clear (click)="openFile($event)">
+        {{ file.name }}
+      </button>
+    </ion-item>
+  </ion-list>
 </ion-content>

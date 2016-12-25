@@ -1,14 +1,21 @@
 import {Component, ViewChild} from '@angular/core';
-import {NavController, AlertController, Content} from 'ionic-angular';
+import {NavController, AlertController, Content, Platform } from 'ionic-angular';
+import {File, FileError, Entry, DirectoryEntry, FileEntry} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
+import {TBAService} from "../../providers/tba-service";
+
+declare var cordova: any;
 
 @Component({
   selector: 'page-field',
-  templateUrl: 'field.html'
+  templateUrl: 'field.html',
+  providers: [TBAService]
 })
 export class FieldPage {
 
   @ViewChild(Content) canvasContent: Content;
+
+  isBrowser: boolean = false;
 
   /* Palette constants */
   EDIT: number;
@@ -52,12 +59,41 @@ export class FieldPage {
   saves: any;
   redos: any;
 
-  constructor(private alertCtrl: AlertController, private navCtrl: NavController) {
+  platform:any;
+  fs:string;
+
+  /* Allows us to pass data */
+  public static savedStrat: string;
+
+  constructor(private alertCtrl: AlertController, private navCtrl: NavController, private plt: Platform, private tba: TBAService) {
     this.drawingValue = "pencil";
 
     // We initialize these first so that they aren't destroyed whenever we exit the DOM
     this.saves = [];
     this.redos = [];
+
+    this.platform = plt;
+
+    if (!this.isBrowser) {
+
+      if (this.platform.is("android")) {
+        this.fs = cordova.file.externalDataDirectory;
+        console.log("Android file system detected.")
+      } else if (this.platform.is("ios")) {
+        this.fs = cordova.file.documentsDirectory;
+        console.log("iOS file system detected.")
+      } else if (this.platform.is("windows")) {
+
+      }
+
+      File.checkDir(this.fs, 'strategy-saves').then((bool) => {
+        console.log('strategy-saves found')
+      }).catch(err => {
+        File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
+          console.log("Successfully created strategy-saves")
+        });
+      });
+    }
   }
 
   ionViewDidEnter() {
@@ -106,6 +142,48 @@ export class FieldPage {
       console.log("Successfully reloaded cached canvas");
     }
 
+    if (OpenFilePage.hasData) {
+      let self = this;
+
+      File.resolveDirectoryUrl(this.fs + "strategy-saves/").then((dirEntry:DirectoryEntry) => {
+        let dirReader = dirEntry.createReader();
+        dirReader.readEntries((result) => {
+          self.loadFile(result[0]);
+        }, err => {
+          console.log(":/ --- " + err.message);
+        })
+      }).catch((err) => {
+        console.log("Get Directory Error - " + <any>err);
+      });
+
+    } else {
+      FieldPage.savedStrat = null;
+    }
+
+  }
+
+  loadFile(fileEntry) {
+    let self = this;
+
+    fileEntry.file(function (file) {
+      var reader = new FileReader();
+
+      reader.onloadend = function() {
+        console.log("Successful file read: " + this.result);
+        let img = document.createElement('img');
+        img.setAttribute("src", this.result);
+        img.addEventListener("load", () => {
+          self.clearCanvas();
+          self.context.drawImage(img, 0, 0);
+        });
+      };
+
+      reader.readAsText(file);
+
+    }, function(error) {
+      console.log("Error - " + error.message);
+      return null;
+    });
   }
 
   ionViewDidLeave() {
@@ -134,8 +212,10 @@ export class FieldPage {
     /* Canvas drawing events */
     self.canvas.addEventListener("touchstart", (e) => {
       if (this.initialized == false) {
+        self.saveState();
         this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
         this.initialized = true;
+        self.undoState();
       }
       if (this.currentMode == this.FIELD) {
         self.drawSelectedImage(e);
@@ -171,6 +251,45 @@ export class FieldPage {
           text: 'Yes',
           handler: () => {
             self.clearCanvas();
+            self.togglePalette(this.EDIT);
+            self.togglePalette(this.EDIT);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  confirmSave() {
+    let self = this;
+    let alert = this.alertCtrl.create({
+      title: 'Save',
+      message: 'Enter the name of the file you wish to save:',
+      inputs: [
+        {
+          name: 'fileName',
+          placeholder: 'qual_1'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Save',
+          handler: (data) => {
+            if (!this.isBrowser) {
+              console.log(data.fileName);
+              File.writeFile(this.fs + "/strategy-saves", data.fileName + ".png", self.canvas.toDataURL("image/png"), []).then((fileEntry) => {
+                console.log("Saved file successfully");
+              }).catch((err) => {
+                console.log(err);
+              });
+            }
             self.togglePalette(this.EDIT);
             self.togglePalette(this.EDIT);
           }
@@ -355,14 +474,13 @@ export class FieldPage {
         e = "save-menu";
         pal = null;
         this.currentMode = null;
-        // call method
+        this.confirmSave();
         break;
 
       case this.OPEN:
         e = "open-menu";
         pal = null;
         this.currentMode = null;
-        // call method
         this.navCtrl.push(OpenFilePage);
         break;
 

@@ -17,6 +17,10 @@ export class TBAService {
     this.data = null;
   }
 
+  requestLocalFile(fs, file) {
+    return this.http.get(fs + file).map((response:Response) => response.json());
+  }
+
   requestTeamInfo(team) {
     let authHeader = new Headers();
     authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');

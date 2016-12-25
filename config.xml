@@ -50,7 +50,7 @@
   <preference name="SplashScreenDelay" value="3000"/>
   <preference name="ShowSplashScreenSpinner" value="false"/>
   <preference name="orientation" value="portrait" />
-  <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+  <preference name="AndroidPersistentFileLocation" value="Internal"/>
   <feature name="SplashScreen">
     <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen"/>
   </feature>
