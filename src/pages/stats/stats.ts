@@ -101,15 +101,21 @@ export class StatsPage {
   }
 
   showCards() {
-    let panel = document.getElementById("teams-cards");
-    panel.classList.remove("hidden");
-    panel.classList.add("visible");
+    let panel1 = document.getElementById("teams-number");
+    let panel2 = document.getElementById("teams-cards");
+    panel1.classList.remove("hidden");
+    panel2.classList.remove("hidden");
+    panel1.classList.add("visible");
+    panel2.classList.add("visible");
   }
 
   hideCards() {
-    let panel = document.getElementById("teams-cards");
-    panel.classList.remove("visible");
-    panel.classList.add("hidden");
+    let panel1 = document.getElementById("teams-number");
+    let panel2 = document.getElementById("teams-cards");
+    panel1.classList.remove("visible");
+    panel2.classList.remove("visible");
+    panel1.classList.add("hidden");
+    panel2.classList.add("hidden");
   }
 
   hideLoading() {

@@ -30,7 +30,7 @@
 
     <div *ngSwitchCase="'team'">
       <ion-card>
-        <ion-card-header>Search For an FRC Team</ion-card-header>
+        <ion-card-header class="blue">Search For FRC Team By Number</ion-card-header>
         <ion-card-content>
           <ion-grid>
             <ion-row>
@@ -69,28 +69,53 @@
         <!--</ion-card-content>-->
       <!--</ion-card>-->
 
-      <div id="teams-cards" class="custom-md-panel hidden">
-        <div class="custom-md-card">
-          <button ion-button full color="secondary">
-            <span class="custom-md-card-header">Awards</span>
-            <span class="fa fa-3x fa-trophy"></span>
-          </button>
-        </div>
-        <div class="custom-md-card">
-          <button ion-button full color="danger">
-            <span class="custom-md-card-header">Robots</span>
-            <span class="fa fa-3x fa-android"></span>
-          </button>
-        </div>
-        <div class="custom-md-card">
-          <button ion-button full color="primary">
-            <span class="custom-md-card-header">Events</span>
-            <span class="fa fa-3x fa-calendar"></span>
-          </button>
+      <div id="teams-number" class="hidden">
+        <div class="custom-md-panel">
+          <div class="custom-md-card team light">
+            <div class="custom-md-card-content">
+              <div>
+                {{ team?.nickname || "" }}
+              </div>
+              <div>
+                Years in FIRST: {{ team?.years || "" }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <button ion-button icon-only id="scroll-top" (click)="scrollToTop()" class="hidden">
+      <div id="teams-cards" class="hidden">
+        <div class="custom-md-panel">
+          <div class="custom-md-card">
+            <button ion-button full color="caution">
+              <span class="custom-md-card-header">Awards</span>
+              <span class="fa fa-3x fa-trophy"></span>
+            </button>
+          </div>
+          <div class="custom-md-card">
+            <button ion-button full color="danger">
+              <span class="custom-md-card-header">Robots</span>
+              <span class="fa fa-3x fa-android"></span>
+            </button>
+          </div>
+        </div>
+        <div class="custom-md-panel">
+          <div class="custom-md-card">
+            <button ion-button full color="primary">
+              <span class="custom-md-card-header">Events</span>
+              <span class="fa fa-3x fa-calendar"></span>
+            </button>
+          </div>
+          <div class="custom-md-card">
+            <button ion-button full color="secondary">
+              <span class="custom-md-card-header">Info</span>
+              <span class="fa fa-3x fa-calendar"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button ion-button icon-only id="scroll-top" (click)="scrollToTop()" class="hidden" style="display: none;">
         <ion-icon name="arrow-up"></ion-icon>
       </button>
     </div>
