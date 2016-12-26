@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, AlertController, LoadingController, Content, Platform, Loading} from 'ionic-angular';
-import {File, FileError, Entry, DirectoryEntry, FileEntry} from 'ionic-native';
+import {File, FileError, Entry, DirectoryEntry} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
 
 declare var cordova: any;

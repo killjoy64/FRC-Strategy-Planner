@@ -100,6 +100,18 @@ export class StatsPage {
     loading.classList.add("visible");
   }
 
+  showCards() {
+    let panel = document.getElementById("teams-cards");
+    panel.classList.remove("hidden");
+    panel.classList.add("visible");
+  }
+
+  hideCards() {
+    let panel = document.getElementById("teams-cards");
+    panel.classList.remove("visible");
+    panel.classList.add("hidden");
+  }
+
   hideLoading() {
     let loading = document.getElementById("loading");
     loading.classList.remove("visible");
@@ -115,6 +127,7 @@ export class StatsPage {
 
   getTeamInfo(team) {
     if (!this.requestOpen) {
+      this.hideCards();
       this.requestOpen = true;
       this.showLoading();
       this.tba.requestCompleteTeamInfo(team)
@@ -128,6 +141,7 @@ export class StatsPage {
             this.team.awards = data[4];
 
             this.hideLoading();
+            this.showCards();
           },
           err => {
             this.requestOpen = false;

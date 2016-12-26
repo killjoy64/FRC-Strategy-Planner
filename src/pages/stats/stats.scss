@@ -1,29 +1,69 @@
-.event-header {
+.custom-md-panel {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
-.event-name {
-  font-weight: bold;
-  width: 100%;
-}
-
-.loading {
-  width: 100%;
+.custom-md-card {
+  //box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   text-align: center;
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+  padding: 5px;
 }
 
-.space-holder {
-  height: 20px !important;
+.custom-md-card > button {
   width: 100%;
+  height: 100%;
+  color: #ffffff;
 }
 
-.team-events {
-  border-left: 4px solid #bd2c00;
+.custom-md-card-header {
+  position: absolute;
+  padding-top: 7px;
+  top: 0;
+  color: #ffffff;
 }
 
-.team-event {
-  margin: 8px 0 0 0 !important;
-  padding-left: 5px !important;
+.placeholder-card {
+  visibility: hidden;
+}
+
+#teams-cards {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+
+
+
+
+
+
+
+
+
+/* Utility classes */
+
+.square-content {
+  width: 100%;
+  height: 100%;
+}
+
+.square {
+  width: 20%;
+}
+
+.square:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
 }
 
 #scroll-top {
@@ -44,6 +84,11 @@
   }
 }
 
+.loading {
+  width: 100%;
+  text-align: center;
+}
+
 .loading-text span {
   animation-name: blink;
   animation-duration: 1.4s;
@@ -59,3 +104,9 @@
   animation-delay: .4s;
 }
 
+/* Overrides */
+page-stats {
+  .item-md {
+    padding-left: 0 !important;
+  }
+}

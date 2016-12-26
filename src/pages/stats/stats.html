@@ -48,25 +48,47 @@
         <ion-spinner></ion-spinner>
         <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
       </div>
-      <ion-card>
-        <ion-card-header>{{ team?.nickname || "Click the search button and find a team" }}</ion-card-header>
-        <ion-card-content>
-          <span>Years Participated - {{ team?.years || "N/A" }}</span>
-        </ion-card-content>
-      </ion-card>
-      <ion-card class="team-awards" *ngFor="let award of (team?.awards || dummy)">
-        <ion-card-header>
-          {{ award?.year || "N/A" }} {{ award?.name || "N/A" }}
-        </ion-card-header>
-      </ion-card>
-      <ion-card class="team-events" *ngFor="let event of (team?.events || dummy)">
-        <ion-card-header>
-          {{ event?.year || "N/A" }} {{ event?.name || "N/A" }}
-        </ion-card-header>
-        <ion-card-content text-wrap class="team-event">
-          <div>Location: {{ event?.location || "N/A" }}</div>
-        </ion-card-content>
-      </ion-card>
+
+      <!--<ion-card>-->
+        <!--<ion-card-header>{{ team?.nickname || "Click the search button and find a team" }}</ion-card-header>-->
+        <!--<ion-card-content>-->
+          <!--<span>Years Participated - {{ team?.years || "N/A" }}</span>-->
+        <!--</ion-card-content>-->
+      <!--</ion-card>-->
+      <!--<ion-card class="team-awards" *ngFor="let award of (team?.awards || dummy)">-->
+        <!--<ion-card-header>-->
+          <!--{{ award?.year || "N/A" }} {{ award?.name || "N/A" }}-->
+        <!--</ion-card-header>-->
+      <!--</ion-card>-->
+      <!--<ion-card class="team-events" *ngFor="let event of (team?.events || dummy)">-->
+        <!--<ion-card-header>-->
+          <!--{{ event?.year || "N/A" }} {{ event?.name || "N/A" }}-->
+        <!--</ion-card-header>-->
+        <!--<ion-card-content text-wrap class="team-event">-->
+          <!--<div>Location: {{ event?.location || "N/A" }}</div>-->
+        <!--</ion-card-content>-->
+      <!--</ion-card>-->
+
+      <div id="teams-cards" class="custom-md-panel hidden">
+        <div class="custom-md-card">
+          <button ion-button full color="secondary">
+            <span class="custom-md-card-header">Awards</span>
+            <span class="fa fa-3x fa-trophy"></span>
+          </button>
+        </div>
+        <div class="custom-md-card">
+          <button ion-button full color="danger">
+            <span class="custom-md-card-header">Robots</span>
+            <span class="fa fa-3x fa-android"></span>
+          </button>
+        </div>
+        <div class="custom-md-card">
+          <button ion-button full color="primary">
+            <span class="custom-md-card-header">Events</span>
+            <span class="fa fa-3x fa-calendar"></span>
+          </button>
+        </div>
+      </div>
 
       <button ion-button icon-only id="scroll-top" (click)="scrollToTop()" class="hidden">
         <ion-icon name="arrow-up"></ion-icon>
