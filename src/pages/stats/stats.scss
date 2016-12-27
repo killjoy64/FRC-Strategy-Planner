@@ -38,10 +38,6 @@ custom-md-card-content {
   height: 50px;
 }
 
-.placeholder-card {
-  visibility: hidden;
-}
-
 #teams-cards {
   -webkit-transition: all 0.3s ease-in-out;
   -moz-transition: all 0.3s ease-in-out;
@@ -68,6 +64,10 @@ custom-md-card-content {
 
 
 /* Utility classes */
+
+.clear-event {
+  margin: 0 !important;
+}
 
 .square-content {
   width: 100%;
@@ -126,6 +126,12 @@ custom-md-card-content {
 page-stats {
   .item-md {
     padding-left: 0 !important;
+  }
+  .item-cover {
+    position: relative !important;
+    width: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 }
 

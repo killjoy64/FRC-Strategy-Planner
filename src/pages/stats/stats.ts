@@ -26,6 +26,11 @@ export class StatsPage {
   public team: any;
   public my_comp: any;
 
+  /* My Event Variables  */
+  districts: any;
+  myEvents: any;
+  my_comp_key: any;
+
   /* Global Data binding */
   viewType: string;
   viewID: number;
@@ -36,11 +41,16 @@ export class StatsPage {
   /* Events Data bindings */
   eventYear: number;
 
+  /* My Event Data bindings */
+  myDistrict: string;
+
   /* Page initialized booleans */
   initialized: boolean;
 
   /* Dummy Array */
   dummy: any;
+
+  loading: boolean;
 
   constructor(private tba: TBAService, private navCtrl: NavController, private alertCtrl: AlertController) {
     this.openRequests = 0;
@@ -51,7 +61,9 @@ export class StatsPage {
     this.teamNumber = 254;
     this.eventYear = 2017;
     this.initialized = false;
+    this.loading = false;
 
+    //
 
     // We fill a dummy array to have default values to resort to when our data variables are uninitialized/undefined.
     this.dummy = [
@@ -59,6 +71,54 @@ export class StatsPage {
         "dummy": 1
       }
     ];
+
+    this.districts = [
+      {
+        "name": "Chesapeake",
+        "key": "chs"
+      },
+      {
+        "name": "Georgia",
+        "key": "pch"
+      },
+      {
+        "name": "Indiana",
+        "key": "in"
+      },
+      {
+        "name": "Israel",
+        "key": "isr"
+      },
+      {
+        "name": "Michigan",
+        "key": "fim"
+      },
+      {
+        "name": "Mid Atlantic",
+        "key": "mar"
+      },
+      {
+        "name": "North Carolina",
+        "key": "nc"
+      },
+      {
+        "name": "New England",
+        "key": "ne"
+      },
+      {
+        "name": "Ontario",
+        "key": "ont"
+      },
+      {
+        "name": "Pacific Northwest",
+        "key": "pnw"
+      }
+    ];
+
+  }
+
+  clearEvents() {
+    this.events = null;
   }
 
   openInfoPage() {
@@ -117,29 +177,50 @@ export class StatsPage {
 
     let loadings = document.getElementsByClassName("loading");
 
-    console.log("Load symbols found: " + loadings.length);
-
-    for (let i = 0; i < loadings.length; i++) {
-      loadings[i].addEventListener("transitionend", () => {
-        if (document.getElementsByClassName("loading")[i].classList.contains("visible")) {
-          // hide
-        } else {
-          // show
-          document.getElementsByClassName("loading")[i].setAttribute("style", "display: none");
-          console.log("Current view: " + this.viewType);
-          if (this.viewType == "team") {
-            if (this.team) {
-              this.showCards();
-            } else {
-              this.hideCards();
-            }
+    loadings[0].addEventListener("transitionend", () => {
+      if (document.getElementsByClassName("loading")[0].classList.contains("visible")) {
+        // hide
+      } else {
+        // show
+        console.log("Making loader hidden");
+        document.getElementsByClassName("loading")[0].setAttribute("style", "display: none");
+        if (this.viewType == "team") {
+          if (this.team) {
+            this.showCards();
           } else {
-            // do stuff
+            this.hideCards();
           }
         }
-      });
-    }
+        if (this.viewType == "my_comp") {
+          this.loading = false;
+        }
+      }
+    });
 
+  }
+
+  confirmClear() {
+    let self = this;
+    let alert = this.alertCtrl.create({
+      title: 'Confirm',
+      message: 'Are you sure you want to clear all of your event information? It may become impossible to recover this data if you are unable to access internet or cellular data at your event.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            self.my_comp = null;
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   showAlert(title, msg) {
@@ -188,6 +269,63 @@ export class StatsPage {
 
   scrollToTop() {
     this.content.scrollToTop(1200);
+  }
+
+  resetMyEvent() {
+    this.confirmClear();
+  }
+
+  updateEvents() {
+    if (!this.requestOpen && this.myDistrict) {
+      this.viewID = 0;
+      // this.hideCards();
+      this.loading = true;
+      this.requestOpen = true;
+      this.showLoading();
+      this.tba.requestDistrictEvents(2016, this.myDistrict)
+        .subscribe(
+          data => {
+            this.requestOpen = false;
+            this.loading = false;
+            this.myEvents = data;
+            this.hideLoading();
+          },
+          err => {
+            this.requestOpen = false;
+            this.loading = false;
+            this.events = null;
+            this.hideLoading();
+            this.showAlert("Error", "Did not find any events by that district.");
+          }
+        );
+    }
+  }
+
+  getMyEvent(event) {
+    if (!this.requestOpen && this.my_comp_key ) {
+      this.viewID = 0;
+      this.loading = true;
+      this.requestOpen = true;
+      if (!this.my_comp) {
+        this.showLoading();
+      }
+      this.tba.requestEvent(event)
+        .subscribe(
+          data => {
+            this.requestOpen = false;
+            this.loading = false;
+            this.my_comp = data;
+            this.hideLoading();
+          },
+          err => {
+            this.requestOpen = false;
+            this.loading = false;
+            this.events = null;
+            this.hideLoading();
+            this.showAlert("Error", "Did not find any events by that district.");
+          }
+        );
+    }
   }
 
   getEvents(year) {

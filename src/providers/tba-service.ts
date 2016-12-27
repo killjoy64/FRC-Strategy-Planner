@@ -116,6 +116,7 @@ export class TBAService {
       this.requestTeamAwardHistory(team)
     );
   }
+
   /* END TEAM SPECIFIC AJAX REQUESTS */
 
   /* START EVENT SPECIFIC AJAX REQUESTS */
@@ -129,6 +130,91 @@ export class TBAService {
     }).map((response:Response) => response.json());
   }
 
+  requestEvent(event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/event/" + event, {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestEventTeamList(event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/event/" + event + "/teams", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestEventMatchList(event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/event/" + event + "/matches", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestEventStatistics(event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/event/" + event + "/stats", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestEventRankings(event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/event/" + event + "/rankings", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestEventAwards(event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/event/" + event + "/awards", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestEventPoints(event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/event/" + event + "/district_points", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
   /* END EVENT SPECIFIC AJAX REQUESTS */
+
+  /* START DISTRICT SPECIFIC AJAX REQUESTS */
+
+  requestDistricts(year) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/districts/" + year, {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  requestDistrictEvents(year, district) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/district/" + district + "/" + year + "/events", {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  /* END DISTRICT SPECIFIC AJAX REQUESTS */
 
 }

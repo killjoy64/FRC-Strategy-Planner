@@ -21,10 +21,63 @@
 
   <div [ngSwitch]="viewType">
     <div *ngSwitchCase="'my_comp'">
+      <ion-card *ngIf="!my_comp">
+        <ion-card-header class="blue">Search for Your Event</ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-label>Select Your District </ion-label>
+              <ion-select [(ngModel)]="myDistrict" placeholder="Select a District" (ionChange)="updateEvents()">
+                <ion-option *ngFor="let district of districts" value="{{ district.key }}">{{ district.name }}</ion-option>
+              </ion-select>
+            </ion-row>
+            <ion-row *ngIf="myEvents">
+              <ion-label>Select Your Event </ion-label>
+              <ion-select [(ngModel)]="my_comp_key" placeholder="Select an Event" (ionChange)="getMyEvent(my_comp_key)">
+                <ion-option *ngFor="let event of myEvents" value="{{ event.key }}">{{ event.short_name }} Event</ion-option>
+              </ion-select>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+      <ion-card *ngIf="my_comp">
+        <button class="clear-event" ion-button full color="danger" [disabled]="loading" (click)="resetMyEvent()">
+          <span>Search for Another Event</span>
+        </button>
+      </ion-card>
+      <ion-card *ngIf="my_comp">
+        <button class="clear-event" ion-button full color="secondary" [disabled]="loading" (click)="getMyEvent(my_comp_key)">
+          <span>Update Event Information</span>
+        </button>
+      </ion-card>
       <div class="loading hidden" style="display: none;">
         <ion-spinner></ion-spinner>
         <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
       </div>
+      <ion-card *ngIf="my_comp">
+        <ion-card-header>
+          <span>{{ my_comp.year }} - </span>
+          <span *ngIf="my_comp.week">Week {{ my_comp.week + " - " }}</span>
+          <span>{{ my_comp.short_name }}</span>
+        </ion-card-header>
+        <ion-card-content>
+          <div>
+            <span><b>{{ my_comp.event_type_string }} Event</b></span>
+          </div>
+          <div>
+            <span>Location: {{ my_comp.location }}</span>
+          </div>
+          <div>
+            <span>Website: <a href="{{ my_comp.website }}">{{ my_comp.website }}</a></span>
+          </div>
+          <div>
+            Date: {{ my_comp.start_date }} - {{ my_comp.end_date }}
+          </div>
+        </ion-card-content>
+      </ion-card>
+      <button ion-button icon-only (click)="scrollToTop()" class="hidden scroll" style="display: none">
+        <ion-icon name="arrow-up"></ion-icon>
+      </button>
     </div>
 
     <div *ngSwitchCase="'event'">
@@ -34,10 +87,13 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <ion-input left type="number" [(ngModel)]="eventYear" placeholder="2017"></ion-input>
+                <ion-input left type="number" [(ngModel)]="eventYear" placeholder="e.g. 2017"></ion-input>
               </ion-col>
               <ion-col center>
                 <button ion-button (click)="getEvents(eventYear)">Search</button>
+              </ion-col>
+              <ion-col center>
+                <button ion-button (click)="clearEvents()">Clear</button>
               </ion-col>
             </ion-row>
           </ion-grid>
