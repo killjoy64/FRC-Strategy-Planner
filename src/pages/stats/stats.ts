@@ -55,7 +55,7 @@ export class StatsPage {
   constructor(private tba: TBAService, private navCtrl: NavController, private alertCtrl: AlertController) {
     this.openRequests = 0;
     this.requestID = 0;
-    this.viewType = 'my_comp';
+    this.viewType = 'team';
     this.viewID = 0;
     this.requestOpen = false;
     this.teamNumber = 254;
@@ -177,6 +177,10 @@ export class StatsPage {
 
     let loadings = document.getElementsByClassName("loading");
 
+    document.addEventListener("load", () => {
+      console.log("TESTING");
+    });
+
     loadings[0].addEventListener("transitionend", () => {
       if (document.getElementsByClassName("loading")[0].classList.contains("visible")) {
         // hide
@@ -193,10 +197,46 @@ export class StatsPage {
         }
         if (this.viewType == "my_comp") {
           this.loading = false;
+          if (this.my_comp) {
+            this.showCards();
+          } else {
+            this.hideCards();
+          }
         }
       }
     });
 
+  }
+
+  checkIfDataCached() {
+    if (this.viewType == "my_comp") {
+      if (this.my_comp) {
+        setTimeout(() => {
+          /* This is the only way to show the cards again after switching views.
+           * The DOM does not become instantly available, so we must wait 250ms
+           * (approximation) before the DOM becomes ready again.*/
+          this.showCards();
+        }, 125);
+      }
+    }
+    if (this.viewType == "event") {
+
+    }
+    if (this.viewType == "team") {
+      if (this.team) {
+
+        /* This is the only way to show the cards again after switching views.
+         * The DOM does not become instantly available, so we must wait 250ms
+         * (approximation) before the DOM becomes ready again.*/
+        setTimeout(() => {
+          this.showCards();
+        }, 125);
+      }
+    }
+  }
+
+  cacheEvent() {
+    console.log("Caching soon!");
   }
 
   confirmClear() {
@@ -250,21 +290,35 @@ export class StatsPage {
   }
 
   showCards() {
-    let panel1 = document.getElementById("teams-number");
-    let panel2 = document.getElementById("teams-cards");
-    panel1.classList.remove("hidden");
-    panel2.classList.remove("hidden");
-    panel1.classList.add("visible");
-    panel2.classList.add("visible");
+    if (this.viewType == "team") {
+      let panel1 = document.getElementById("teams-number");
+      let panel2 = document.getElementById("teams-cards");
+      panel1.classList.remove("hidden");
+      panel2.classList.remove("hidden");
+      panel1.classList.add("visible");
+      panel2.classList.add("visible");
+    }
+    if (this.viewType == "my_comp") {
+      let panel = document.getElementById("event-cards");
+      panel.classList.remove("hidden");
+      panel.classList.add("visible");
+    }
   }
 
   hideCards() {
-    let panel1 = document.getElementById("teams-number");
-    let panel2 = document.getElementById("teams-cards");
-    panel1.classList.remove("visible");
-    panel2.classList.remove("visible");
-    panel1.classList.add("hidden");
-    panel2.classList.add("hidden");
+    if (this.viewType == "team") {
+      let panel1 = document.getElementById("teams-number");
+      let panel2 = document.getElementById("teams-cards");
+      panel1.classList.remove("visible");
+      panel2.classList.remove("visible");
+      panel1.classList.add("hidden");
+      panel2.classList.add("hidden");
+    }
+    if (this.viewType == "my_comp") {
+      let panel = document.getElementById("event-cards");
+      panel.classList.remove("visible");
+      panel.classList.add("hidden");
+    }
   }
 
   scrollToTop() {
@@ -309,12 +363,18 @@ export class StatsPage {
       if (!this.my_comp) {
         this.showLoading();
       }
-      this.tba.requestEvent(event)
+      this.tba.requestCompleteEventInfo(event)
         .subscribe(
           data => {
             this.requestOpen = false;
             this.loading = false;
-            this.my_comp = data;
+            this.my_comp = data[0];
+            this.my_comp.teams = data[1];
+            this.my_comp.matches = data[2];
+            this.my_comp.stats = data[3];
+            this.my_comp.ranks = data[4];
+            this.my_comp.awards = [5];
+            this.my_comp.points = [6];
             this.hideLoading();
           },
           err => {

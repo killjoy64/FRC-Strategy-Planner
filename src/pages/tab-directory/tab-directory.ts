@@ -16,7 +16,6 @@ export class TabsPage {
   settings: any = SettingsPage;
 
   constructor() {
-
   }
 
 }

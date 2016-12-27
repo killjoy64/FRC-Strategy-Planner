@@ -193,6 +193,21 @@ export class TBAService {
     }).map((response:Response) => response.json());
   }
 
+  requestCompleteEventInfo(event) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return Observable.forkJoin(
+      this.requestEvent(event),
+      this.requestEventTeamList(event),
+      this.requestEventMatchList(event),
+      this.requestEventStatistics(event),
+      this.requestEventRankings(event),
+      this.requestEventAwards(event),
+      this.requestEventPoints(event)
+    );
+  }
+
   /* END EVENT SPECIFIC AJAX REQUESTS */
 
   /* START DISTRICT SPECIFIC AJAX REQUESTS */
