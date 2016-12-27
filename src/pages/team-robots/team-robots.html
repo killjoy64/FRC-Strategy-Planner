@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>FRC Team {{ team.team_number }} - Robots</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card *ngFor="let robot of robots">
+    <ion-card-content>
+      {{ robot.year }} - {{ robot.name }}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

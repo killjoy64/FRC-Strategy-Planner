@@ -15,6 +15,7 @@
 }
 
 .custom-md-card > button {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   width: 100%;
   height: 100%;
   color: #ffffff;
@@ -59,7 +60,10 @@ custom-md-card-content {
   color: #f4f4f4;
 }
 
-
+.orange {
+  background-color: #ffa500 !important;
+  color: #ffffff;
+}
 
 
 

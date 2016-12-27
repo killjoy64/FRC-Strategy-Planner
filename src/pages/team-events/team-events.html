@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>FRC Team {{ team.team_number }} - Events</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-card *ngFor="let event of events">
+    <ion-card-header>
+      <span>{{ event.year }} - </span>
+      <span *ngIf="event.week">Week {{ event.week + " - " }}</span>
+      <span>{{ event.short_name }}</span>
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <span><b>{{ event.event_type_string }} Event</b></span>
+      </div>
+      <div>
+        <span>Location: {{ event.location }}</span>
+      </div>
+      <div>
+        <span>Website: <a href="{{ event.website }}">{{ event.website }}</a></span>
+      </div>
+      <div>
+        Date: {{ event.start_date }} - {{ event.end_date }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <button ion-button icon-only id="scroll-top-events" (click)="scrollToTop()" class="hidden scroll" color="primary">
+    <ion-icon name="arrow-up"></ion-icon>
+  </button>
+</ion-content>

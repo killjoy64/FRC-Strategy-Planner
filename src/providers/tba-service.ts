@@ -21,6 +21,8 @@ export class TBAService {
     return this.http.get(fs + file).map((response:Response) => response.json());
   }
 
+
+  /* START TEAM SPECIFIC AJAX REQUESTS */
   requestTeamInfo(team) {
     let authHeader = new Headers();
     authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
@@ -114,5 +116,19 @@ export class TBAService {
       this.requestTeamAwardHistory(team)
     );
   }
+  /* END TEAM SPECIFIC AJAX REQUESTS */
+
+  /* START EVENT SPECIFIC AJAX REQUESTS */
+
+  requestEventList(year) {
+    let authHeader = new Headers();
+    authHeader.append('X-TBA-App-Id', 'admin:frcsp:v01');
+
+    return this.http.get("https://www.thebluealliance.com/api/v2/events/" + year, {
+      headers: authHeader
+    }).map((response:Response) => response.json());
+  }
+
+  /* END EVENT SPECIFIC AJAX REQUESTS */
 
 }

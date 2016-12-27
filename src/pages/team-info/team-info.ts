@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-team-info',
@@ -7,8 +7,10 @@ import { NavController } from 'ionic-angular';
 })
 export class TeamInfoPage {
 
-  constructor(public navCtrl: NavController) {
+  team: any;
 
+  constructor(private navCtrl: NavController, private navParams: NavParams) {
+    this.team = navParams.get("team");
   }
 
 }

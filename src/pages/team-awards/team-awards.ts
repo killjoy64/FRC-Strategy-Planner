@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {NavController, NavParams, Content} from 'ionic-angular';
 
 @Component({
   selector: 'page-team-awards',
@@ -7,8 +7,34 @@ import { NavController } from 'ionic-angular';
 })
 export class TeamAwardsPage {
 
-  constructor(public navCtrl: NavController) {
+  @ViewChild(Content) content: Content;
 
+  team: any;
+  awards: any;
+
+  constructor(private navCtrl: NavController, private navParams: NavParams) {
+    this.team = navParams.get("team");
+    this.awards = navParams.get("awards");
+  }
+
+  ngAfterViewInit() {
+    this.content.addScrollListener((e) => {
+      if (e.target.scrollTop >= 150) {
+        if (document.getElementById("scroll-top-awards").classList.contains("hidden")) {
+          document.getElementById("scroll-top-awards").classList.remove("hidden");
+          document.getElementById("scroll-top-awards").classList.add("visible");
+        }
+      } else {
+        if (document.getElementById("scroll-top-awards").classList.contains("visible")) {
+          document.getElementById("scroll-top-awards").classList.remove("visible");
+          document.getElementById("scroll-top-awards").classList.add("hidden");
+        }
+      }
+    });
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop(1200);
   }
 
 }
