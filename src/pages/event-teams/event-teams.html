@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ event.short_name }} - Teams</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let team of event.teams">
+      <ion-thumbnail item-left>
+        <img src="assets/option-robots.png">
+      </ion-thumbnail>
+      <h2>FRC Team {{ team.team_number }}</h2>
+      <h3>{{ team.nickname }}</h3>
+      <p>{{ team.motto }}</p>
+      <button ion-button clear item-right (click)="openTeamPage(team)">View</button>
+    </ion-item>
+  </ion-list>
+</ion-content>

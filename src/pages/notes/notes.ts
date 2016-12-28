@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { AlertController, Content, NavController } from 'ionic-angular';
 import { TBAService } from '../../providers/tba-service'
+import {EventTeamsPage} from "../event-teams/event-teams";
 
 @Component({
   selector: 'page-notes',
@@ -87,6 +88,14 @@ export class NotesPage {
       }
     ];
 
+  }
+
+  openEventTeamsPage() {
+    if (this.my_comp) {
+      this.navCtrl.push(EventTeamsPage, {
+        event: this.my_comp
+      });
+    }
   }
 
   clearEvents() {

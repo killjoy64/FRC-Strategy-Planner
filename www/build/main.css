@@ -26568,6 +26568,16 @@ sub {
   transition: all 0.3s ease-in-out;
 }
 
+page-event-team .item-md ion-avatar {
+  min-width: 8rem !important;
+  min-height: 8rem !important;
+}
+
+page-event-team .item-md ion-avatar img {
+  min-width: 8rem !important;
+  min-height: 8rem !important;
+}
+
 #canvas-menu {
   position: fixed;
   z-index: 10;

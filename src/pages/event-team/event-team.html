@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Team {{ team.team_number }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item text-wrap>
+      <ion-avatar item-left>
+        <img src="assets/option-robots.png">
+      </ion-avatar>
+      <h2>FRC Team {{ team.team_number }}</h2>
+      <h3>{{ team.nickname }}</h3>
+      <p>{{ team.motto }}</p>
+    </ion-item>
+    <ion-item>
+      Event: {{ event.short_name }}
+    </ion-item>
+  </ion-list>
+</ion-content>

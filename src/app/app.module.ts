@@ -11,6 +11,8 @@ import { TeamAwardsPage } from '../pages/team-awards/team-awards';
 import { TeamEventsPage } from '../pages/team-events/team-events';
 import { TeamInfoPage } from '../pages/team-info/team-info';
 import { TeamRobotsPage } from '../pages/team-robots/team-robots';
+import { EventTeamsPage } from '../pages/event-teams/event-teams';
+import { EventTeamPage } from '../pages/event-team/event-team';
 import { TabsPage } from '../pages/tab-directory/tab-directory';
 
 @NgModule({
@@ -25,6 +27,8 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     TeamEventsPage,
     TeamInfoPage,
     TeamRobotsPage,
+    EventTeamsPage,
+    EventTeamPage,
     LoginPage,
     TabsPage
   ],
@@ -43,6 +47,8 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     TeamEventsPage,
     TeamInfoPage,
     TeamRobotsPage,
+    EventTeamsPage,
+    EventTeamPage,
     LoginPage,
     TabsPage
   ],
