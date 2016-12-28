@@ -3,6 +3,8 @@ import { AlertController, Content, NavController } from 'ionic-angular';
 import { TBAService } from '../../providers/tba-service'
 import {EventTeamsPage} from "../event-teams/event-teams";
 import {EventMatchesPage} from "../event-matches/event-matches";
+import {EventRankingsPage} from "../event-rankings/event-rankings";
+import {EventAwardsPage} from "../event-awards/event-awards";
 
 @Component({
   selector: 'page-notes',
@@ -102,6 +104,22 @@ export class NotesPage {
   openEventMatchesPage() {
     if (this.my_comp) {
       this.navCtrl.push(EventMatchesPage, {
+        event: this.my_comp
+      });
+    }
+  }
+
+  openEventRankingsPage() {
+    if (this.my_comp) {
+      this.navCtrl.push(EventRankingsPage, {
+        event: this.my_comp
+      });
+    }
+  }
+
+  openEventAwardsPage() {
+    if (this.my_comp) {
+      this.navCtrl.push(EventAwardsPage, {
         event: this.my_comp
       });
     }
@@ -271,8 +289,8 @@ export class NotesPage {
             this.my_comp.matches = data[2];
             this.my_comp.stats = data[3];
             this.my_comp.ranks = data[4];
-            this.my_comp.awards = [5];
-            this.my_comp.points = [6];
+            this.my_comp.awards = data[5];
+            this.my_comp.points = data[6];
             this.hideLoading();
           },
           err => {
