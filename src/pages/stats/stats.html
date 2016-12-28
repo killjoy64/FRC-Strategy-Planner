@@ -48,10 +48,12 @@
           </ion-grid>
         </ion-card-content>
       </ion-card>
-      <div class="loading hidden" style="display: none;">
+
+      <div id="loading-1" class="loading hidden" style="display: none;">
         <ion-spinner></ion-spinner>
         <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
       </div>
+
       <div *ngIf="events">
         <ion-card *ngFor="let event of events">
           <ion-card-header>
@@ -99,7 +101,8 @@
           </ion-grid>
         </ion-card-content>
       </ion-card>
-      <div class="loading hidden" style="display: none;">
+
+      <div id="loading-2" class="loading hidden" style="display: none;">
         <ion-spinner></ion-spinner>
         <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
       </div>

@@ -175,29 +175,17 @@ export class StatsPage {
 
   bindListeners() {
 
-    let loadings = document.getElementsByClassName("loading");
+    let loading = document.getElementById("loading-1") || document.getElementById("loading-2");
 
-    document.addEventListener("load", () => {
-      console.log("TESTING");
-    });
-
-    loadings[0].addEventListener("transitionend", () => {
-      if (document.getElementsByClassName("loading")[0].classList.contains("visible")) {
+    loading.addEventListener("transitionend", () => {
+      if (loading.classList.contains("visible")) {
         // hide
       } else {
         // show
         console.log("Making loader hidden");
-        document.getElementsByClassName("loading")[0].setAttribute("style", "display: none");
+        loading.setAttribute("style", "display: none");
         if (this.viewType == "team") {
           if (this.team) {
-            this.showCards();
-          } else {
-            this.hideCards();
-          }
-        }
-        if (this.viewType == "my_comp") {
-          this.loading = false;
-          if (this.my_comp) {
             this.showCards();
           } else {
             this.hideCards();
@@ -277,14 +265,15 @@ export class StatsPage {
       this.bindListeners();
     }
 
-    let loading = document.getElementsByClassName("loading")[0];
-    loading.setAttribute("style", "display: block");
+    let loading = document.getElementById("loading-1") || document.getElementById("loading-2");
+    loading.style.display = "block";
+    console.log(loading);
     loading.classList.remove("hidden");
     loading.classList.add("visible");
   }
 
   hideLoading() {
-    let loading = document.getElementsByClassName("loading")[0];
+    let loading = document.getElementById("loading-1") || document.getElementById("loading-2");
     loading.classList.remove("visible");
     loading.classList.add("hidden");
   }
@@ -361,7 +350,7 @@ export class StatsPage {
       this.loading = true;
       this.requestOpen = true;
       if (!this.my_comp) {
-        this.showLoading();
+        // this.showLoading();
       }
       this.tba.requestCompleteEventInfo(event)
         .subscribe(
