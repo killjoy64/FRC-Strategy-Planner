@@ -12,6 +12,7 @@ import { TeamEventsPage } from '../pages/team-events/team-events';
 import { TeamInfoPage } from '../pages/team-info/team-info';
 import { TeamRobotsPage } from '../pages/team-robots/team-robots';
 import { EventTeamsPage } from '../pages/event-teams/event-teams';
+import { EventMatchesPage } from '../pages/event-matches/event-matches';
 import { EventTeamPage } from '../pages/event-team/event-team';
 import { TabsPage } from '../pages/tab-directory/tab-directory';
 
@@ -28,6 +29,7 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     TeamInfoPage,
     TeamRobotsPage,
     EventTeamsPage,
+    EventMatchesPage,
     EventTeamPage,
     LoginPage,
     TabsPage
@@ -48,6 +50,7 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     TeamInfoPage,
     TeamRobotsPage,
     EventTeamsPage,
+    EventMatchesPage,
     EventTeamPage,
     LoginPage,
     TabsPage

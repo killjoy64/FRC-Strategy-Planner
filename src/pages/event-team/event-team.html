@@ -17,5 +17,42 @@
     <ion-item>
       Event: {{ event.short_name }}
     </ion-item>
+    <ion-item>
+      OPR: {{ event.stats.oprs[team.team_number] }}
+    </ion-item>
   </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      Upcoming Matches
+    </ion-list-header>
+    <ion-item *ngFor="let match of matches">
+      <span>
+        <b *ngIf="match.comp_level != 'qm'">{{ match.comp_level.toUpperCase() }} </b><b>Match {{ match.match_number }}</b>
+      </span>
+      <ion-grid>
+        <ion-row>
+          <ion-col item-left>
+            <span *ngFor="let team of match.alliances.red.teams">{{ team.substring(3, team.length) }} </span>
+          </ion-col>
+          <ion-col item-right>
+            <span *ngFor="let team of match.alliances.blue.teams">{{ team.substring(3, team.length) }} </span>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col item-left>
+            <span class="red-score">{{ match.score_breakdown.red.totalPoints }}</span>
+          </ion-col>
+          <ion-col item-right>
+            <span class="blue-score">{{ match.score_breakdown.blue.totalPoints }}</span>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <button id="scroll" ion-button icon-only (click)="scrollToTop()" class="hidden">
+    <ion-icon name="arrow-up"></ion-icon>
+  </button>
+
 </ion-content>

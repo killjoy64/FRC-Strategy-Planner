@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { AlertController, Content, NavController } from 'ionic-angular';
 import { TBAService } from '../../providers/tba-service'
 import {EventTeamsPage} from "../event-teams/event-teams";
+import {EventMatchesPage} from "../event-matches/event-matches";
 
 @Component({
   selector: 'page-notes',
@@ -41,7 +42,7 @@ export class NotesPage {
     this.openRequests = 0;
     this.requestID = 0;
     this.requestOpen = false;
-    this.eventYear = 2017;
+    this.eventYear = 2016;
     this.initialized = false;
     this.loading = false;
 
@@ -93,6 +94,14 @@ export class NotesPage {
   openEventTeamsPage() {
     if (this.my_comp) {
       this.navCtrl.push(EventTeamsPage, {
+        event: this.my_comp
+      });
+    }
+  }
+
+  openEventMatchesPage() {
+    if (this.my_comp) {
+      this.navCtrl.push(EventMatchesPage, {
         event: this.my_comp
       });
     }
