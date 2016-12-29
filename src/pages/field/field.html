@@ -15,9 +15,9 @@
         <span class="fa fa-futbol-o "></span>
       </button>
     </ion-col>
-    <ion-col id="clear-menu" class="canvas-menu-item" (click)="togglePalette(2)">
+    <ion-col id="robot-menu" class="canvas-menu-item" (click)="togglePalette(2)">
       <button ion-button clear color="light" class="canvas-menu-item" >
-        <span class="fa fa-trash "></span>
+        <span class="fa fa-android "></span>
       </button>
     </ion-col>
     <ion-col id="save-menu" class="canvas-menu-item" (click)="togglePalette(3)">
@@ -36,6 +36,9 @@
 <ion-content id="canvas-scroll" scrollY="true">
   <ion-fab id="undo" right top class="fixed-fab">
     <button ion-fab mini color="light" (click)="undoState()"><span class="fa fa-undo"></span></button>
+  </ion-fab>
+  <ion-fab id="clear" right top class="fixed-fab">
+    <button ion-fab mini color="light" (click)="confirmClear()"><span class="fa fa-trash"></span></button>
   </ion-fab>
   <!--<ion-fab id="redo" right top class="fixed-fab flip-x">-->
     <!--<button ion-fab mini color="light" (click)="redoState()"><span class="fa fa-undo"></span></button>-->
@@ -123,6 +126,51 @@
     </div>
     <div class="field-item" (click)="selectFieldObject($event)">
       <img src="assets/objects/2016/ball.png"/>
+    </div>
+  </div>
+</div>
+
+<div id="robot-palette" class="palette hidden" padding>
+  <div>
+    <h3>Robot Menu <span *ngIf="my_comp">- {{ my_comp.short_name }}</span></h3>
+  </div>
+  <div *ngIf="my_comp">
+    <ion-grid>
+    <ion-row>
+      <ion-label>Select Your Match </ion-label>
+      <ion-select [(ngModel)]="my_match_key" placeholder="Select Your Match" (ionChange)="getMatch()" multiple="false">
+        <ion-option *ngFor="let match of my_comp.matches" value="{{ match.key }}">
+          <!--{{ match.alliances.red.teams[0] }}-{{ match.alliances.red.teams[1] }}-{{ match.alliances.red.teams[2] }}-{{ match.alliances.blue.teams[0] }}-{{ match.alliances.blue.teams[1] }}-{{ match.alliances.blue.teams[2] }}-->
+          <div>
+            {{ match.comp_level.toUpperCase() }} {{ match.match_number }}
+          </div>
+        </ion-option>
+      </ion-select>
+    </ion-row>
+  </ion-grid>
+  </div>
+  <div *ngIf="my_match">
+    <div id="red-robots" class="robot-row">
+      <div class="red-robot robot" (click)="selectTeam($event)">
+        {{ my_match.alliances.red.teams[0].replace("frc", "") }}
+      </div>
+      <div class="red-robot robot" (click)="selectTeam($event)">
+        {{ my_match.alliances.red.teams[1].replace("frc", "") }}
+      </div>
+      <div class="red-robot robot" (click)="selectTeam($event)">
+        {{ my_match.alliances.red.teams[2].replace("frc", "") }}
+      </div>
+    </div>
+    <div id="blue-robots" class="robot-row">
+      <div class="blue-robot robot" (click)="selectTeam($event)">
+        {{ my_match.alliances.blue.teams[0].replace("frc", "") }}
+      </div>
+      <div class="blue-robot robot" (click)="selectTeam($event)">
+        {{ my_match.alliances.blue.teams[1].replace("frc", "") }}
+      </div>
+      <div class="blue-robot robot" (click)="selectTeam($event)">
+        {{ my_match.alliances.blue.teams[2].replace("frc", "") }}
+      </div>
     </div>
   </div>
 </div>

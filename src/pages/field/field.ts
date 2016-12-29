@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {NavController, AlertController, LoadingController, Content, Platform, Loading} from 'ionic-angular';
 import {File, FileError, Entry, DirectoryEntry} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
+import {NotesPage} from '../notes/notes';
 
 declare var cordova: any;
 
@@ -13,12 +14,17 @@ export class FieldPage {
 
   @ViewChild(Content) canvasContent: Content;
 
-  isBrowser: boolean = false;
+  isBrowser: boolean = true;
+
+  my_comp: any;
+  my_matches: any;
+  my_match: any;
+  my_match_key: any;
 
   /* Palette constants */
   EDIT: number;
   FIELD: number;
-  CLEAR: number;
+  ROBOT: number;
   SAVE: number;
   OPEN: number;
   VIEW: number;
@@ -100,15 +106,20 @@ export class FieldPage {
 
   ionViewWillEnter() {
     if (OpenFilePage.hasData) {
-
       if (!this.currentLoad) {
         this.currentLoad = this.loadCtrl.create({
           content: 'Loading File...'
         });
-
         this.currentLoad.present();
       }
-
+    }
+    if (NotesPage.CURRENT_EVENT) {
+      this.my_comp = NotesPage.CURRENT_EVENT;
+    } else {
+      this.my_comp = null;
+      this.my_match = null;
+      this.my_matches = null;
+      this.my_match_key = null;
     }
   }
 
@@ -137,7 +148,7 @@ export class FieldPage {
 
     this.EDIT = 0;
     this.FIELD = 1;
-    this.CLEAR = 2;
+    this.ROBOT = 2;
     this.SAVE = 3;
     this.VIEW = 4;
     this.OPEN = 5;
@@ -167,6 +178,30 @@ export class FieldPage {
 
   }
 
+  getMatchesForTeam(team) {
+    this.my_matches = [];
+
+    for (let match of this.my_comp.matches) {
+      for (let i = 0; i < 3; i++) {
+        if (match.alliances.blue.teams[i] == team.key) {
+          this.my_matches.push(match);
+        }
+        if (match.alliances.red.teams[i] == team.key) {
+          this.my_matches.push(match);
+        }
+      }
+    }
+  }
+
+  getMatch() {
+    for (let match of this.my_comp.matches) {
+      if (match.key == this.my_match_key) {
+        this.my_match = match;
+        break;
+      }
+    }
+  }
+
   loadFile(fileEntry) {
     let self = this;
 
@@ -188,6 +223,7 @@ export class FieldPage {
           self.currentLoad = null;
           self.togglePalette(self.EDIT);
           self.togglePalette(self.EDIT);
+          OpenFilePage.hasData = false;
         });
       };
 
@@ -232,6 +268,8 @@ export class FieldPage {
       }
       if (this.currentMode == this.FIELD) {
         self.drawSelectedImage(e);
+      } else if (this.currentMode == this.ROBOT) {
+        self.drawSelectedRobot(e);
       } else {
         self.beginDrawing(e);
       }
@@ -264,8 +302,6 @@ export class FieldPage {
           text: 'Yes',
           handler: () => {
             self.clearCanvas();
-            self.togglePalette(this.EDIT);
-            self.togglePalette(this.EDIT);
           }
         }
       ]
@@ -389,10 +425,43 @@ export class FieldPage {
     }
   }
 
-  drawSelectedImage(e) {
-    this.saveState();
-    this.changeDrawMode(this.PENCIL);
+  drawSelectedRobot(e) {
     if (this.canEdit) {
+      this.saveState();
+      this.changeDrawMode(this.PENCIL);
+
+      let selected = document.getElementsByClassName("selected-robot")[0];
+      let teamNumber = selected.innerHTML;
+      let x = e.touches[0].pageX;
+      let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
+
+
+      if (selected.classList.contains("red-robot")) {
+        this.context.fillStyle = "#ee0002";
+      } else {
+        this.context.fillStyle = "#2e74eb";
+      }
+
+      /* Get the width, in pixels, of the text */
+      let textWidth = this.context.measureText(teamNumber).width;
+      let width = 40;
+      let height = 30;
+
+      this.context.font = "12px arial";
+      this.context.textAlign = "center";
+      this.context.textBaseline = "middle";
+      this.context.fillRect(x - (width/2), y - (height/2), width, height);
+      this.context.fillStyle = "#ffffff";
+      this.context.fillText(teamNumber, x - (width/2) + (textWidth/4), y);
+
+    }
+  }
+
+  drawSelectedImage(e) {
+    if (this.canEdit) {
+      this.saveState();
+      this.changeDrawMode(this.PENCIL);
+
       let selected = document.getElementsByClassName("selected")[0];
       let selectedImg = selected.querySelector("img");
       let self = this;
@@ -476,11 +545,10 @@ export class FieldPage {
         this.currentMode = this.FIELD;
         break;
 
-      case this.CLEAR:
-        e = "clear-menu";
-        pal = null;
-        this.currentMode = null;
-        this.confirmClear();
+      case this.ROBOT:
+        e = "robot-menu";
+        pal = "robot-palette";
+        this.currentMode = this.ROBOT;
         break;
 
       case this.SAVE:
@@ -555,6 +623,19 @@ export class FieldPage {
       item.classList.add("selected");
     }
     this.togglePalette(this.FIELD);
+  }
+
+  selectTeam(e) {
+    let robots = document.getElementsByClassName("robot");
+    for (let i = 0; i < robots.length; i++) {
+      robots[i].classList.remove("selected-robot");
+    }
+
+    let robot = e.path[0];
+    if (!robot.classList.contains("selected-robot")) {
+      robot.classList.add("selected-robot");
+    }
+    this.togglePalette(this.ROBOT);
   }
 
   updateBrushSize() {

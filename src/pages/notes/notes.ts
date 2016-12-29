@@ -22,8 +22,9 @@ export class NotesPage {
   requestOpen: boolean;
 
   /* AJAX data holding variables  */
-  public events: any;
+  public static CURRENT_EVENT;
   public my_comp: any;
+  public events: any;
 
   /* My Event Variables  */
   districts: any;
@@ -126,7 +127,8 @@ export class NotesPage {
   }
 
   clearEvents() {
-    this.events = null;
+    this.my_comp = null;
+    console.log(this.my_comp);
   }
 
   ngAfterViewInit() {
@@ -154,19 +156,20 @@ export class NotesPage {
 
   bindListeners() {
 
-    let loadings = document.getElementsByClassName("loading");
+    let loading = document.getElementById("loading");
 
-    loadings[0].addEventListener("transitionend", () => {
-      if (document.getElementsByClassName("loading")[0].classList.contains("visible")) {
+    loading.addEventListener("transitionend", () => {
+      if (loading.classList.contains("visible")) {
         // hide
       } else {
         // show
         console.log("Making loader hidden");
-        document.getElementsByClassName("loading")[0].setAttribute("style", "display: none");
+        loading.style.display = "none";
         this.loading = false;
-        if (this.my_comp) {
+        if (this.my_comp && this.my_comp != null) {
           this.showCards();
         } else {
+          console.log("HIDING CARDS");
           this.hideCards();
         }
       }
@@ -194,7 +197,10 @@ export class NotesPage {
         {
           text: 'Yes',
           handler: () => {
+            self.hideCards();
             self.my_comp = null;
+            NotesPage.CURRENT_EVENT = null;
+            console.log(self.my_comp);
           }
         }
       ]
@@ -216,14 +222,14 @@ export class NotesPage {
       this.bindListeners();
     }
 
-    let loading = document.getElementsByClassName("loading")[0];
+    let loading = document.getElementById("loading");
     loading.setAttribute("style", "display: block");
     loading.classList.remove("hidden");
     loading.classList.add("visible");
   }
 
   hideLoading() {
-    let loading = document.getElementsByClassName("loading")[0];
+    let loading = document.getElementById("loading");
     loading.classList.remove("visible");
     loading.classList.add("hidden");
   }
@@ -291,6 +297,7 @@ export class NotesPage {
             this.my_comp.ranks = data[4];
             this.my_comp.awards = data[5];
             this.my_comp.points = data[6];
+            NotesPage.CURRENT_EVENT = this.my_comp;
             this.hideLoading();
           },
           err => {

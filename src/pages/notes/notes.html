@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card *ngIf="!my_comp">
+  <ion-card *ngIf="!my_comp && my_comp == null">
     <ion-card-header class="blue">Search for Your Event</ion-card-header>
     <ion-card-content>
       <ion-grid>
@@ -24,26 +24,26 @@
       </ion-grid>
     </ion-card-content>
   </ion-card>
-  <ion-card *ngIf="my_comp">
+  <ion-card *ngIf="my_comp && my_comp != null">
     <button class="clear-event" ion-button full color="danger" [disabled]="loading" (click)="resetMyEvent()">
       <span>Search for Another Event</span>
     </button>
   </ion-card>
-  <ion-card *ngIf="my_comp">
+  <ion-card *ngIf="my_comp && my_comp != null">
     <button class="clear-event" ion-button full color="primary" [disabled]="loading" (click)="cacheEvent()">
       <span>Cache this event's data as is</span>
     </button>
   </ion-card>
-  <ion-card *ngIf="my_comp">
+  <ion-card *ngIf="my_comp && my_comp != null">
     <button class="clear-event" ion-button full color="secondary" [disabled]="loading" (click)="getMyEvent(my_comp_key)">
       <span>Update Event Information</span>
     </button>
   </ion-card>
-  <div class="loading hidden" style="display: none;">
+  <div id="loading" class="loading hidden" style="display: none;">
     <ion-spinner></ion-spinner>
     <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
   </div>
-  <ion-card *ngIf="my_comp">
+  <ion-card *ngIf="my_comp && my_comp != null">
     <ion-card-header>
       <span>{{ my_comp.year }} - </span>
       <span *ngIf="my_comp.week">Week {{ my_comp.week + " - " }}</span>
