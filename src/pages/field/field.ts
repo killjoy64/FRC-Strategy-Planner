@@ -1,6 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, AlertController, LoadingController, Content, Platform, Loading} from 'ionic-angular';
-import {File, FileError, Entry, DirectoryEntry} from 'ionic-native';
+import {File} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
 import {NotesPage} from '../notes/notes';
 
@@ -63,6 +63,13 @@ export class FieldPage {
   saves: any;
   redos: any;
 
+  /* Robot palette helper declarations */
+  robot_count: number;
+  robot_team_number: number;
+  robot_team_alliance: string;
+  robots: any;
+
+  /* File System declarations */
   platform:any;
   fs:string;
 
@@ -75,6 +82,7 @@ export class FieldPage {
     this.drawingValue = "pencil";
 
     // We initialize these first so that they aren't destroyed whenever we exit the DOM
+    this.robots = [];
     this.saves = [];
     this.redos = [];
 
@@ -425,6 +433,32 @@ export class FieldPage {
     }
   }
 
+  addRobot() {
+    if (this.robot_team_alliance && this.robot_team_number) {
+      if (this.robots.length >= 6) {
+        this.robots.pop();
+      }
+      this.robots.unshift({
+        "team_number": this.robot_team_number,
+        "alliance": this.robot_team_alliance
+      });
+
+      // Because our change is not shown immediately...
+      setTimeout(()=> {
+        let manRobots = document.getElementById("manual-robots");
+        let robotItems = manRobots.getElementsByClassName("robot");
+
+        for (let i = 0; i < this.robots.length; i++) {
+          if (!robotItems[i].classList.contains(this.robots[i].alliance)) {
+            robotItems[i].classList.remove(this.robots[i].alliance == "red-robot" ? "blue-robot" : "red-robot");
+            robotItems[i].classList.add(this.robots[i].alliance);
+          }
+        }
+      }, 50);
+
+    }
+  }
+
   drawSelectedRobot(e) {
     if (this.canEdit) {
       this.saveState();
@@ -434,7 +468,6 @@ export class FieldPage {
       let teamNumber = selected.innerHTML;
       let x = e.touches[0].pageX;
       let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
-
 
       if (selected.classList.contains("red-robot")) {
         this.context.fillStyle = "#ee0002";

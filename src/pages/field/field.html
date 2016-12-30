@@ -136,18 +136,18 @@
   </div>
   <div *ngIf="my_comp">
     <ion-grid>
-    <ion-row>
-      <ion-label>Select Your Match </ion-label>
-      <ion-select [(ngModel)]="my_match_key" placeholder="Select Your Match" (ionChange)="getMatch()" multiple="false">
-        <ion-option *ngFor="let match of my_comp.matches" value="{{ match.key }}">
-          <!--{{ match.alliances.red.teams[0] }}-{{ match.alliances.red.teams[1] }}-{{ match.alliances.red.teams[2] }}-{{ match.alliances.blue.teams[0] }}-{{ match.alliances.blue.teams[1] }}-{{ match.alliances.blue.teams[2] }}-->
-          <div>
-            {{ match.comp_level.toUpperCase() }} {{ match.match_number }}
-          </div>
-        </ion-option>
-      </ion-select>
-    </ion-row>
-  </ion-grid>
+      <ion-row>
+        <ion-label>Import from your event</ion-label>
+        <ion-select [(ngModel)]="my_match_key" placeholder="Select Your Match" (ionChange)="getMatch()" multiple="false">
+          <ion-option *ngFor="let match of my_comp.matches" value="{{ match.key }}">
+            <!--{{ match.alliances.red.teams[0] }}-{{ match.alliances.red.teams[1] }}-{{ match.alliances.red.teams[2] }}-{{ match.alliances.blue.teams[0] }}-{{ match.alliances.blue.teams[1] }}-{{ match.alliances.blue.teams[2] }}-->
+            <div>
+              {{ match.comp_level.toUpperCase() }} {{ match.match_number }}
+            </div>
+          </ion-option>
+        </ion-select>
+      </ion-row>
+    </ion-grid>
   </div>
   <div *ngIf="my_match">
     <div id="red-robots" class="robot-row">
@@ -170,6 +170,47 @@
       </div>
       <div class="blue-robot robot" (click)="selectTeam($event)">
         {{ my_match.alliances.blue.teams[2].replace("frc", "") }}
+      </div>
+    </div>
+  </div>
+  <div>
+    <ion-grid>
+      <ion-row>
+        <ion-label>Add a robot manually</ion-label>
+      </ion-row>
+      <ion-row>
+        <ion-input [(ngModel)]="robot_team_number" type="number" placeholder="e.g. 3618"></ion-input>
+        <ion-select [(ngModel)]="robot_team_alliance" placeholder="Choose Alliance">
+          <ion-option value="red-robot">Red Alliance</ion-option>
+          <ion-option value="blue-robot">Blue Alliance</ion-option>
+        </ion-select>
+        <button ion-button icon-only (click)="addRobot()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <div id="manual-robots">
+    <div class="robot-row">
+      <div class="robot" (click)="selectTeam($event)" *ngIf="robots[0]">
+        {{ robots[0].team_number }}
+      </div>
+      <div class="robot" (click)="selectTeam($event)" *ngIf="robots[1]">
+        {{ robots[1].team_number }}
+      </div>
+      <div class="robot" (click)="selectTeam($event)" *ngIf="robots[2]">
+        {{ robots[2].team_number }}
+      </div>
+    </div>
+    <div class="robot-row">
+      <div class="robot" (click)="selectTeam($event)" *ngIf="robots[3]">
+        {{ robots[3].team_number }}
+      </div>
+      <div class="robot" (click)="selectTeam($event)" *ngIf="robots[4]">
+        {{ robots[4].team_number }}
+      </div>
+      <div class="robot" (click)="selectTeam($event)" *ngIf="robots[5]">
+        {{ robots[5].team_number }}
       </div>
     </div>
   </div>

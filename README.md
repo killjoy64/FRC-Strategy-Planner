@@ -1,4 +1,4 @@
-# FRC Strategy Planner - v1.10.0 ALPHA
+# FRC Strategy Planner - v1.11.0 ALPHA
 FRC Strategy Planner is a cross-platform web application that will allow FRC users to easily develop strategies and draw on the FRC field.
 
 # (12/20/2016) This branch was successfully merged from 'ionic-dev'
