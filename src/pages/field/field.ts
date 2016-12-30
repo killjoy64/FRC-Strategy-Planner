@@ -3,6 +3,7 @@ import {NavController, AlertController, LoadingController, Content, Platform, Lo
 import {File} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
 import {NotesPage} from '../notes/notes';
+import {partition} from "rxjs/operator/partition";
 
 declare var cordova: any;
 
@@ -187,6 +188,7 @@ export class FieldPage {
     if (NotesPage.CURRENT_EVENT) {
       let items = NotesPage.CURRENT_EVENT;
       let sorted = this.quicksortMatches(items.matches, 0, items.matches.length - 1);
+      // let sorted2 = this.quicksortMatches(sorted, 0, sorted.length - 1);
       for (let i = 0; i < sorted.length; i++) {
         let match = sorted[i];
         console.log(match.comp_level.toUpperCase() + " " + match.set_number + " " + match.match_number);
@@ -196,65 +198,31 @@ export class FieldPage {
   }
 
   quicksortMatches(items, left, right) {
-    let index;
+    let length = items.length, pivot, partitionIndex;
 
-    console.log("QUICKSORT IS BEING CALLED");
+    if (left < right) {
+      pivot = right;
+      partitionIndex = this.partition(items, pivot, left, right);
 
-    if (items.length > 1) {
-      index = this.partition(items, left, right);
-
-      console.log("INDEX: " + index);
-
-      if (left < index - 1) {
-        this.quicksortMatches(items, left, index - 1);
-      }
-
-      if (index < right) {
-        this.quicksortMatches(items, index, right);
-      }
-
+      this.quicksortMatches(items, left, partitionIndex - 1);
+      this.quicksortMatches(items, partitionIndex + 1, right);
     }
 
     return items;
-
   }
 
-  partition(items, left, right) {
+  partition(items, pivot, left, right) {
+    let pivotValue = items[pivot];
+    let partitionIndex = left;
 
-    console.log("PARTITION BEING CALLED");
-
-    let pivot = items[0];
-    let i = left;
-    let j = right;
-
-    console.log(items[0]);
-    console.log("RIGHT: " + right);
-    console.log("LEFT: " + left);
-
-    // console.log("FLOOR: " + Math.round((right + left) / 2));
-    // console.log("ITEMS: " + items);
-    // console.log("PIVOT: " + pivot);
-
-    while (i <= j) {
-
-      if (this.shouldSwap(items[i], pivot) == -1) {
-        i++;
+    for (let i = left; i < right; i++) {
+      if (this.shouldSwap(items[i], pivotValue) == -1) {
+        this.swap(items, i, partitionIndex);
+        partitionIndex++;
       }
-
-      if (this.shouldSwap(items[j], pivot) == 1) {
-        j--;
-      }
-
-      if (i <= j) {
-        this.swap(items, i, j);
-        i++;
-        j--;
-      }
-
     }
-
-    return i;
-
+    this.swap(items, right, partitionIndex);
+    return partitionIndex;
   }
 
   swap(items, index1, index2) {
@@ -276,7 +244,7 @@ export class FieldPage {
     if (matchType == 0) {
       // They are equal
       let set1 = parseInt(match1.set_number);
-      let set2 = parseInt(match1.set_number);
+      let set2 = parseInt(match2.set_number);
       if (set1 < set2) {
         return -1;
       }
@@ -286,7 +254,7 @@ export class FieldPage {
       if (set1 == set2) {
         // Still equal
         let num1 = parseInt(match1.match_number);
-        let num2 = parseInt(match1.match_number);
+        let num2 = parseInt(match2.match_number);
         if (num1 < num2) {
            return -1;
         }
@@ -304,7 +272,9 @@ export class FieldPage {
     let type1 = 0;
     let type2 = 0;
 
-    if (match_type_1 == "ef") {
+    if (match_type_1 == "qm") {
+      type1 = 0;
+    } else if (match_type_1 == "ef") {
       type1 = 1;
     } else if (match_type_1 == "qf") {
       type1 = 2;
@@ -314,7 +284,9 @@ export class FieldPage {
       type1 = 4;
     }
 
-    if (match_type_2 == "ef") {
+    if (match_type_2 == "qm") {
+      type2 = 0;
+    } else if (match_type_2 == "ef") {
       type2 = 1;
     } else if (match_type_2 == "qf") {
       type2 = 2;
