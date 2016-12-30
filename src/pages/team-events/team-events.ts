@@ -1,5 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams, Content} from 'ionic-angular';
+import {EventsSorter} from '../../util/sorting';
 
 @Component({
   selector: 'page-team-events',
@@ -7,14 +8,19 @@ import {NavController, NavParams, Content} from 'ionic-angular';
 })
 export class TeamEventsPage {
 
+  eventsSorter: EventsSorter;
+
   @ViewChild(Content) content: Content;
 
   team: any;
   events: any;
+  sorted_events: any;
 
   constructor(private navCtrl: NavController, private navParams: NavParams) {
+    this.eventsSorter = new EventsSorter();
     this.team = navParams.get("team");
     this.events = navParams.get("events");
+    this.sorted_events = this.eventsSorter.quicksort(this.events, 0, this.events.length - 1);
   }
 
   ngAfterViewInit() {

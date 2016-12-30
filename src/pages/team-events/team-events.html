@@ -5,7 +5,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngFor="let event of events">
+  <ion-card *ngFor="let event of sorted_events">
     <ion-card-header>
       <span>{{ event.year }} - </span>
       <span *ngIf="event.week">Week {{ event.week + " - " }}</span>

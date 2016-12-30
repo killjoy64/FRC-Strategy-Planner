@@ -142,7 +142,7 @@
           <ion-option *ngFor="let match of my_comp.matches" value="{{ match.key }}">
             <!--{{ match.alliances.red.teams[0] }}-{{ match.alliances.red.teams[1] }}-{{ match.alliances.red.teams[2] }}-{{ match.alliances.blue.teams[0] }}-{{ match.alliances.blue.teams[1] }}-{{ match.alliances.blue.teams[2] }}-->
             <div>
-              {{ match.comp_level.toUpperCase() }} {{ match.match_number }}
+              {{ matchConverter.convert(match) }}
             </div>
           </ion-option>
         </ion-select>

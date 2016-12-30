@@ -3,8 +3,8 @@ import {NavController, AlertController, LoadingController, Content, Platform, Lo
 import {File} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
 import {NotesPage} from '../notes/notes';
-import {partition} from "rxjs/operator/partition";
-
+import {MatchSorter} from '../../util/sorting';
+import {MatchConverter} from '../../util/string-converter';
 declare var cordova: any;
 
 @Component({
@@ -14,6 +14,9 @@ declare var cordova: any;
 export class FieldPage {
 
   @ViewChild(Content) canvasContent: Content;
+
+  matchSorter: MatchSorter;
+  matchConverter: MatchConverter;
 
   isBrowser: boolean = true;
 
@@ -80,38 +83,41 @@ export class FieldPage {
   public static savedStrat: any;
 
   constructor(private alertCtrl: AlertController, private loadCtrl: LoadingController, private navCtrl: NavController, private plt: Platform) {
-    this.drawingValue = "pencil";
+  this.matchSorter = new MatchSorter();
+  this.matchConverter = new MatchConverter();
 
-    // We initialize these first so that they aren't destroyed whenever we exit the DOM
-    this.robots = [];
-    this.saves = [];
-    this.redos = [];
+  this.drawingValue = "pencil";
 
-    this.platform = plt;
+  // We initialize these first so that they aren't destroyed whenever we exit the DOM
+  this.robots = [];
+  this.saves = [];
+  this.redos = [];
 
-    this.currentLoad = null;
+  this.platform = plt;
 
-    if (!this.isBrowser) {
+  this.currentLoad = null;
 
-      if (this.platform.is("android")) {
-        this.fs = cordova.file.externalDataDirectory;
-        console.log("Android file system detected.")
-      } else if (this.platform.is("ios")) {
-        this.fs = cordova.file.documentsDirectory;
-        console.log("iOS file system detected.")
-      } else if (this.platform.is("windows")) {
+  if (!this.isBrowser) {
 
-      }
+    if (this.platform.is("android")) {
+      this.fs = cordova.file.externalDataDirectory;
+      console.log("Android file system detected.")
+    } else if (this.platform.is("ios")) {
+      this.fs = cordova.file.documentsDirectory;
+      console.log("iOS file system detected.")
+    } else if (this.platform.is("windows")) {
 
-      File.checkDir(this.fs, 'strategy-saves').then((bool) => {
-        console.log('strategy-saves found')
-      }).catch(err => {
-        File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
-          console.log("Successfully created strategy-saves")
-        });
-      });
     }
+
+    File.checkDir(this.fs, 'strategy-saves').then((bool) => {
+      console.log('strategy-saves found')
+    }).catch(err => {
+      File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
+        console.log("Successfully created strategy-saves")
+      });
+    });
   }
+}
 
   ionViewWillEnter() {
     if (OpenFilePage.hasData) {
@@ -124,6 +130,10 @@ export class FieldPage {
     }
     if (NotesPage.CURRENT_EVENT) {
       this.my_comp = NotesPage.CURRENT_EVENT;
+
+      // Sort our matches
+      let items = this.my_comp.matches;
+      this.my_comp.matches = this.matchSorter.quicksort(items, 0, items.length - 1);
     } else {
       this.my_comp = null;
       this.my_match = null;
@@ -184,134 +194,6 @@ export class FieldPage {
     } else {
       FieldPage.savedStrat = null;
     }
-
-    if (NotesPage.CURRENT_EVENT) {
-      let items = NotesPage.CURRENT_EVENT;
-      let sorted = this.quicksortMatches(items.matches, 0, items.matches.length - 1);
-      // let sorted2 = this.quicksortMatches(sorted, 0, sorted.length - 1);
-      for (let i = 0; i < sorted.length; i++) {
-        let match = sorted[i];
-        console.log(match.comp_level.toUpperCase() + " " + match.set_number + " " + match.match_number);
-      }
-    }
-
-  }
-
-  quicksortMatches(items, left, right) {
-    let length = items.length, pivot, partitionIndex;
-
-    if (left < right) {
-      pivot = right;
-      partitionIndex = this.partition(items, pivot, left, right);
-
-      this.quicksortMatches(items, left, partitionIndex - 1);
-      this.quicksortMatches(items, partitionIndex + 1, right);
-    }
-
-    return items;
-  }
-
-  partition(items, pivot, left, right) {
-    let pivotValue = items[pivot];
-    let partitionIndex = left;
-
-    for (let i = left; i < right; i++) {
-      if (this.shouldSwap(items[i], pivotValue) == -1) {
-        this.swap(items, i, partitionIndex);
-        partitionIndex++;
-      }
-    }
-    this.swap(items, right, partitionIndex);
-    return partitionIndex;
-  }
-
-  swap(items, index1, index2) {
-    let temp = items[index1];
-    items[index1] = items[index2];
-    items[index2] = temp;
-  }
-
-  shouldSwap(match1, match2) {
-    let matchType = this.compareMatchTypes(match1.comp_level, match2.comp_level);
-    if (matchType == -1) {
-      // Match1 < Match2
-      return -1;
-    }
-    if (matchType == 1) {
-      // Match1 > Match2
-      return 1;
-    }
-    if (matchType == 0) {
-      // They are equal
-      let set1 = parseInt(match1.set_number);
-      let set2 = parseInt(match2.set_number);
-      if (set1 < set2) {
-        return -1;
-      }
-      if (set1 > set2) {
-        return 1;
-      }
-      if (set1 == set2) {
-        // Still equal
-        let num1 = parseInt(match1.match_number);
-        let num2 = parseInt(match2.match_number);
-        if (num1 < num2) {
-           return -1;
-        }
-        if (num1 > num2) {
-          return 1;
-        }
-        if (num1 == num2) {
-          return 0;
-        }
-      }
-    }
-  }
-
-  compareMatchTypes(match_type_1, match_type_2) {
-    let type1 = 0;
-    let type2 = 0;
-
-    if (match_type_1 == "qm") {
-      type1 = 0;
-    } else if (match_type_1 == "ef") {
-      type1 = 1;
-    } else if (match_type_1 == "qf") {
-      type1 = 2;
-    } else if (match_type_1 == "sf") {
-      type1 = 3;
-    } else if (match_type_1 == "f") {
-      type1 = 4;
-    }
-
-    if (match_type_2 == "qm") {
-      type2 = 0;
-    } else if (match_type_2 == "ef") {
-      type2 = 1;
-    } else if (match_type_2 == "qf") {
-      type2 = 2;
-    } else if (match_type_2 == "sf") {
-      type2 = 3;
-    } else if (match_type_2 == "f") {
-      type2 = 4;
-    }
-
-    if (type1 > type2) {
-      return 1;
-    }
-
-    if (type1 == type2) {
-      return 0;
-    }
-
-    if (type1 < type2) {
-      return -1;
-    }
-
-  }
-
-  sortMatches() {
-
   }
 
   getMatchesForTeam(team) {

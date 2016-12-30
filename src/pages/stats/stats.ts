@@ -5,6 +5,7 @@ import { TeamInfoPage } from '../team-info/team-info';
 import { TeamAwardsPage } from "../team-awards/team-awards";
 import {TeamRobotsPage} from "../team-robots/team-robots";
 import {TeamEventsPage} from "../team-events/team-events";
+import {EventsSorter} from "../../util/sorting";
 
 @Component({
   selector: 'page-stats',
@@ -12,6 +13,8 @@ import {TeamEventsPage} from "../team-events/team-events";
   providers: [TBAService]
 })
 export class StatsPage {
+
+  eventsSorter: EventsSorter;
 
   @ViewChild(Content) content: Content;
 
@@ -23,6 +26,7 @@ export class StatsPage {
 
   /* AJAX data holding variables  */
   public events: any;
+  public sorted_events: any;
   public team: any;
   public my_comp: any;
 
@@ -53,6 +57,8 @@ export class StatsPage {
   loading: boolean;
 
   constructor(private tba: TBAService, private navCtrl: NavController, private alertCtrl: AlertController) {
+    this.eventsSorter = new EventsSorter();
+
     this.openRequests = 0;
     this.requestID = 0;
     this.viewType = 'team';
@@ -158,7 +164,7 @@ export class StatsPage {
 
   ngAfterViewInit() {
     this.content.addScrollListener((e) => {
-      let scroll = document.getElementsByClassName("scroll")[0];
+      let scroll = document.getElementsByClassName("scroll")[1];
       if (e.target.scrollTop >= 150) {
         if (scroll.classList.contains("hidden")) {
           scroll.classList.remove("hidden");
@@ -197,16 +203,6 @@ export class StatsPage {
   }
 
   checkIfDataCached() {
-    if (this.viewType == "my_comp") {
-      if (this.my_comp) {
-        setTimeout(() => {
-          /* This is the only way to show the cards again after switching views.
-           * The DOM does not become instantly available, so we must wait 250ms
-           * (approximation) before the DOM becomes ready again.*/
-          this.showCards();
-        }, 125);
-      }
-    }
     if (this.viewType == "event") {
 
     }
@@ -225,30 +221,6 @@ export class StatsPage {
 
   cacheEvent() {
     console.log("Caching soon!");
-  }
-
-  confirmClear() {
-    let self = this;
-    let alert = this.alertCtrl.create({
-      title: 'Confirm',
-      message: 'Are you sure you want to clear all of your event information? It may become impossible to recover this data if you are unable to access internet or cellular data at your event.',
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: 'Yes',
-          handler: () => {
-            self.my_comp = null;
-          }
-        }
-      ]
-    });
-    alert.present();
   }
 
   showAlert(title, msg) {
@@ -314,69 +286,6 @@ export class StatsPage {
     this.content.scrollToTop(1200);
   }
 
-  resetMyEvent() {
-    this.confirmClear();
-  }
-
-  updateEvents() {
-    if (!this.requestOpen && this.myDistrict) {
-      this.viewID = 0;
-      // this.hideCards();
-      this.loading = true;
-      this.requestOpen = true;
-      this.showLoading();
-      this.tba.requestDistrictEvents(2016, this.myDistrict)
-        .subscribe(
-          data => {
-            this.requestOpen = false;
-            this.loading = false;
-            this.myEvents = data;
-            this.hideLoading();
-          },
-          err => {
-            this.requestOpen = false;
-            this.loading = false;
-            this.events = null;
-            this.hideLoading();
-            this.showAlert("Error", "Did not find any events by that district.");
-          }
-        );
-    }
-  }
-
-  getMyEvent(event) {
-    if (!this.requestOpen && this.my_comp_key ) {
-      this.viewID = 0;
-      this.loading = true;
-      this.requestOpen = true;
-      if (!this.my_comp) {
-        // this.showLoading();
-      }
-      this.tba.requestCompleteEventInfo(event)
-        .subscribe(
-          data => {
-            this.requestOpen = false;
-            this.loading = false;
-            this.my_comp = data[0];
-            this.my_comp.teams = data[1];
-            this.my_comp.matches = data[2];
-            this.my_comp.stats = data[3];
-            this.my_comp.ranks = data[4];
-            this.my_comp.awards = [5];
-            this.my_comp.points = [6];
-            this.hideLoading();
-          },
-          err => {
-            this.requestOpen = false;
-            this.loading = false;
-            this.events = null;
-            this.hideLoading();
-            this.showAlert("Error", "Did not find any events by that district.");
-          }
-        );
-    }
-  }
-
   getEvents(year) {
     if (!this.requestOpen) {
       this.viewID = 1;
@@ -388,11 +297,13 @@ export class StatsPage {
           data => {
             this.requestOpen = false;
             this.events = data;
+            this.sorted_events = this.eventsSorter.quicksort(this.events, 0, this.events.length - 1);
             this.hideLoading();
           },
           err => {
             this.requestOpen = false;
             this.events = null;
+            this.sorted_events = null;
             this.hideLoading();
             this.showAlert("Error", "Did not find any events by that year.");
           }

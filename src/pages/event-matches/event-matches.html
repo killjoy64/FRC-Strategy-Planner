@@ -6,13 +6,13 @@
 
 <ion-content>
 
-  <ion-list [virtualScroll]="event.matches">
+  <ion-list [virtualScroll]="matches">
     <ion-list-header>
       Upcoming Matches
     </ion-list-header>
     <ion-item *virtualItem="let match" approxItemHeight="150px">
       <span>
-        <b *ngIf="match.comp_level != 'qm'">{{ match.comp_level.toUpperCase() }} </b><b>Match {{ match.match_number }}</b>
+        <b>{{ matchConverter.convert(match) }}</b>
       </span>
       <ion-grid>
         <ion-row>

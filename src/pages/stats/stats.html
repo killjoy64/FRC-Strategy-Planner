@@ -54,11 +54,11 @@
         <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
       </div>
 
-      <div *ngIf="events">
+      <div *ngIf="sorted_events">
         <ion-card *ngFor="let event of events">
           <ion-card-header>
             <span>{{ event.year }} - </span>
-            <span *ngIf="event.week">Week {{ event.week + " - " }}</span>
+            <span *ngIf="event.week != null">Week {{ event.week + " - " }}</span>
             <span>{{ event.short_name }}</span>
           </ion-card-header>
           <ion-card-content>

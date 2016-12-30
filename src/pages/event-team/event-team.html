@@ -26,9 +26,9 @@
     <ion-list-header>
       Upcoming Matches
     </ion-list-header>
-    <ion-item *ngFor="let match of matches">
+    <ion-item *ngFor="let match of sorted_matches">
       <span>
-        <b *ngIf="match.comp_level != 'qm'">{{ match.comp_level.toUpperCase() }} </b><b>Match {{ match.match_number }}</b>
+        <b>{{ matchConverter.convert(match) }}</b>
       </span>
       <ion-grid>
         <ion-row>
