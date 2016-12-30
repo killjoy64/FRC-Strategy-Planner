@@ -186,6 +186,78 @@ export class FieldPage {
 
   }
 
+  shouldSwap(match1, match2) {
+    let matchType = this.compareMatchTypes(match1.comp_level, match2.comp_level);
+    if (matchType == -1) {
+      // Match1 < Match2
+      return false;
+    }
+    if (matchType == 1) {
+      // Match1 > Match2
+      return true;
+    }
+    if (matchType == 0) {
+      // They are equal
+      if (match1.set_number < match2.set_number) {
+        return false;
+      }
+      if (match1.set_number > match2.set_number) {
+        return true;
+      }
+      if (match1.set_number == match2.set_number) {
+        // Still equal
+        if (match1.match_number < match2.match_number) {
+           return false;
+        }
+        if (match1.match_number > match2.match_number) {
+          return true;
+        }
+      }
+    }
+  }
+
+  compareMatchTypes(match_type_1, match_type_2) {
+    let type1 = 0;
+    let type2 = 0;
+
+    if (match_type_1 == "ef") {
+      type1 = 1;
+    } else if (match_type_1 == "qf") {
+      type1 = 2;
+    } else if (match_type_1 == "sf") {
+      type1 = 3;
+    } else if (match_type_1 == "f") {
+      type1 = 4;
+    }
+
+    if (match_type_2 == "ef") {
+      type2 = 1;
+    } else if (match_type_2 == "qf") {
+      type2 = 2;
+    } else if (match_type_2 == "sf") {
+      type2 = 3;
+    } else if (match_type_2 == "f") {
+      type2 = 4;
+    }
+
+    if (type1 > type2) {
+      return 1;
+    }
+
+    if (type1 == type2) {
+      return 0;
+    }
+
+    if (type1 < type2) {
+      return -1;
+    }
+
+  }
+
+  sortMatches() {
+
+  }
+
   getMatchesForTeam(team) {
     this.my_matches = [];
 
