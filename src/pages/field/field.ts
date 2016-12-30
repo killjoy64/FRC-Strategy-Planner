@@ -184,33 +184,117 @@ export class FieldPage {
       FieldPage.savedStrat = null;
     }
 
+    if (NotesPage.CURRENT_EVENT) {
+      let items = NotesPage.CURRENT_EVENT;
+      let sorted = this.quicksortMatches(items.matches, 0, items.matches.length - 1);
+      for (let i = 0; i < sorted.length; i++) {
+        let match = sorted[i];
+        console.log(match.comp_level.toUpperCase() + " " + match.set_number + " " + match.match_number);
+      }
+    }
+
+  }
+
+  quicksortMatches(items, left, right) {
+    let index;
+
+    console.log("QUICKSORT IS BEING CALLED");
+
+    if (items.length > 1) {
+      index = this.partition(items, left, right);
+
+      console.log("INDEX: " + index);
+
+      if (left < index - 1) {
+        this.quicksortMatches(items, left, index - 1);
+      }
+
+      if (index < right) {
+        this.quicksortMatches(items, index, right);
+      }
+
+    }
+
+    return items;
+
+  }
+
+  partition(items, left, right) {
+
+    console.log("PARTITION BEING CALLED");
+
+    let pivot = items[0];
+    let i = left;
+    let j = right;
+
+    console.log(items[0]);
+    console.log("RIGHT: " + right);
+    console.log("LEFT: " + left);
+
+    // console.log("FLOOR: " + Math.round((right + left) / 2));
+    // console.log("ITEMS: " + items);
+    // console.log("PIVOT: " + pivot);
+
+    while (i <= j) {
+
+      if (this.shouldSwap(items[i], pivot) == -1) {
+        i++;
+      }
+
+      if (this.shouldSwap(items[j], pivot) == 1) {
+        j--;
+      }
+
+      if (i <= j) {
+        this.swap(items, i, j);
+        i++;
+        j--;
+      }
+
+    }
+
+    return i;
+
+  }
+
+  swap(items, index1, index2) {
+    let temp = items[index1];
+    items[index1] = items[index2];
+    items[index2] = temp;
   }
 
   shouldSwap(match1, match2) {
     let matchType = this.compareMatchTypes(match1.comp_level, match2.comp_level);
     if (matchType == -1) {
       // Match1 < Match2
-      return false;
+      return -1;
     }
     if (matchType == 1) {
       // Match1 > Match2
-      return true;
+      return 1;
     }
     if (matchType == 0) {
       // They are equal
-      if (match1.set_number < match2.set_number) {
-        return false;
+      let set1 = parseInt(match1.set_number);
+      let set2 = parseInt(match1.set_number);
+      if (set1 < set2) {
+        return -1;
       }
-      if (match1.set_number > match2.set_number) {
-        return true;
+      if (set1 > set2) {
+        return 1;
       }
-      if (match1.set_number == match2.set_number) {
+      if (set1 == set2) {
         // Still equal
-        if (match1.match_number < match2.match_number) {
-           return false;
+        let num1 = parseInt(match1.match_number);
+        let num2 = parseInt(match1.match_number);
+        if (num1 < num2) {
+           return -1;
         }
-        if (match1.match_number > match2.match_number) {
-          return true;
+        if (num1 > num2) {
+          return 1;
+        }
+        if (num1 == num2) {
+          return 0;
         }
       }
     }
