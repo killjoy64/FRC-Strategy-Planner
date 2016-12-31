@@ -1,6 +1,9 @@
 import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams, Content} from 'ionic-angular';
 import {EventsSorter} from '../../util/sorting';
+import {EventFilter} from '../../util/filter';
+import {Config} from '../../util/config';
+import { Keyboard } from 'ionic-native';
 
 @Component({
   selector: 'page-team-events',
@@ -9,6 +12,7 @@ import {EventsSorter} from '../../util/sorting';
 export class TeamEventsPage {
 
   eventsSorter: EventsSorter;
+  eventFilter: EventFilter;
 
   @ViewChild(Content) content: Content;
 
@@ -21,6 +25,17 @@ export class TeamEventsPage {
     this.team = navParams.get("team");
     this.events = navParams.get("events");
     this.sorted_events = this.eventsSorter.quicksort(this.events, 0, this.events.length - 1);
+    this.eventFilter = new EventFilter(this.sorted_events);
+
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
+      });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
   }
 
   ngAfterViewInit() {

@@ -4,9 +4,6 @@
   </ion-navbar>
   <ion-toolbar>
     <ion-segment [(ngModel)]="viewType" (ionChange)="checkIfDataCached()">
-      <!--<ion-segment-button value="my_comp">-->
-        <!--My Event-->
-      <!--</ion-segment-button>-->
       <ion-segment-button value="event">
         Events
       </ion-segment-button>
@@ -20,14 +17,6 @@
 <ion-content>
 
   <div [ngSwitch]="viewType">
-
-    <!--- --->
-
-    <!--<div *ngSwitchCase="'my_comp'">-->
-
-    <!--</div>-->
-
-    <!--- --->
 
     <div *ngSwitchCase="'event'">
       <ion-card>
@@ -55,7 +44,11 @@
       </div>
 
       <div *ngIf="sorted_events">
-        <ion-card *ngFor="let event of events">
+        <ion-searchbar (ionInput)="eventFilter.filterEvents($event)"></ion-searchbar>
+      </div>
+
+      <div *ngIf="sorted_events">
+        <ion-card *ngFor="let event of eventFilter.getFilteredData()">
           <ion-card-header>
             <span>{{ event.year }} - </span>
             <span *ngIf="event.week != null">Week {{ event.week + " - " }}</span>
@@ -63,7 +56,7 @@
           </ion-card-header>
           <ion-card-content>
             <div>
-              <span><b>{{ event.event_type_string }} Event</b></span>
+              <span><b>{{ event.name }}</b></span>
             </div>
             <div>
               <span>Location: {{ event.location }}</span>

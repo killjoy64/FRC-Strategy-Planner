@@ -3,9 +3,14 @@ import { AlertController, Content, NavController } from 'ionic-angular';
 import { TBAService } from '../../providers/tba-service'
 import { TeamInfoPage } from '../team-info/team-info';
 import { TeamAwardsPage } from "../team-awards/team-awards";
-import {TeamRobotsPage} from "../team-robots/team-robots";
-import {TeamEventsPage} from "../team-events/team-events";
-import {EventsSorter} from "../../util/sorting";
+import { TeamRobotsPage } from "../team-robots/team-robots";
+import { TeamEventsPage } from "../team-events/team-events";
+import { EventsSorter } from "../../util/sorting";
+import { EventFilter } from '../../util/filter';
+import { Keyboard } from 'ionic-native';
+import {Config} from "../../util/config";
+
+declare var cordova: any;
 
 @Component({
   selector: 'page-stats',
@@ -15,6 +20,7 @@ import {EventsSorter} from "../../util/sorting";
 export class StatsPage {
 
   eventsSorter: EventsSorter;
+  eventFilter: EventFilter;
 
   @ViewChild(Content) content: Content;
 
@@ -71,6 +77,16 @@ export class StatsPage {
 
     //
 
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
+      });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
+
     // We fill a dummy array to have default values to resort to when our data variables are uninitialized/undefined.
     this.dummy = [
       {
@@ -125,6 +141,8 @@ export class StatsPage {
 
   clearEvents() {
     this.events = null;
+    this.sorted_events = null;
+    this.eventFilter = null;
   }
 
   openInfoPage() {
@@ -298,12 +316,18 @@ export class StatsPage {
             this.requestOpen = false;
             this.events = data;
             this.sorted_events = this.eventsSorter.quicksort(this.events, 0, this.events.length - 1);
+            if (!this.eventFilter) {
+              this.eventFilter = new EventFilter(this.sorted_events);
+            } else {
+              this.eventFilter.setEvents(this.sorted_events);
+            }
             this.hideLoading();
           },
           err => {
             this.requestOpen = false;
             this.events = null;
             this.sorted_events = null;
+            this.eventFilter = null;
             this.hideLoading();
             this.showAlert("Error", "Did not find any events by that year.");
           }

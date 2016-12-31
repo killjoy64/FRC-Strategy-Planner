@@ -5,6 +5,8 @@ import {OpenFilePage} from '../open-file/open-file';
 import {NotesPage} from '../notes/notes';
 import {MatchSorter} from '../../util/sorting';
 import {MatchConverter} from '../../util/string-converter';
+import {Config} from '../../util/config';
+
 declare var cordova: any;
 
 @Component({
@@ -17,8 +19,6 @@ export class FieldPage {
 
   matchSorter: MatchSorter;
   matchConverter: MatchConverter;
-
-  isBrowser: boolean = true;
 
   my_comp: any;
   my_matches: any;
@@ -97,7 +97,7 @@ export class FieldPage {
 
   this.currentLoad = null;
 
-  if (!this.isBrowser) {
+  if (!Config.IS_BROWSER) {
 
     if (this.platform.is("android")) {
       this.fs = cordova.file.externalDataDirectory;
@@ -349,7 +349,7 @@ export class FieldPage {
         {
           text: 'Save',
           handler: (data) => {
-            if (!this.isBrowser) {
+            if (!Config.IS_BROWSER) {
               console.log(data.fileName);
               File.writeFile(this.fs + "/strategy-saves", data.fileName + ".png", self.canvas.toDataURL("image/png"), []).then((fileEntry) => {
                 console.log("Saved file successfully");
