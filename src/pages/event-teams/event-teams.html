@@ -5,8 +5,9 @@
 </ion-header>
 
 <ion-content>
+  <ion-searchbar (ionInput)="teamFilter.filterTeams($event)"></ion-searchbar>
   <ion-list>
-    <ion-item *ngFor="let team of teams">
+    <ion-item *ngFor="let team of teamFilter.getFilteredData()">
       <ion-thumbnail item-left>
         <img src="assets/option-robots.png">
       </ion-thumbnail>

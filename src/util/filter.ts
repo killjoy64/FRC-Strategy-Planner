@@ -42,3 +42,100 @@ export class EventFilter {
   }
 
 }
+
+export class TeamFilter {
+
+  private teams: any;
+  private filteredTeams: any;
+
+  constructor(private teamsArray: any) {
+    this.teams = teamsArray;
+    this.filteredTeams = this.teams;
+  }
+
+  public setEvents(items) {
+    this.teams = items;
+    this.filteredTeams = items;
+  }
+
+  public getFilteredData() {
+    return this.filteredTeams;
+  }
+
+  public filterTeams(e) {
+    let value = e.target.value;
+
+    if (value && value.trim() != '' && value != null) {
+      this.filteredTeams = this.teams.filter((team) => {
+
+        let query = value.toLowerCase();
+        let full_name = (team.nickname || "null").toLowerCase();
+        let full_number = (team.team_number + "" || "null").toLowerCase();
+
+        let contains_full = (full_name.indexOf(query) > -1);
+        let contains_number = (full_number.indexOf(query) > -1);
+
+        return contains_full || contains_number;
+      });
+    } else {
+      this.filteredTeams = this.teams;
+    }
+  }
+}
+
+export class MatchFilter {
+
+  private matches: any;
+  private matchesFilter: any;
+
+  constructor(private matchesArray: any) {
+    this.matches = matchesArray;
+    this.matchesFilter = this.matches;
+  }
+
+  public setEvents(items) {
+    this.matches = items;
+    this.matchesFilter = items;
+  }
+
+  public getFilteredData() {
+    return this.matchesFilter;
+  }
+
+  public filterMatches(e) {
+    let value = e.target.value;
+
+    console.log(value);
+
+    if (value && value.trim() != '' && value != null) {
+      this.matchesFilter = this.matches.filter((match) => {
+
+        let query = value.toLowerCase();
+
+        let contains_red_alliance = false;
+        let contains_blue_alliance = false;
+
+        for (let i = 0; i < match.alliances.red.teams.length; i++) {
+          let team = match.alliances.red.teams[i];
+          if ((team.substring(3, team.length)).indexOf(query) > -1) {
+            contains_red_alliance = true;
+            break;
+          }
+        }
+
+        for (let i = 0; i < match.alliances.blue.teams.length; i++) {
+          let team = match.alliances.blue.teams[i];
+          if ((team.substring(3, team.length)).indexOf(query) > -1) {
+            contains_blue_alliance = true;
+            break;
+          }
+        }
+
+        return contains_red_alliance || contains_blue_alliance;
+
+      });
+    } else {
+      this.matchesFilter = this.matches;
+    }
+  }
+}

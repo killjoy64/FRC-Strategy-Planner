@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {NavController, NavParams, Content} from 'ionic-angular';
 import { MatchSorter } from '../../util/sorting';
 import { MatchConverter } from '../../util/string-converter';
+import { MatchFilter } from '../../util/filter';
 
 @Component({
   selector: 'page-event-matches',
@@ -11,6 +12,7 @@ export class EventMatchesPage {
 
   matchSorter: MatchSorter;
   matchConverter: MatchConverter;
+  matchFilter: MatchFilter;
 
   @ViewChild(Content) content: Content;
 
@@ -22,6 +24,7 @@ export class EventMatchesPage {
     this.matchConverter = new MatchConverter();
     this.event = navParams.get("event");
     this.matches = this.matchSorter.quicksort(this.event.matches, 0, this.event.matches.length - 1);
+    this.matchFilter = new MatchFilter(this.matches);
   }
 
   ngAfterViewInit() {

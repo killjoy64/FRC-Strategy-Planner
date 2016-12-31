@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { EventTeamPage } from "../event-team/event-team";
 import { TeamSorter } from '../../util/sorting';
+import { TeamFilter } from '../../util/filter';
 
 @Component({
   selector: 'page-event-teams',
@@ -10,6 +11,7 @@ import { TeamSorter } from '../../util/sorting';
 export class EventTeamsPage {
 
   teamSorter: TeamSorter;
+  teamFilter: TeamFilter;
 
   event: any;
   teams: any;
@@ -18,6 +20,7 @@ export class EventTeamsPage {
     this.teamSorter = new TeamSorter();
     this.event = navParams.get("event");
     this.teams = this.teamSorter.quicksort(this.event.teams, 0, this.event.teams.length - 1);
+    this.teamFilter = new TeamFilter(this.teams);
   }
 
   openTeamPage(team) {
