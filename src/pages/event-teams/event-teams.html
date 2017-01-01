@@ -9,7 +9,7 @@
   <ion-list>
     <ion-item *ngFor="let team of teamFilter.getFilteredData()">
       <ion-thumbnail item-left>
-        <img src="assets/option-robots.png">
+        <img src="assets/option-robots.png" id="{{ team.team_number }}-avatar">
       </ion-thumbnail>
       <h2>FRC Team {{ team.team_number }}</h2>
       <h3>{{ team.nickname }}</h3>
