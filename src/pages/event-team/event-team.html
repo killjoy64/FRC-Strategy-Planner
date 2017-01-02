@@ -15,7 +15,7 @@
       <ion-avatar item-left (click)="openPictureSheet()">
         <!-- id="{{ team.team_number }}-avatar" -->
         <img src="assets/option-robots.png" class="avatar" *ngIf="!src">
-        <img [src]="santizer.bypassSecurityTrustUrl(src)" class="avatar" *ngIf="src">
+        <ion-img [src]="src" class="avatar" *ngIf="src"></ion-img>
       </ion-avatar>
       <h2>FRC Team {{ team.team_number }}</h2>
       <h3>{{ team.nickname }}</h3>
@@ -29,7 +29,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-list>
+  <ion-list *ngIf="sorted_matches">
     <ion-list-header>
       Upcoming Matches
     </ion-list-header>

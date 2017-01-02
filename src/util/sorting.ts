@@ -16,6 +16,22 @@ export class MatchSorter {
     return items;
   }
 
+  quickSort(items, left, right) {
+    return new Promise(function(resolve) {
+      let pivot, partitionIndex;
+
+      if (left < right) {
+        pivot = right;
+        partitionIndex = this.partition(items, pivot, left, right);
+
+        this.quicksort(items, left, partitionIndex - 1);
+        this.quicksort(items, partitionIndex + 1, right);
+      }
+
+      resolve(items);
+    });
+  }
+
   partition(items, pivot, left, right) {
     let pivotValue = items[pivot];
     let partitionIndex = left;

@@ -6,10 +6,11 @@
 
 <ion-content>
   <ion-searchbar (ionInput)="teamFilter.filterTeams($event)"></ion-searchbar>
-  <ion-list>
-    <ion-item *ngFor="let team of teamFilter.getFilteredData()">
+  <ion-list [virtualScroll]="teamFilter.getFilteredData()" approxItemHeight="100px" id="team-list" bufferRatio="4">
+    <ion-item *virtualItem="let team">
       <ion-thumbnail item-left>
-        <img src="assets/option-robots.png" id="{{ team.team_number }}-avatar">
+        <ion-img src="assets/option-robots.png" *ngIf="!team.avatar_url"></ion-img>
+        <ion-img [src]="team.avatar_url" *ngIf="team.avatar_url"></ion-img>
       </ion-thumbnail>
       <h2>FRC Team {{ team.team_number }}</h2>
       <h3>{{ team.nickname }}</h3>

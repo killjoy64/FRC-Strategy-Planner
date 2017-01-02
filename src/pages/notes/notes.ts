@@ -5,6 +5,9 @@ import {EventTeamsPage} from "../event-teams/event-teams";
 import {EventMatchesPage} from "../event-matches/event-matches";
 import {EventRankingsPage} from "../event-rankings/event-rankings";
 import {EventAwardsPage} from "../event-awards/event-awards";
+import {AppDirectory, TeamAvatar} from '../../util/file-reader';
+import {Entry} from "ionic-native";
+import {Config} from "../../util/config";
 
 @Component({
   selector: 'page-notes',
@@ -14,6 +17,8 @@ import {EventAwardsPage} from "../event-awards/event-awards";
 export class NotesPage {
 
   @ViewChild(Content) content: Content;
+
+  teamAvatar: TeamAvatar;
 
   /* AJAX Request Variables */
   openRequests: any;
@@ -91,6 +96,8 @@ export class NotesPage {
         "key": "pnw"
       }
     ];
+
+    this.teamAvatar = new TeamAvatar();
 
   }
 
@@ -218,6 +225,8 @@ export class NotesPage {
   }
 
   showLoading() {
+    this.loading = true;
+
     if (!this.initialized) {
       this.bindListeners();
     }
@@ -229,6 +238,7 @@ export class NotesPage {
   }
 
   hideLoading() {
+    this.loading = false;
     let loading = document.getElementById("loading");
     loading.classList.remove("visible");
     loading.classList.add("hidden");
@@ -298,7 +308,28 @@ export class NotesPage {
             this.my_comp.awards = data[5];
             this.my_comp.points = data[6];
             NotesPage.CURRENT_EVENT = this.my_comp;
-            this.hideLoading();
+            if (!Config.IS_BROWSER) {
+              this.teamAvatar.getAvatars().then((data:Entry[]) => {
+
+                for (let i = 0; i < this.my_comp.teams.length; i++) {
+                  let team_number:string = this.my_comp.teams[i].team_number;
+                  for (let j = 0; j < data.length; j++) {
+                    let length = data[j].name.length;
+                    let name = data[j].name.substring(0, length-4);
+                    if (team_number == name) {
+                      this.my_comp.teams[i].avatar_url = AppDirectory.getPermDir() + "avatars/" + team_number + ".jpg";
+                      break;
+                    }
+                  }
+                }
+
+                this.hideLoading();
+              }, err => {
+                console.log("Error!");
+              });
+            } else {
+              this.hideLoading();
+            }
           },
           err => {
             this.requestOpen = false;

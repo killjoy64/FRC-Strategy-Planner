@@ -97,27 +97,38 @@ export class FieldPage {
 
   this.currentLoad = null;
 
-  if (!Config.IS_BROWSER) {
+    if (!Config.IS_BROWSER) {
 
-    if (this.platform.is("android")) {
-      this.fs = cordova.file.externalDataDirectory;
-      console.log("Android file system detected.")
-    } else if (this.platform.is("ios")) {
-      this.fs = cordova.file.documentsDirectory;
-      console.log("iOS file system detected.")
-    } else if (this.platform.is("windows")) {
+      if (this.platform.is("android")) {
+        this.fs = cordova.file.externalDataDirectory;
+        console.log("Android file system detected.")
+      } else if (this.platform.is("ios")) {
+        this.fs = cordova.file.documentsDirectory;
+        console.log("iOS file system detected.")
+      } else if (this.platform.is("windows")) {
 
+      }
+
+      File.checkDir(this.fs, 'strategy-saves').then((bool) => {
+        console.log('strategy-saves found')
+      }).catch(err => {
+        File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
+          console.log("Successfully created strategy-saves")
+        });
+      });
     }
 
-    File.checkDir(this.fs, 'strategy-saves').then((bool) => {
-      console.log('strategy-saves found')
-    }).catch(err => {
-      File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
-        console.log("Successfully created strategy-saves")
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
       });
-    });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
+
   }
-}
 
   ionViewWillEnter() {
     if (OpenFilePage.hasData) {

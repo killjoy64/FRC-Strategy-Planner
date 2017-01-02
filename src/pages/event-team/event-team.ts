@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, Sanitizer, SecurityContext} from '@angular/core';
 import {NavController, NavParams, Content, ActionSheetController} from 'ionic-angular';
 import {MatchSorter} from '../../util/sorting';
 import {MatchConverter} from '../../util/string-converter';
@@ -27,7 +27,7 @@ export class EventTeamPage {
   matches: any;
   sorted_matches: any;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, public santizer: DomSanitizer) {
+  constructor(private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, public sanitizer: DomSanitizer) {
     this.matchSorter = new MatchSorter();
     this.matchConverter = new MatchConverter();
     this.team = navParams.get("team");
@@ -56,11 +56,11 @@ export class EventTeamPage {
       }
     }
 
-    this.sorted_matches = this.matchSorter.quicksort(this.matches, 0, this.matches.length - 1);
-
   }
 
   ngAfterViewInit() {
+    this.sorted_matches = this.matchSorter.quicksort(this.matches, 0, this.matches.length - 1);
+
     this.content.addScrollListener((e) => {
       let scroll = document.getElementById("scroll");
       if (e.target.scrollTop >= 150) {
@@ -137,7 +137,7 @@ export class EventTeamPage {
       }).catch((err) => {
         console.log("ERROR MOVING FILE: " + err.message);
       });
-      console.log(this.src);
+      self.sanitizer.bypassSecurityTrustUrl(self.src);
     }, (err) => {
       if (!self.src) {
         self.src = null;

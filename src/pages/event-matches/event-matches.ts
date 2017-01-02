@@ -3,6 +3,7 @@ import {NavController, NavParams, Content} from 'ionic-angular';
 import { MatchSorter } from '../../util/sorting';
 import { MatchConverter } from '../../util/string-converter';
 import { MatchFilter } from '../../util/filter';
+import {Config} from "../../util/config";
 
 @Component({
   selector: 'page-event-matches',
@@ -25,9 +26,19 @@ export class EventMatchesPage {
     this.event = navParams.get("event");
     this.matches = this.matchSorter.quicksort(this.event.matches, 0, this.event.matches.length - 1);
     this.matchFilter = new MatchFilter(this.matches);
+
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
+      });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
   }
 
-  ngAfterViewInit() {
+  ionViewDidEnter() {
     this.content.addScrollListener((e) => {
       let scroll = document.getElementById("scroll");
       if (e.target.scrollTop >= 150) {

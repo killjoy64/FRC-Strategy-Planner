@@ -3,6 +3,7 @@ import { Platform } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
 import { LoginPage } from '../pages/login/login';
 import { AppDirectory } from '../util/file-reader';
+import { Config } from '../util/config';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,8 +15,10 @@ export class FRCSP {
     platform.ready().then(() => {
       StatusBar.styleDefault();
 
-      AppDirectory.init(platform);
-      AppDirectory.createDirs();
+      if (!Config.IS_BROWSER) {
+        AppDirectory.init(platform);
+        AppDirectory.createDirs();
+      }
 
       setTimeout(function () {
         document.getElementById("login-logo").classList.add("slid-up");

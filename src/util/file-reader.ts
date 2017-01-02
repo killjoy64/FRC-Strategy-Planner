@@ -11,12 +11,22 @@ export class TeamAvatar {
     this.fs = AppDirectory.getPermDir();
   }
 
+  public getAvatars() {
+    let promise = File.listDir(AppDirectory.getPermDir(), "avatars").then((entries:Entry[]) => {
+      return entries;
+    }).catch((err:FileError) => {
+      console.log("ERROR GETTING AVATARS - " + err.message);
+    });
+    return promise;
+  }
+
   public getAvatar(team) {
     let promise = File.checkFile(this.fs, "avatars/" + team + ".jpg").then((bool:boolean) => {
-      if (bool) {
+      if (bool == true) {
         console.log("FOUND AVATAR FOR TEAM " + team);
         return this.fs + "avatars/" + team + ".jpg";
-      } else {
+      }
+      if (bool == false) {
         console.log("NO AVATAR FOR TEAM " + team);
         return "";
       }

@@ -3,6 +3,8 @@ import {NavController, NavParams, Content} from 'ionic-angular';
 import { EventTeamPage } from "../event-team/event-team";
 import { TeamSorter } from '../../util/sorting';
 import { TeamFilter } from '../../util/filter';
+import {DomSanitizer} from '@angular/platform-browser';
+import {Config} from "../../util/config";
 
 @Component({
   selector: 'page-event-teams',
@@ -18,11 +20,21 @@ export class EventTeamsPage {
   event: any;
   teams: any;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams) {
+  constructor(private navCtrl: NavController, private navParams: NavParams, public sanitizer: DomSanitizer) {
     this.teamSorter = new TeamSorter();
     this.event = navParams.get("event");
     this.teams = this.teamSorter.quicksort(this.event.teams, 0, this.event.teams.length - 1);
     this.teamFilter = new TeamFilter(this.teams);
+
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
+      });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
   }
 
   openTeamPage(team) {
@@ -49,8 +61,15 @@ export class EventTeamsPage {
     });
   }
 
+  ionViewDidEnter() {
+    let list = document.getElementById("team-list");
+    let items = list.getElementsByClassName("item");
+    let height = items[0].clientHeight;
+    list.setAttribute("approxItemHeight", height + "px");
+  }
+
   scrollToTop() {
-    this.content.scrollToTop(1200);
+    this.content.scrollToTop(2000);
   }
 
 }
