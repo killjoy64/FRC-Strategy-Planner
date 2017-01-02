@@ -1,14 +1,21 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Team {{ team.team_number }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="primary">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
     <ion-item text-wrap>
-      <ion-avatar item-left>
-        <img src="assets/option-robots.png" id="{{ team.team_number }}-avatar">
+      <ion-avatar item-left (click)="openPictureSheet()">
+        <!-- id="{{ team.team_number }}-avatar" -->
+        <img src="assets/option-robots.png" class="avatar" *ngIf="!src">
+        <img [src]="santizer.bypassSecurityTrustUrl(src)" class="avatar" *ngIf="src">
       </ion-avatar>
       <h2>FRC Team {{ team.team_number }}</h2>
       <h3>{{ team.nickname }}</h3>

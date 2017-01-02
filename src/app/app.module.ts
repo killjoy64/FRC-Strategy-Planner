@@ -16,6 +16,7 @@ import { EventMatchesPage } from '../pages/event-matches/event-matches';
 import { EventRankingsPage } from '../pages/event-rankings/event-rankings';
 import { EventAwardsPage } from "../pages/event-awards/event-awards";
 import { EventTeamPage } from '../pages/event-team/event-team';
+import { CameraPreviewPage } from '../pages/camera-preview/camera-preview';
 import { TabsPage } from '../pages/tab-directory/tab-directory';
 
 @NgModule({
@@ -35,6 +36,7 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     EventRankingsPage,
     EventAwardsPage,
     EventTeamPage,
+    CameraPreviewPage,
     LoginPage,
     TabsPage
   ],
@@ -58,6 +60,7 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
     EventRankingsPage,
     EventAwardsPage,
     EventTeamPage,
+    CameraPreviewPage,
     LoginPage,
     TabsPage
   ],

@@ -1,11 +1,17 @@
 page-event-team {
-  .item-md ion-avatar {
+  ion-avatar {
     min-width: 8rem !important;
     min-height: 8rem !important;
   }
-  .item-md ion-avatar img {
+  ion-avatar img {
     min-width: 8rem !important;
     min-height: 8rem !important;
+    padding: 2px !important;
+  }
+
+  .avatar {
+    border-radius: 4rem !important;
+    border: 1px solid #2e74eb;
   }
 }
 

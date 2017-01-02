@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { StatusBar } from 'ionic-native';
-
 import { LoginPage } from '../pages/login/login';
+import { AppDirectory } from '../util/file-reader';
 
 @Component({
   templateUrl: 'app.html'
@@ -13,6 +13,9 @@ export class FRCSP {
   constructor(platform: Platform) {
     platform.ready().then(() => {
       StatusBar.styleDefault();
+
+      AppDirectory.init(platform);
+      AppDirectory.createDirs();
 
       setTimeout(function () {
         document.getElementById("login-logo").classList.add("slid-up");

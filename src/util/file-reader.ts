@@ -7,40 +7,32 @@ export class TeamAvatar {
 
   private fs:string;
 
-  constructor(private platform: Platform) {
-    if (platform.is("android")) {
-      this.fs = cordova.file.externalDataDirectory;
-    } else if (platform.is("ios")) {
-      this.fs = cordova.file.documentsDirectory;
-    } else if (platform.is("windows")) {
-      // TODO - Write code for windows directory
-    }
-
-    File.checkDir(this.fs, 'team-data/avatars').then((bool) => {
-      console.log('team-data/avatars successfully found');
-    }).catch(err => {
-      File.createDir(this.fs, "team-data/avatars", false).then((freeSpace) => {
-        console.log("Successfully created directory team-data/avatars")
-      });
-    });
+  constructor() {
+    this.fs = AppDirectory.getPermDir();
   }
 
-  public hasAvatar(team) {
-    File.checkFile(this.fs, "team-data/avatars/" + team + ".jpg").then((bool:boolean) => {
-      return bool;
-    }, (err:FileError) => {
-      console.log("Error checking for avatar: " + err.message);
-      return false;
+  public getAvatar(team) {
+    let promise = File.checkFile(this.fs, "avatars/" + team + ".jpg").then((bool:boolean) => {
+      if (bool) {
+        console.log("FOUND AVATAR FOR TEAM " + team);
+        return this.fs + "avatars/" + team + ".jpg";
+      } else {
+        console.log("NO AVATAR FOR TEAM " + team);
+        return "";
+      }
+    }).catch((err:FileError) => {
+      console.log("ERROR FINDING AVATAR FOR TEAM " + team + " - " + err.message);
     });
+
+    return promise;
   }
 
-  private getAvatar(team) {
+  private avatar(team) {
 
-    let self = this;
     let fileEntry = null;
     let fileEntries:Entry[] = null;
 
-    File.listDir(this.fs, "strategy-saves").then((entries:Entry[]) => {
+    File.listDir(this.fs, "avatars").then((entries:Entry[]) => {
       fileEntries = entries;
     }).catch((err:FileError) => {
       fileEntries = null;
@@ -49,7 +41,10 @@ export class TeamAvatar {
     });
 
     for (let i = 0; i < fileEntries.length; i++) {
-
+      if (fileEntries[i].name == team + ".jpg") {
+        fileEntry = fileEntries[i];
+        break;
+      }
     }
 
     fileEntry.file(function (file) {
@@ -65,6 +60,68 @@ export class TeamAvatar {
       console.log("Error Reading Contents - " + error.message);
       return null;
     });
+  }
+
+
+
+}
+
+export class AppDirectory {
+
+  private static fs: string;
+  private static cache: string;
+
+  constructor() {}
+
+  public static init(platform: Platform) {
+    let p = "";
+
+    if (platform.is("android")) {
+      this.fs = cordova.file.externalDataDirectory;
+      p = "ANDROID";
+    } else if (platform.is("ios")) {
+      this.fs = cordova.file.documentsDirectory;
+      p = "ANDROID";
+    } else if (platform.is("windows")) {
+      // TODO - Write code for windows directory
+      p = "WINDOWS";
+    }
+
+    if (platform.is("android")) {
+      this.cache = cordova.file.externalApplicationStorageDirectory + "cache/";
+      p = "ANDROID";
+    } else if (platform.is("ios")) {
+      this.cache = cordova.file.documentsDirectory;
+      p = "ANDROID";
+    } else if (platform.is("windows")) {
+      // TODO - Write code for windows directory
+      p = "WINDOWS";
+    }
+
+    console.log("SUCCESSFULLY MAPPED DIRECTORIES FOR " + p);
+    console.log("MAPPED DIRECTORIES: ");
+    console.log("PERM: " + this.fs);
+    console.log("TEMP: " + this.cache);
+  }
+
+  public static createDirs() {
+    File.checkDir(this.fs, 'avatars').then((bool) => {
+      console.log('avatars successfully found');
+    }).catch(err => {
+      File.createDir(this.fs, "avatars", false).then((freeSpace) => {
+        console.log("Successfully created directory avatars")
+      }).catch((err => {
+        console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
+      }));
+    });
+  }
+
+  public static getPermDir() {
+    return this.fs;
+  }
+
+  public static getTempDir() {
+    return this.cache;
   }
 
 }
