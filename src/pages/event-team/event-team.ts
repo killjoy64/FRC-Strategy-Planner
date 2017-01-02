@@ -2,7 +2,7 @@ import {Component, ViewChild, Sanitizer, SecurityContext} from '@angular/core';
 import {NavController, NavParams, Content, ActionSheetController} from 'ionic-angular';
 import {MatchSorter} from '../../util/sorting';
 import {MatchConverter} from '../../util/string-converter';
-import {Camera, File, Entry, FileError} from "ionic-native";
+import {Camera, File, Entry, FileError, PhotoViewer} from "ionic-native";
 import {TeamAvatar, AppDirectory} from '../../util/file-reader';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Config} from '../../util/config';
@@ -89,6 +89,10 @@ export class EventTeamPage {
         {
           text: 'View Photo',
           handler: () => {
+            let navTransition = actionSheet.dismiss();
+            navTransition.then(() => {
+              PhotoViewer.show(self.src, 'Team ' + self.team.team_number);
+            });
           }
         },
         {
@@ -96,9 +100,6 @@ export class EventTeamPage {
           handler: () => {
             let navTransition = actionSheet.dismiss();
             navTransition.then(() => {
-              // this.navCtrl.push(CameraPreviewPage, {
-              //   "team": this.team.team_number
-              // });
               self.takePicture();
             });
           }
@@ -106,6 +107,10 @@ export class EventTeamPage {
         {
           text: 'Import from Camera Roll',
           handler: () => {
+            let navTransition = actionSheet.dismiss();
+            navTransition.then(() => {
+              self.getPicture();
+            });
           }
         },
         {
@@ -118,6 +123,37 @@ export class EventTeamPage {
     });
 
     actionSheet.present();
+  }
+
+  getPicture() {
+    let self = this;
+
+    Camera.getPicture({
+      destinationType: Camera.DestinationType.FILE_URI,
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+      saveToPhotoAlbum: false,
+      quality: 100,
+      targetWidth: 720,
+      targetHeight: 720
+    }).then((imageData) => {
+      let currentName = imageData.replace(/^.*[\\\/]/, '');
+      if (currentName.indexOf("?") > -1) {
+        currentName = currentName.substring(0, currentName.indexOf("?"));
+      }
+      self.src = imageData;
+      File.moveFile(AppDirectory.getTempDir(), currentName, AppDirectory.getPermDir(), "avatars/" + self.team.team_number + ".jpg").then((entry) => {
+        console.log("SUCCESSFULLY MOVED FILE");
+        self.team.avatar_url = self.src;
+      }).catch((err) => {
+        console.log("ERROR MOVING FILE: " + err.message);
+      });
+      self.sanitizer.bypassSecurityTrustUrl(self.src);
+    }, (err) => {
+      if (!self.src) {
+        self.src = null;
+      }
+      console.log(err);
+    });
   }
 
   takePicture() {
@@ -134,6 +170,7 @@ export class EventTeamPage {
       self.src = imageData;
       File.moveFile(AppDirectory.getTempDir(), currentName, AppDirectory.getPermDir(), "avatars/" + self.team.team_number + ".jpg").then((entry) => {
         console.log("SUCCESSFULLY MOVED FILE");
+        self.team.avatar_url = self.src;
       }).catch((err) => {
         console.log("ERROR MOVING FILE: " + err.message);
       });
