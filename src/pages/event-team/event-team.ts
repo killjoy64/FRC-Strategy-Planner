@@ -3,7 +3,7 @@ import {NavController, NavParams, Content, ActionSheetController, ModalControlle
 import {MatchSorter} from '../../util/sorting';
 import {MatchConverter} from '../../util/string-converter';
 import {Camera, File, Entry, FileError, PhotoViewer} from "ionic-native";
-import {TeamAvatar, AppDirectory} from '../../util/file-reader';
+import {TeamAvatar, AppDirectory, TeamNotes} from '../../util/file-reader';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Config} from '../../util/config';
 import {TeamNotesModal} from '../../modals/team-notes-modal';
@@ -22,6 +22,7 @@ export class EventTeamPage {
   @ViewChild(Content) content: Content;
 
   src: any;
+  teamNote: TeamNotes;
   teamAvatar: TeamAvatar;
   team: any;
   event: any;
@@ -43,6 +44,12 @@ export class EventTeamPage {
         self.src = data;
       }, (err) => {
         console.log(err);
+      });
+
+      this.teamNote = new TeamNotes();
+      this.teamNote.getNotes(this.team).then((data) => {
+        this.team.team_notes = data;
+        console.log(this.team.team_notes);
       });
     }
 

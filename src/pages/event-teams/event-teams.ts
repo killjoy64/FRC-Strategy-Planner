@@ -20,6 +20,8 @@ export class EventTeamsPage {
   event: any;
   teams: any;
 
+  initialized: boolean;
+
   constructor(private navCtrl: NavController, private navParams: NavParams, public sanitizer: DomSanitizer) {
     this.teamSorter = new TeamSorter();
     this.event = navParams.get("event");
@@ -35,6 +37,8 @@ export class EventTeamsPage {
         document.body.classList.remove("keyboard-is-open");
       });
     }
+
+    this.initialized = false;
   }
 
   openTeamPage(team) {
@@ -62,10 +66,12 @@ export class EventTeamsPage {
   }
 
   ionViewDidEnter() {
-    let list = document.getElementById("team-list");
-    let items = list.getElementsByClassName("item");
-    let height = items[0].clientHeight;
-    list.setAttribute("approxItemHeight", height + "px");
+    if (!this.initialized) {
+      let list = document.getElementById("team-list");
+      let items = list.getElementsByClassName("item");
+      let height = items[0].clientHeight;
+      list.setAttribute("approxItemHeight", height + "px");
+    }
   }
 
   scrollToTop() {

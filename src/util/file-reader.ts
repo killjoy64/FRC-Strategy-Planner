@@ -37,42 +37,69 @@ export class TeamAvatar {
     return promise;
   }
 
-  private avatar(team) {
+}
 
+export class TeamNotes {
+
+  private fs: string;
+
+  constructor() {
+    this.fs = AppDirectory.getPermDir();
+  }
+
+  saveNotes(team, data) {
+    let promise = File.writeFile(this.fs, "notes/" + team + ".dat", data, []).then((fileEntry) => {
+      console.log("Saved file successfully");
+      return fileEntry;
+    }).catch((err) => {
+      console.log(err);
+    });
+    return promise;
+  }
+
+  getNotes(team) {
     let fileEntry = null;
     let fileEntries:Entry[] = null;
 
-    File.listDir(this.fs, "avatars").then((entries:Entry[]) => {
+    let promise = File.listDir(this.fs, "notes").then((entries:Entry[]) => {
       fileEntries = entries;
+
+      for (let i = 0; i < fileEntries.length; i++) {
+        if (fileEntries[i].name == team.team_number + ".dat") {
+          fileEntry = fileEntries[i];
+          break;
+        }
+      }
+
+      let data = new Promise((resolve, reject) => {
+
+        fileEntry.file(function (file) {
+          var reader = new FileReader();
+
+          reader.onloadend = function() {
+            // team.team_notes = this.result;
+            resolve(this.result);
+          };
+
+          reader.readAsText(file);
+
+        }, function(error) {
+          reject(error);
+        });
+
+      });
+
+      return data;
+
     }).catch((err:FileError) => {
       fileEntries = null;
       console.log("Error Listing Contents - " + err.message);
       return null;
     });
 
-    for (let i = 0; i < fileEntries.length; i++) {
-      if (fileEntries[i].name == team + ".jpg") {
-        fileEntry = fileEntries[i];
-        break;
-      }
-    }
+    return promise;
 
-    fileEntry.file(function (file) {
-      var reader = new FileReader();
-
-      reader.onloadend = function() {
-        console.log("Successful file read: " + this.result);
-      };
-
-      reader.readAsText(file);
-
-    }, function(error) {
-      console.log("Error Reading Contents - " + error.message);
-      return null;
-    });
   }
-
-
 
 }
 
@@ -120,6 +147,16 @@ export class AppDirectory {
     }).catch(err => {
       File.createDir(this.fs, "avatars", false).then((freeSpace) => {
         console.log("Successfully created directory avatars")
+      }).catch((err => {
+        console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
+      }));
+    });
+
+    File.checkDir(this.fs, 'notes').then((bool) => {
+      console.log('notes successfully found');
+    }).catch(err => {
+      File.createDir(this.fs, "notes", false).then((freeSpace) => {
+        console.log("Successfully created directory notes")
       }).catch((err => {
         console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));

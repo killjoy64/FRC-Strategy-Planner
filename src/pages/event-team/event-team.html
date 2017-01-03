@@ -21,6 +21,9 @@
       <h3>{{ team.nickname }}</h3>
       <p>{{ team.motto }}</p>
     </ion-item>
+    <ion-item *ngIf="team.team_notes">
+        {{ team.team_notes }}
+    </ion-item>
     <ion-item>
       Event: {{ event.short_name }}
     </ion-item>
