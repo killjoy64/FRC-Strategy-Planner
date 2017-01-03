@@ -1,11 +1,12 @@
 import {Component, ViewChild, Sanitizer, SecurityContext} from '@angular/core';
-import {NavController, NavParams, Content, ActionSheetController} from 'ionic-angular';
+import {NavController, NavParams, Content, ActionSheetController, ModalController} from 'ionic-angular';
 import {MatchSorter} from '../../util/sorting';
 import {MatchConverter} from '../../util/string-converter';
 import {Camera, File, Entry, FileError, PhotoViewer} from "ionic-native";
 import {TeamAvatar, AppDirectory} from '../../util/file-reader';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Config} from '../../util/config';
+import {TeamNotesModal} from '../../modals/team-notes-modal';
 
 declare var cordova: any;
 
@@ -27,7 +28,7 @@ export class EventTeamPage {
   matches: any;
   sorted_matches: any;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, public sanitizer: DomSanitizer) {
+  constructor(private modalCtrl: ModalController, private navParams: NavParams, private actionCtrl: ActionSheetController, public sanitizer: DomSanitizer) {
     this.matchSorter = new MatchSorter();
     this.matchConverter = new MatchConverter();
     this.team = navParams.get("team");
@@ -79,6 +80,16 @@ export class EventTeamPage {
 
   scrollToTop() {
     this.content.scrollToTop(1200);
+  }
+
+  openNotesModal() {
+    let modal = this.modalCtrl.create(TeamNotesModal, {
+      team: this.team
+    });
+    modal.onDidDismiss(data => {
+      console.log(data);
+    });
+    modal.present();
   }
 
   openPictureSheet() {

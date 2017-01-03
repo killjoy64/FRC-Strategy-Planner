@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only color="primary" (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ team.team_number }} Notes</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-label stacked>Add a Note</ion-label>
+  <textarea [(ngModel)]="text" id="notes" placeholder="TYPE TEXT HERE..."></textarea>
+  <button ion-button full color="primary" (click)="saveText()">
+    <span>Save</span>
+  </button>
+  <button ion-button full color="primary" (click)="clearText()">
+    <span>Clear</span>
+  </button>
+</ion-content>

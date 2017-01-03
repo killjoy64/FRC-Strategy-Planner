@@ -2,7 +2,7 @@
   <ion-navbar>
     <ion-title>Team {{ team.team_number }}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only color="primary">
+      <button ion-button icon-only color="primary" (click)="openNotesModal()">
         <ion-icon name="create"></ion-icon>
       </button>
     </ion-buttons>
