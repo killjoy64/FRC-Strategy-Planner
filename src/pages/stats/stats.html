@@ -14,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content (ionScroll)="checkScroll($event)">
 
   <div [ngSwitch]="viewType">
 

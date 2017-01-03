@@ -1,5 +1,9 @@
-# FRC Strategy Planner - v1.18.0 ALPHA
+# FRC Strategy Planner - v2.0.4 ALPHA
 FRC Strategy Planner is a cross-platform web application that will allow FRC users to easily develop strategies and draw on the FRC field.
+
+# (1/3/2017) Updated project to Ionic v2.0.0-rc.4
+- Will break any version below v2.0.0, as several functions from Ionic are deprecated/removed.
+- This was mainly to improve VirtualScroll performance. (We display a lot of data!) 
 
 # (12/20/2016) This branch was successfully merged from 'ionic-dev'
 - This means that FRCSP is now written with the Ionic v2 framework! 

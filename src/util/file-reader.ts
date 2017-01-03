@@ -73,19 +73,23 @@ export class TeamNotes {
 
       let data = new Promise((resolve, reject) => {
 
-        fileEntry.file(function (file) {
-          var reader = new FileReader();
+        if (fileEntry) {
+          fileEntry.file(function (file) {
+            var reader = new FileReader();
 
-          reader.onloadend = function() {
-            // team.team_notes = this.result;
-            resolve(this.result);
-          };
+            reader.onloadend = function() {
+              // team.team_notes = this.result;
+              resolve(this.result);
+            };
 
-          reader.readAsText(file);
+            reader.readAsText(file);
 
-        }, function(error) {
-          reject(error);
-        });
+          }, function(error) {
+            reject(error);
+          });
+        } else {
+          reject("FileEntry is null!");
+        }
 
       });
 

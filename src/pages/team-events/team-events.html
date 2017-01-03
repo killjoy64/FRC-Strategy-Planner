@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content (ionScroll)="checkScroll($event)">
   <ion-searchbar (ionInput)="eventFilter.filterEvents($event)"></ion-searchbar>
   <ion-card *ngFor="let event of eventFilter.getFilteredData()">
     <ion-card-header>

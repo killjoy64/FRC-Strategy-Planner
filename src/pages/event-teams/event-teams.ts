@@ -48,30 +48,28 @@ export class EventTeamsPage {
     });
   }
 
-  ngAfterViewInit() {
-    this.content.addScrollListener((e) => {
-      let scroll = document.getElementById("scroll");
-      if (e.target.scrollTop >= 150) {
-        if (scroll.classList.contains("hidden")) {
-          scroll.classList.remove("hidden");
-          scroll.classList.add("visible");
-        }
-      } else {
-        if (scroll.classList.contains("visible")) {
-          scroll.classList.remove("visible");
-          scroll.classList.add("hidden");
-        }
+  checkScroll(e) {
+    let scroll = document.getElementById("scroll");
+    if (e.scrollTop >= 150) {
+      if (scroll.classList.contains("hidden")) {
+        scroll.classList.remove("hidden");
+        scroll.classList.add("visible");
       }
-    });
+    } else {
+      if (scroll.classList.contains("visible")) {
+        scroll.classList.remove("visible");
+        scroll.classList.add("hidden");
+      }
+    }
   }
 
   ionViewDidEnter() {
-    if (!this.initialized) {
-      let list = document.getElementById("team-list");
-      let items = list.getElementsByClassName("item");
-      let height = items[0].clientHeight;
-      list.setAttribute("approxItemHeight", height + "px");
-    }
+    // if (!this.initialized) {
+    //   let list = document.getElementById("team-list");
+    //   let items = list.getElementsByClassName("item");
+    //   let height = items[0].clientHeight;
+    //   list.setAttribute("approxItemHeight", height + "px");
+    // }
   }
 
   scrollToTop() {

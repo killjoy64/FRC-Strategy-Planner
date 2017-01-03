@@ -190,6 +190,9 @@ export class FieldPage {
     this.currentMode = 0;
     this.drawingType = 0;
 
+    this.togglePalette(this.VIEW);
+    this.togglePalette(this.VIEW);
+
     this.setDimensions();
     this.clearVisiblePalettes();
     this.bindListeners();
@@ -245,14 +248,16 @@ export class FieldPage {
         // self.canvas.setAttribute("height", self.canvas_container.clientHeight + "");
 
         img.addEventListener("load", () => {
-          self.currentLoad.dismiss();
           self.clearCanvas();
-          self.context.drawImage(img, 0, 0);
-          self.saveState();
-          self.currentLoad = null;
-          self.togglePalette(self.EDIT);
-          self.togglePalette(self.EDIT);
-          OpenFilePage.hasData = false;
+          setTimeout(() => {
+            self.currentLoad.dismiss();
+            self.context.drawImage(img, 0, 0);
+            self.saveState();
+            self.currentLoad = null;
+            self.togglePalette(self.EDIT);
+            self.togglePalette(self.EDIT);
+            OpenFilePage.hasData = false;
+          }, 150);
         });
       };
 
@@ -277,9 +282,25 @@ export class FieldPage {
     this.canvas_scroll.style.marginTop = document.getElementById("canvas-menu").offsetHeight + "px";
     this.canvas_scroll.style.height = height + "px";
 
-    /* Default properties for our canvas */
-    this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
-    this.canvas.setAttribute("height", this.canvas_container.clientHeight + "");
+    let canvas_bg = document.getElementById("canvas-bg");
+    let img = canvas_bg.querySelector("img");
+
+    if (img.clientHeight != this.canvas.height || img.clientHeight != canvas_bg.clientHeight) {
+      let loading = this.loadCtrl.create({
+        content: 'Loading field...'
+      });
+
+      loading.present();
+
+      setTimeout(() => {
+        canvas_bg.style.height = img.clientHeight + "px";
+
+        /* Default properties for our canvas */
+        this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
+        this.canvas.setAttribute("height", img.clientHeight + "");
+        loading.dismiss();
+      }, 250);
+    }
   }
 
   bindListeners() {
@@ -432,7 +453,7 @@ export class FieldPage {
       e.preventDefault();
       this.updateColor();
       let x = e.touches[0].pageX;
-      let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
+      let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.scrollTop;
       let r = this.size;
       this.context.lineTo(x, y);
       this.context.stroke();
@@ -486,27 +507,33 @@ export class FieldPage {
       this.changeDrawMode(this.PENCIL);
 
       let selected = document.getElementsByClassName("selected-robot")[0];
-      let teamNumber = selected.innerHTML;
-      let x = e.touches[0].pageX;
-      let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
 
-      if (selected.classList.contains("red-robot")) {
-        this.context.fillStyle = "#ee0002";
-      } else {
-        this.context.fillStyle = "#2e74eb";
+      if (selected) {
+
+        let teamNumber = selected.innerHTML;
+
+        let x = e.touches[0].pageX;
+        let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.scrollTop;
+
+        if (selected.classList.contains("red-robot")) {
+          this.context.fillStyle = "#ee0002";
+        } else {
+          this.context.fillStyle = "#2e74eb";
+        }
+
+        /* Get the width, in pixels, of the text */
+        let textWidth = this.context.measureText(teamNumber).width;
+        let width = 40;
+        let height = 30;
+
+        this.context.font = "12px arial";
+        this.context.textAlign = "center";
+        this.context.textBaseline = "middle";
+        this.context.fillRect(x - (width/2), y - (height/2), width, height);
+        this.context.fillStyle = "#ffffff";
+        this.context.fillText(teamNumber, x - (width/2) + (textWidth/4), y);
+
       }
-
-      /* Get the width, in pixels, of the text */
-      let textWidth = this.context.measureText(teamNumber).width;
-      let width = 40;
-      let height = 30;
-
-      this.context.font = "12px arial";
-      this.context.textAlign = "center";
-      this.context.textBaseline = "middle";
-      this.context.fillRect(x - (width/2), y - (height/2), width, height);
-      this.context.fillStyle = "#ffffff";
-      this.context.fillText(teamNumber, x - (width/2) + (textWidth/4), y);
 
     }
   }
@@ -520,7 +547,7 @@ export class FieldPage {
       let selectedImg = selected.querySelector("img");
       let self = this;
       let x = e.touches[0].pageX;
-      let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.getScrollTop();
+      let y = e.touches[0].pageY - this.canvas_scroll.offsetTop + this.canvasContent.scrollTop;
 
       /* Since context is defined within canvas, we replaced it's image with our saved one */
       let img = document.createElement('img');

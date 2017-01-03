@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content (ionScroll)="checkScroll($event)">
   <ion-card *ngFor="let award of awards">
     <ion-card-header>
       {{ award.year }} - {{ award.name }}

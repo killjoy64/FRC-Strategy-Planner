@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content (ionScroll)="checkScroll($event)">
   <ion-searchbar (ionInput)="matchFilter.filterMatches($event)"></ion-searchbar>
   <ion-list [virtualScroll]="matchFilter.getFilteredData()">
     <ion-list-header>

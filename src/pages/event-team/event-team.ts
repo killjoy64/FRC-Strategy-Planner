@@ -36,23 +36,6 @@ export class EventTeamPage {
     this.event = navParams.get("event");
     this.matches = [];
 
-    let self = this;
-
-    if (!Config.IS_BROWSER) {
-      this.teamAvatar = new TeamAvatar();
-      this.teamAvatar.getAvatar(this.team.team_number).then((data) => {
-        self.src = data;
-      }, (err) => {
-        console.log(err);
-      });
-
-      this.teamNote = new TeamNotes();
-      this.teamNote.getNotes(this.team).then((data) => {
-        this.team.team_notes = data;
-        console.log(this.team.team_notes);
-      });
-    }
-
     for (let match of this.event.matches) {
       for (let i = 0; i < 3; i++) {
         if (match.alliances.blue.teams[i] == this.team.key) {
@@ -67,22 +50,41 @@ export class EventTeamPage {
   }
 
   ngAfterViewInit() {
-    this.sorted_matches = this.matchSorter.quicksort(this.matches, 0, this.matches.length - 1);
+    let self = this;
 
-    this.content.addScrollListener((e) => {
-      let scroll = document.getElementById("scroll");
-      if (e.target.scrollTop >= 150) {
-        if (scroll.classList.contains("hidden")) {
-          scroll.classList.remove("hidden");
-          scroll.classList.add("visible");
-        }
-      } else {
-        if (scroll.classList.contains("visible")) {
-          scroll.classList.remove("visible");
-          scroll.classList.add("hidden");
-        }
+    if (!Config.IS_BROWSER) {
+      this.teamAvatar = new TeamAvatar();
+      this.teamAvatar.getAvatar(this.team.team_number).then((data) => {
+        self.src = data;
+      }, (err) => {
+        console.log("Error getting avatar: " + err.message);
+      });
+
+      this.teamNote = new TeamNotes();
+      this.teamNote.getNotes(this.team).then((data) => {
+        this.team.team_notes = data;
+        console.log("Team Notes: " + this.team.team_notes);
+      }, (err) => {
+        console.log("Error getting notes:" + err.message);
+      });
+    }
+
+    this.sorted_matches = this.matchSorter.quicksort(this.matches, 0, this.matches.length - 1);
+  }
+
+  checkScroll(e) {
+    let scroll = document.getElementById("scroll");
+    if (e.scrollTop >= 150) {
+      if (scroll.classList.contains("hidden")) {
+        scroll.classList.remove("hidden");
+        scroll.classList.add("visible");
       }
-    });
+    } else {
+      if (scroll.classList.contains("visible")) {
+        scroll.classList.remove("visible");
+        scroll.classList.add("hidden");
+      }
+    }
   }
 
   scrollToTop() {

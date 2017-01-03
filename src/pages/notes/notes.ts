@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, Content, NavController } from 'ionic-angular';
+import { AlertController, Content, NavController, LoadingController } from 'ionic-angular';
 import { TBAService } from '../../providers/tba-service'
 import {EventTeamsPage} from "../event-teams/event-teams";
 import {EventMatchesPage} from "../event-matches/event-matches";
@@ -46,7 +46,7 @@ export class NotesPage {
   initialized: boolean;
   loading: boolean;
 
-  constructor(private tba: TBAService, private navCtrl: NavController, private alertCtrl: AlertController) {
+  constructor(private tba: TBAService, private navCtrl: NavController, private alertCtrl: AlertController, private loadCtrl: LoadingController) {
     this.openRequests = 0;
     this.requestID = 0;
     this.requestOpen = false;
@@ -103,33 +103,66 @@ export class NotesPage {
 
   openEventTeamsPage() {
     if (this.my_comp) {
-      this.navCtrl.push(EventTeamsPage, {
-        event: this.my_comp
+      let loading = this.loadCtrl.create({
+        content: 'Loading information...'
+      });
+
+      loading.present().then(() => {
+        this.navCtrl.push(EventTeamsPage, {
+          event: this.my_comp
+        }).then(() => {
+          loading.dismiss();
+        });
       });
     }
   }
 
   openEventMatchesPage() {
     if (this.my_comp) {
-      this.navCtrl.push(EventMatchesPage, {
-        event: this.my_comp
+      let loading = this.loadCtrl.create({
+        content: 'Loading information...'
+      });
+
+      loading.present().then(() => {
+        this.navCtrl.push(EventMatchesPage, {
+          event: this.my_comp
+        }).then(() => {
+          loading.dismiss();
+        });
       });
     }
   }
 
   openEventRankingsPage() {
     if (this.my_comp) {
-      this.navCtrl.push(EventRankingsPage, {
-        event: this.my_comp
+      let loading = this.loadCtrl.create({
+        content: 'Loading information...'
+      });
+
+      loading.present().then(() => {
+        this.navCtrl.push(EventRankingsPage, {
+          event: this.my_comp
+        }).then(() => {
+          loading.dismiss();
+        });
       });
     }
   }
 
   openEventAwardsPage() {
     if (this.my_comp) {
-      this.navCtrl.push(EventAwardsPage, {
-        event: this.my_comp
+      let loading = this.loadCtrl.create({
+        content: 'Loading information...'
       });
+
+      loading.present().then(() => {
+        this.navCtrl.push(EventAwardsPage, {
+          event: this.my_comp
+        }).then(() => {
+          loading.dismiss();
+        });
+      });
+
     }
   }
 
@@ -138,21 +171,19 @@ export class NotesPage {
     console.log(this.my_comp);
   }
 
-  ngAfterViewInit() {
-    this.content.addScrollListener((e) => {
-      let scroll = document.getElementsByClassName("scroll")[0];
-      if (e.target.scrollTop >= 150) {
-        if (scroll.classList.contains("hidden")) {
-          scroll.classList.remove("hidden");
-          scroll.classList.add("visible");
-        }
-      } else {
-        if (scroll.classList.contains("visible")) {
-          scroll.classList.remove("visible");
-          scroll.classList.add("hidden");
-        }
+  checkScroll(e) {
+    let scroll = document.getElementById("scroll");
+    if (e.scrollTop >= 150) {
+      if (scroll.classList.contains("hidden")) {
+        scroll.classList.remove("hidden");
+        scroll.classList.add("visible");
       }
-    });
+    } else {
+      if (scroll.classList.contains("visible")) {
+        scroll.classList.remove("visible");
+        scroll.classList.add("hidden");
+      }
+    }
   }
 
   ionViewDidEnter() {

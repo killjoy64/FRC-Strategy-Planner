@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content (ionScroll)="checkScroll($event)">
   <ion-card *ngIf="!my_comp && my_comp == null">
     <ion-card-header class="blue">Search for Your Event</ion-card-header>
     <ion-card-content>

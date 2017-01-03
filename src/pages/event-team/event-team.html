@@ -9,14 +9,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content (ionScroll)="checkScroll($event)">
   <ion-list>
     <ion-item text-wrap>
-      <ion-avatar item-left (click)="openPictureSheet()">
+      <ion-thumbnail item-left (click)="openPictureSheet()">
         <!-- id="{{ team.team_number }}-avatar" -->
         <img src="assets/option-robots.png" class="avatar" *ngIf="!src">
-        <ion-img [src]="src" class="avatar" *ngIf="src"></ion-img>
-      </ion-avatar>
+        <img src="{{ src }}" class="avatar" *ngIf="src">
+      </ion-thumbnail>
       <h2>FRC Team {{ team.team_number }}</h2>
       <h3>{{ team.nickname }}</h3>
       <p>{{ team.motto }}</p>

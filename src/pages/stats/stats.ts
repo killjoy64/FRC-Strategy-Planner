@@ -180,21 +180,19 @@ export class StatsPage {
     }
   }
 
-  ngAfterViewInit() {
-    this.content.addScrollListener((e) => {
-      let scroll = document.getElementsByClassName("scroll")[1];
-      if (e.target.scrollTop >= 150) {
-        if (scroll.classList.contains("hidden")) {
-          scroll.classList.remove("hidden");
-          scroll.classList.add("visible");
-        }
-      } else {
-        if (scroll.classList.contains("visible")) {
-          scroll.classList.remove("visible");
-          scroll.classList.add("hidden");
-        }
+  checkScroll(e) {
+    let scroll = document.getElementsByClassName("scroll")[1];
+    if (e.scrollTop >= 150) {
+      if (scroll.classList.contains("hidden")) {
+        scroll.classList.remove("hidden");
+        scroll.classList.add("visible");
       }
-    });
+    } else {
+      if (scroll.classList.contains("visible")) {
+        scroll.classList.remove("visible");
+        scroll.classList.add("hidden");
+      }
+    }
   }
 
   bindListeners() {

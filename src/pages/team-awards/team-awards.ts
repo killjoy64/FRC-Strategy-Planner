@@ -17,20 +17,19 @@ export class TeamAwardsPage {
     this.awards = navParams.get("awards");
   }
 
-  ngAfterViewInit() {
-    this.content.addScrollListener((e) => {
-      if (e.target.scrollTop >= 150) {
-        if (document.getElementById("scroll-top-awards").classList.contains("hidden")) {
-          document.getElementById("scroll-top-awards").classList.remove("hidden");
-          document.getElementById("scroll-top-awards").classList.add("visible");
-        }
-      } else {
-        if (document.getElementById("scroll-top-awards").classList.contains("visible")) {
-          document.getElementById("scroll-top-awards").classList.remove("visible");
-          document.getElementById("scroll-top-awards").classList.add("hidden");
-        }
+  checkScroll(e) {
+    let scroll = document.getElementById("scroll");
+    if (e.scrollTop >= 150) {
+      if (document.getElementById("scroll-top-awards").classList.contains("hidden")) {
+        document.getElementById("scroll-top-awards").classList.remove("hidden");
+        document.getElementById("scroll-top-awards").classList.add("visible");
       }
-    });
+    } else {
+      if (document.getElementById("scroll-top-awards").classList.contains("visible")) {
+        document.getElementById("scroll-top-awards").classList.remove("visible");
+        document.getElementById("scroll-top-awards").classList.add("hidden");
+      }
+    }
   }
 
   scrollToTop() {

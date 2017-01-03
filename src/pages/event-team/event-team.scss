@@ -1,21 +1,25 @@
 page-event-team {
-  ion-avatar {
-    min-width: 8rem !important;
-    min-height: 8rem !important;
-  }
-  ion-avatar img {
-    min-width: 8rem !important;
-    min-height: 8rem !important;
-    padding: 2px !important;
-  }
+  //ion-avatar {
+  //  width: 8rem !important;
+  //  height: 8rem !important;
+  //}
+  //ion-avatar img {
+  //  width: 8rem !important;
+  //  height: 8rem !important;
+  //  padding: 2px !important;
+  //}
+  //
+  //.avatar {
+  //  border-radius: 4rem !important;
+  //  border: 1px solid #2e74eb;
+  //}
+  //
+  //.avatar > img {
+  //  border-radius: 4rem !important;
+  //}
 
-  .avatar {
-    border-radius: 4rem !important;
-    border: 1px solid #2e74eb;
-  }
-
-  .avatar > img {
-    border-radius: 4rem !important;
+  ion-img {
+    background: #FFFFFF !important;
   }
 
 }

@@ -38,20 +38,19 @@ export class TeamEventsPage {
     }
   }
 
-  ngAfterViewInit() {
-    this.content.addScrollListener((e) => {
-      if (e.target.scrollTop >= 150) {
-        if (document.getElementById("scroll-top-events").classList.contains("hidden")) {
-          document.getElementById("scroll-top-events").classList.remove("hidden");
-          document.getElementById("scroll-top-events").classList.add("visible");
-        }
-      } else {
-        if (document.getElementById("scroll-top-events").classList.contains("visible")) {
-          document.getElementById("scroll-top-events").classList.remove("visible");
-          document.getElementById("scroll-top-events").classList.add("hidden");
-        }
+  checkScroll(e) {
+    let scroll = document.getElementById("scroll");
+    if (e.scrollTop >= 150) {
+      if (document.getElementById("scroll-top-events").classList.contains("hidden")) {
+        document.getElementById("scroll-top-events").classList.remove("hidden");
+        document.getElementById("scroll-top-events").classList.add("visible");
       }
-    });
+    } else {
+      if (document.getElementById("scroll-top-events").classList.contains("visible")) {
+        document.getElementById("scroll-top-events").classList.remove("visible");
+        document.getElementById("scroll-top-events").classList.add("hidden");
+      }
+    }
   }
 
   scrollToTop() {
