@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, Content, NavController, LoadingController } from 'ionic-angular';
+import { AlertController, Content, NavController, LoadingController, ToastController } from 'ionic-angular';
 import { TBAService } from '../../providers/tba-service'
 import {EventTeamsPage} from "../event-teams/event-teams";
 import {EventMatchesPage} from "../event-matches/event-matches";
@@ -46,7 +46,7 @@ export class NotesPage {
   initialized: boolean;
   loading: boolean;
 
-  constructor(private tba: TBAService, private navCtrl: NavController, private alertCtrl: AlertController, private loadCtrl: LoadingController) {
+  constructor(private tba: TBAService, private navCtrl: NavController, private alertCtrl: AlertController, private loadCtrl: LoadingController, private toastCtrl: ToastController) {
     this.openRequests = 0;
     this.requestID = 0;
     this.requestOpen = false;
@@ -361,6 +361,17 @@ export class NotesPage {
             } else {
               this.hideLoading();
             }
+            let toast = this.toastCtrl.create({
+              message: "Successfully got data for " + this.my_comp.short_name,
+              showCloseButton: true,
+              duration: 3000,
+              position: 'bottom',
+            });
+            toast.present().then(() => {
+              console.log("Toast is showing!");
+            }, (err) => {
+              console.log("Error with toast? " + err.message);
+            });
           },
           err => {
             this.requestOpen = false;
