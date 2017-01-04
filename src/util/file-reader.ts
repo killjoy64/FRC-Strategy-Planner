@@ -124,7 +124,7 @@ export class AppDirectory {
       this.fs = cordova.file.documentsDirectory;
       p = "ANDROID";
     } else if (platform.is("windows")) {
-      // TODO - Write code for windows directory
+      this.fs = cordova.file.dataDirectory;
       p = "WINDOWS";
     }
 
@@ -135,7 +135,7 @@ export class AppDirectory {
       this.cache = cordova.file.documentsDirectory;
       p = "ANDROID";
     } else if (platform.is("windows")) {
-      // TODO - Write code for windows directory
+      this.cache = cordova.file.cacheDirectory;
       p = "WINDOWS";
     }
 

@@ -138,8 +138,16 @@
     <ion-grid>
       <ion-row>
         <ion-label>Import from your event</ion-label>
-        <ion-select [(ngModel)]="my_match_key" placeholder="Select Your Match" (ionChange)="getMatch()" multiple="false">
+        <ion-select [(ngModel)]="my_match_key" placeholder="Select Your Match" (ionChange)="getMatch()" *ngIf="!my_matches">
           <ion-option *ngFor="let match of my_comp.matches" value="{{ match.key }}">
+            <!--{{ match.alliances.red.teams[0] }}-{{ match.alliances.red.teams[1] }}-{{ match.alliances.red.teams[2] }}-{{ match.alliances.blue.teams[0] }}-{{ match.alliances.blue.teams[1] }}-{{ match.alliances.blue.teams[2] }}-->
+            <div>
+              {{ matchConverter.convert(match) }}
+            </div>
+          </ion-option>
+        </ion-select>
+        <ion-select [(ngModel)]="my_match_key" placeholder="Select Your Match" (ionChange)="getSortedMatch()" *ngIf="my_matches">
+          <ion-option *ngFor="let match of my_matches" value="{{ match.key }}">
             <!--{{ match.alliances.red.teams[0] }}-{{ match.alliances.red.teams[1] }}-{{ match.alliances.red.teams[2] }}-{{ match.alliances.blue.teams[0] }}-{{ match.alliances.blue.teams[1] }}-{{ match.alliances.blue.teams[2] }}-->
             <div>
               {{ matchConverter.convert(match) }}

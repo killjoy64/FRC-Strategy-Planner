@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Settings</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item-group>
+    <ion-item-divider color="light">Team Specific</ion-item-divider>
+    <ion-item>
+      <ion-label item-left>Team Number</ion-label>
+      <ion-input [(ngModel)]="team_number" type="number" placeholder="e.g. 5314" item-right class="team-number"></ion-input>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">Alpha Updates</ion-item-divider>
+    <ion-item>
+      <ion-label>Auto-Receive Updates</ion-label>
+      <ion-toggle [(ngModel)]="auto_receive" (ionChange)="enableAutoReceive()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <ion-label>Receive Push Notifications</ion-label>
+      <ion-toggle [(ngModel)]="push_notifications" (ionChange)="enablePushNotifications()"></ion-toggle>
+    </ion-item>
+    <ion-item>
+      <span item-left>
+        <button ion-button clear class="update-btn" (click)="checkForUpdate()">
+        Check for Updates
+        </button>
+      </span>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">About</ion-item-divider>
+    <ion-item>
+      <span item-left>Libraries Used</span>
+      <button item-right ion-button clear (click)="openLibraries()">
+        View
+      </button>
+    </ion-item>
+    <ion-item>
+      <span item-left>Changelog</span>
+      <button item-right ion-button clear (click)="openChangeLog()">
+        View
+      </button>
+    </ion-item>
+    <ion-item>
+      <span item-left>Version</span>
+      <span item-right>v2.0.4 Alpha</span>
+    </ion-item>
+  </ion-item-group>
+</ion-content>

@@ -141,10 +141,14 @@ export class FieldPage {
     }
     if (NotesPage.CURRENT_EVENT) {
       this.my_comp = NotesPage.CURRENT_EVENT;
-
-      // Sort our matches
       let items = this.my_comp.matches;
-      this.my_comp.matches = this.matchSorter.quicksort(items, 0, items.length - 1);
+      if (Config.TEAM_NUMBER) {
+        let u_items = this.getMatchesForTeam(Config.TEAM_NUMBER, items);
+        this.my_matches = this.matchSorter.quicksort(u_items, 0, u_items.length - 1);
+      } else {
+        this.my_comp.matches = this.matchSorter.quicksort(items, 0, items.length - 1);
+      }
+
     } else {
       this.my_comp = null;
       this.my_match = null;
@@ -210,17 +214,28 @@ export class FieldPage {
     }
   }
 
-  getMatchesForTeam(team) {
-    this.my_matches = [];
+  getMatchesForTeam(team, data) {
+    let unsorted_matches = [];
 
-    for (let match of this.my_comp.matches) {
+    for (let match of data) {
       for (let i = 0; i < 3; i++) {
-        if (match.alliances.blue.teams[i] == team.key) {
-          this.my_matches.push(match);
+        if (match.alliances.blue.teams[i].indexOf(team) > -1) {
+          unsorted_matches.push(match);
         }
-        if (match.alliances.red.teams[i] == team.key) {
-          this.my_matches.push(match);
+        if (match.alliances.red.teams[i].indexOf(team) > -1) {
+          unsorted_matches.push(match);
         }
+      }
+    }
+
+    return unsorted_matches;
+  }
+
+  getSortedMatch() {
+    for (let match of this.my_matches) {
+      if (match.key == this.my_match_key) {
+        this.my_match = match;
+        break;
       }
     }
   }

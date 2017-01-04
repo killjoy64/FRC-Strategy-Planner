@@ -1,5 +1,7 @@
-# FRC Strategy Planner - v2.0.4 ALPHA
+# FRC Strategy Planner - v2.1.0 ALPHA
 FRC Strategy Planner is a cross-platform web application that will allow FRC users to easily develop strategies and draw on the FRC field.
+
+# (1/4/2017) Started cleanup process for app release.
 
 # (1/3/2017) Updated project to Ionic v2.0.0-rc.4
 - Will break any version below v2.0.0, as several functions from Ionic are deprecated/removed.
@@ -11,8 +13,8 @@ FRC Strategy Planner is a cross-platform web application that will allow FRC use
 # TODO
 ### Desired upcoming features and house-keeping things
 - [ ] Start packaging the app and get ready for it's first stable release!
-- [ ] Optimize everything. App is starting to run a little slow.
-- [ ] Add licensing and credits to angular, ionic, font-awesome, etc.
+- [X] Optimize everything. App is starting to run a little slow. (1/4/2017)
+- [X] Add licensing and credits to angular, ionic, font-awesome, etc. (1/4/2017)
 - [X] Literally refactor everything and make more classes. I feel disgusting looking at it. (1/2/2017)
 - [X] Sort through all data because most of it is out of order (12/30/2016)
 - [X] Add search feature for the 'Events' and 'Teams' section of the statistics page (12/30/2016)

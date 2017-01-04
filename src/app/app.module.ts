@@ -1,3 +1,5 @@
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { FRCSP } from './app.component';
@@ -17,8 +19,16 @@ import { EventRankingsPage } from '../pages/event-rankings/event-rankings';
 import { EventAwardsPage } from "../pages/event-awards/event-awards";
 import { EventTeamPage } from '../pages/event-team/event-team';
 import { TabsPage } from '../pages/tab-directory/tab-directory';
+import { AboutChangelogPage } from '../pages/about-changelog/about-changelog';
+import { AboutLibrariesPage } from '../pages/about-libraries/about-libraries';
 
 import { TeamNotesModal } from '../modals/team-notes-modal';
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'add5520f'
+  }
+};
 
 @NgModule({
   declarations: [
@@ -39,10 +49,13 @@ import { TeamNotesModal } from '../modals/team-notes-modal';
     EventTeamPage,
     LoginPage,
     TabsPage,
+    AboutChangelogPage,
+    AboutLibrariesPage,
     TeamNotesModal
   ],
   imports: [
-    IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'})
+    IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'}),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -63,6 +76,8 @@ import { TeamNotesModal } from '../modals/team-notes-modal';
     EventTeamPage,
     LoginPage,
     TabsPage,
+    AboutChangelogPage,
+    AboutLibrariesPage,
     TeamNotesModal
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]

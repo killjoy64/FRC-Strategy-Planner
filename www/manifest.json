@@ -1,6 +1,6 @@
 {
   "name": "FRC Strategy Planner",
-  "short_name": "FRCSP",
+  "short_name": "FRC Strategy Planner",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
