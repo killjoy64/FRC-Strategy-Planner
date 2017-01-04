@@ -1,7 +1,7 @@
 import { Platform } from 'ionic-angular';
 import {File, FileError, Entry} from 'ionic-native';
 
-declare var cordova;
+declare var cordova: any;
 
 export class TeamAvatar {
 
@@ -117,32 +117,47 @@ export class AppDirectory {
   public static init(platform: Platform) {
     let p = "";
 
-    if (platform.is("android")) {
-      this.fs = cordova.file.externalDataDirectory;
-      p = "ANDROID";
-    } else if (platform.is("ios")) {
-      this.fs = cordova.file.documentsDirectory;
-      p = "ANDROID";
-    } else if (platform.is("windows")) {
-      this.fs = cordova.file.dataDirectory;
-      p = "WINDOWS";
+    if (!cordova) {
+      console.log("CORDOVA NOT DEFINED - SEVERE ERROR");
+    } else {
+      console.log("CORDOVA: " + cordova);
+
+      if (!cordova.file) {
+        console.log("CORDOVA FILE PLUGIN NOT FOUND - SEVERE ERROR");
+      } else {
+        console.log("CORDOVA FILE: " + cordova.file);
+
+        if (platform.is("android")) {
+          this.fs = cordova.file.externalDataDirectory;
+          p = "ANDROID";
+        } else if (platform.is("ios")) {
+          this.fs = cordova.file.documentsDirectory;
+          p = "ANDROID";
+        } else if (platform.is("windows")) {
+          this.fs = cordova.file.dataDirectory;
+          p = "WINDOWS";
+        }
+
+        if (platform.is("android")) {
+          this.cache = cordova.file.externalApplicationStorageDirectory + "cache/";
+          p = "ANDROID";
+        } else if (platform.is("ios")) {
+          this.cache = cordova.file.documentsDirectory;
+          p = "ANDROID";
+        } else if (platform.is("windows")) {
+          this.cache = cordova.file.cacheDirectory;
+          p = "WINDOWS";
+        }
+
+        console.log("SUCCESSFULLY MAPPED DIRECTORIES FOR " + p);
+        console.log("MAPPED DIRECTORIES: ");
+        console.log("PERM: " + this.fs);
+        console.log("TEMP: " + this.cache);
+
+      }
+
     }
 
-    if (platform.is("android")) {
-      this.cache = cordova.file.externalApplicationStorageDirectory + "cache/";
-      p = "ANDROID";
-    } else if (platform.is("ios")) {
-      this.cache = cordova.file.documentsDirectory;
-      p = "ANDROID";
-    } else if (platform.is("windows")) {
-      this.cache = cordova.file.cacheDirectory;
-      p = "WINDOWS";
-    }
-
-    console.log("SUCCESSFULLY MAPPED DIRECTORIES FOR " + p);
-    console.log("MAPPED DIRECTORIES: ");
-    console.log("PERM: " + this.fs);
-    console.log("TEMP: " + this.cache);
   }
 
   public static createDirs() {

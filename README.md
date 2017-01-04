@@ -1,4 +1,4 @@
-# FRC Strategy Planner - v2.2.0 ALPHA
+# FRC Strategy Planner - v2.4.8 ALPHA
 FRC Strategy Planner is a cross-platform web application that will allow FRC users to easily develop strategies and draw on the FRC field.
 
 # (1/4/2017) Started cleanup process for app release.
@@ -12,7 +12,7 @@ FRC Strategy Planner is a cross-platform web application that will allow FRC use
 
 # TODO
 ### Desired upcoming features and house-keeping things
-- [ ] Start packaging the app and get ready for it's first stable release!
+- [X] Start packaging the app and get ready for it's first stable release! (1/4/2017 - 4:33am)
 - [X] Optimize everything. App is starting to run a little slow. (1/4/2017)
 - [X] Add licensing and credits to angular, ionic, font-awesome, etc. (1/4/2017)
 - [X] Literally refactor everything and make more classes. I feel disgusting looking at it. (1/2/2017)

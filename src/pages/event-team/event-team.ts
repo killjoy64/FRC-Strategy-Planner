@@ -111,8 +111,11 @@ export class EventTeamPage {
           handler: () => {
             let navTransition = actionSheet.dismiss();
             navTransition.then(() => {
-              PhotoViewer.show(self.src, 'Team ' + self.team.team_number);
+              if (self.src) {
+                PhotoViewer.show(self.src, 'Team ' + self.team.team_number);
+              }
             });
+            return false;
           }
         },
         {

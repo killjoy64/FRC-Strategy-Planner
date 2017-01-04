@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {NavController, AlertController, LoadingController, Content, Platform, Loading} from 'ionic-angular';
+import {NavController, AlertController, LoadingController, Content, Platform, Loading, ToastController} from 'ionic-angular';
 import {File} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
 import {NotesPage} from '../notes/notes';
@@ -82,7 +82,7 @@ export class FieldPage {
   /* Allows us to pass data */
   public static savedStrat: any;
 
-  constructor(private alertCtrl: AlertController, private loadCtrl: LoadingController, private navCtrl: NavController, private plt: Platform) {
+  constructor(private alertCtrl: AlertController, private loadCtrl: LoadingController, private navCtrl: NavController, private plt: Platform, private toastCtrl: ToastController) {
   this.matchSorter = new MatchSorter();
   this.matchConverter = new MatchConverter();
 
@@ -400,12 +400,50 @@ export class FieldPage {
               console.log(data.fileName);
               File.writeFile(this.fs + "/strategy-saves", data.fileName + ".png", self.canvas.toDataURL("image/png"), []).then((fileEntry) => {
                 console.log("Saved file successfully");
+                alert.dismiss().then(() => {
+                  self.togglePalette(this.EDIT);
+                  self.togglePalette(this.EDIT);
+                  let toast = self.toastCtrl.create({
+                    message: "Successfully saved file " + data.fileName + ".png",
+                    showCloseButton: true,
+                    duration: 3000,
+                    position: 'bottom',
+                  });
+                  toast.present();
+                }, (err) => {
+                  // Don't even care.
+                });
               }).catch((err) => {
                 console.log(err);
+                let toast = self.toastCtrl.create({
+                  message: "Error saving file!",
+                  showCloseButton: true,
+                  duration: 3000,
+                  position: 'bottom',
+                });
+                toast.present();
+              });
+            } else {
+              alert.dismiss().then(() => {
+                self.togglePalette(this.EDIT);
+                self.togglePalette(this.EDIT);
+                let toast = self.toastCtrl.create({
+                  message: "Successfully saved file " + data.fileName + ".png",
+                  showCloseButton: true,
+                  duration: 3000,
+                  position: 'bottom',
+                });
+                toast.present().then(() => {
+                  console.log("TOAST SHOWN");
+                }, (err) => {
+                  console.log("TOAST ERROR");
+                });
+              }, (err) => {
+                // Don't even care.
+                console.log("ERROR: " + err.message);
               });
             }
-            self.togglePalette(this.EDIT);
-            self.togglePalette(this.EDIT);
+            return false;
           }
         }
       ]

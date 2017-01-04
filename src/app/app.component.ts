@@ -15,6 +15,8 @@ export class FRCSP {
     platform.ready().then(() => {
       StatusBar.styleDefault();
 
+      console.log("CONFIG BROWSER: " + Config.IS_BROWSER);
+
       if (!Config.IS_BROWSER) {
         AppDirectory.init(platform);
         AppDirectory.createDirs();
