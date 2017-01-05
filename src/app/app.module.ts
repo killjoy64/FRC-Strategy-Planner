@@ -1,6 +1,6 @@
 import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 
-import { NgModule, ErrorHandler } from '@angular/core';
+import {NgModule, ErrorHandler, enableProdMode} from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { FRCSP } from './app.component';
 import { NotesPage } from '../pages/notes/notes';
@@ -29,6 +29,8 @@ const cloudSettings: CloudSettings = {
     'app_id': 'add5520f'
   }
 };
+
+enableProdMode();
 
 @NgModule({
   declarations: [

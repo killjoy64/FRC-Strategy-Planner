@@ -434,9 +434,9 @@ export class FieldPage {
                   position: 'bottom',
                 });
                 toast.present().then(() => {
-                  console.log("TOAST SHOWN");
+                  // Do nothing
                 }, (err) => {
-                  console.log("TOAST ERROR");
+                  // Do nothing
                 });
               }, (err) => {
                 // Don't even care.

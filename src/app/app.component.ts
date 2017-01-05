@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { StatusBar } from 'ionic-native';
+import { StatusBar, Splashscreen } from 'ionic-native';
 import { LoginPage } from '../pages/login/login';
 import { AppDirectory } from '../util/file-reader';
 import { Config } from '../util/config';
@@ -12,8 +12,12 @@ export class FRCSP {
   rootPage = LoginPage;
 
   constructor(platform: Platform) {
+
+    document.body.style.backgroundColor = "#387ef5";
+
     platform.ready().then(() => {
       StatusBar.styleDefault();
+      Splashscreen.hide();
 
       console.log("CONFIG BROWSER: " + Config.IS_BROWSER);
 
