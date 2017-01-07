@@ -15,8 +15,12 @@
   <ion-item-group>
     <ion-item-divider color="light">Alpha Updates</ion-item-divider>
     <ion-item>
+      <ion-label>Auto-Save My Event</ion-label>
+      <ion-toggle [(ngModel)]="auto_save" (ionChange)="enablePushNotifications()"></ion-toggle>
+    </ion-item>
+    <ion-item>
       <ion-label>Auto-Receive Updates</ion-label>
-      <ion-toggle [(ngModel)]="auto_receive" (ionChange)="enableAutoReceive()"></ion-toggle>
+      <ion-toggle [(ngModel)]="auto_receive" (ionChange)="enableAutoSaveMyEvent()"></ion-toggle>
     </ion-item>
     <ion-item>
       <ion-label>Receive Push Notifications</ion-label>

@@ -23,6 +23,7 @@ import { AboutChangelogPage } from '../pages/about-changelog/about-changelog';
 import { AboutLibrariesPage } from '../pages/about-libraries/about-libraries';
 
 import { TeamNotesModal } from '../modals/team-notes-modal';
+import {Config} from "../util/config";
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -30,7 +31,9 @@ const cloudSettings: CloudSettings = {
   }
 };
 
-enableProdMode();
+if (!Config.DEBUG) {
+  enableProdMode();
+}
 
 @NgModule({
   declarations: [

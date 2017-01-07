@@ -13,8 +13,6 @@ export class FRCSP {
 
   constructor(platform: Platform) {
 
-    document.body.style.backgroundColor = "#387ef5";
-
     platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();

@@ -3,6 +3,79 @@ import {File, FileError, Entry} from 'ionic-native';
 
 declare var cordova: any;
 
+export class MyEvent {
+
+  private fs: string;
+
+  constructor() {
+    this.fs = AppDirectory.getPermDir();
+  }
+
+  saveMyEvent(event) {
+    let eventJSON = JSON.stringify(event);
+    let promise = File.writeFile(this.fs, "json/my_event.json", eventJSON, []).then((fileEntry) => {
+      console.log("Saved MY_EVENT.JSON successfully");
+      return fileEntry;
+    }).catch((err) => {
+      console.log(err);
+    });
+    return promise;
+  }
+
+  getMyEvent() {
+    let fileEntry = null;
+    let fileEntries:Entry[] = null;
+
+    let promise = File.listDir(this.fs, "json").then((entries:Entry[]) => {
+      fileEntries = entries;
+
+      if (fileEntries.length <= 0) {
+        return null;
+      }
+
+      for (let i = 0; i < fileEntries.length; i++) {
+        if (fileEntries[i].name.indexOf("my_event") > -1) {
+          fileEntry = fileEntries[i];
+          break;
+        }
+      }
+
+      let data = new Promise((resolve, reject) => {
+
+        if (fileEntry) {
+          fileEntry.file(function (file) {
+            var reader = new FileReader();
+
+            reader.onloadend = function() {
+              // team.team_notes = this.result;
+              resolve(this.result);
+            };
+
+            reader.readAsText(file);
+
+          }, function(error) {
+            reject(error);
+          });
+        } else {
+          reject("FileEntry is null!");
+        }
+
+      });
+
+      return data;
+
+    }).catch((err:FileError) => {
+      fileEntries = null;
+      console.log("Error Listing Contents - " + err.message);
+      return null;
+    });
+
+    return promise;
+
+  }
+
+}
+
 export class TeamAvatar {
 
   private fs:string;
@@ -176,6 +249,16 @@ export class AppDirectory {
     }).catch(err => {
       File.createDir(this.fs, "notes", false).then((freeSpace) => {
         console.log("Successfully created directory notes")
+      }).catch((err => {
+        console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
+      }));
+    });
+
+    File.checkDir(this.fs, 'json').then((bool) => {
+      console.log('JSON successfully found');
+    }).catch(err => {
+      File.createDir(this.fs, "json", false).then((freeSpace) => {
+        console.log("Successfully created directory JSON")
       }).catch((err => {
         console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));

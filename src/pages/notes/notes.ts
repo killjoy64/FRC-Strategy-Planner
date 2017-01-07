@@ -5,7 +5,7 @@ import {EventTeamsPage} from "../event-teams/event-teams";
 import {EventMatchesPage} from "../event-matches/event-matches";
 import {EventRankingsPage} from "../event-rankings/event-rankings";
 import {EventAwardsPage} from "../event-awards/event-awards";
-import {AppDirectory, TeamAvatar} from '../../util/file-reader';
+import {AppDirectory, TeamAvatar, MyEvent} from '../../util/file-reader';
 import {Entry} from "ionic-native";
 import {Config} from "../../util/config";
 
@@ -18,6 +18,7 @@ export class NotesPage {
 
   @ViewChild(Content) content: Content;
 
+  eventData: MyEvent;
   teamAvatar: TeamAvatar;
 
   /* AJAX Request Variables */
@@ -97,7 +98,10 @@ export class NotesPage {
       }
     ];
 
-    this.teamAvatar = new TeamAvatar();
+    if (!Config.IS_BROWSER) {
+      this.teamAvatar = new TeamAvatar();
+      this.eventData = new MyEvent();
+    }
 
   }
 
@@ -186,6 +190,31 @@ export class NotesPage {
     }
   }
 
+  ngAfterViewInit() {
+    if (!this.my_comp && !Config.IS_BROWSER) {
+      let self = this;
+      this.eventData.getMyEvent().then((data) => {
+        if (data) {
+          self.my_comp = JSON.parse(data);
+          self.my_comp_key = self.my_comp.key;
+          NotesPage.CURRENT_EVENT = self.my_comp;
+          let toast = this.toastCtrl.create({
+            message: "Successfully loaded cached event",
+            showCloseButton: true,
+            duration: 3000,
+            position: 'bottom',
+          });
+          toast.present().then(() => {
+            self.showCards();
+          }, (err) => {
+          });
+        }
+      }, (err) => {
+        console.log(err.message);
+      });
+    }
+  }
+
   ionViewDidEnter() {
     if (this.my_comp) {
       this.showCards();
@@ -216,7 +245,26 @@ export class NotesPage {
   }
 
   cacheEvent() {
-    console.log("Caching soon!");
+    if (this.my_comp) {
+
+      this.showLoading();
+
+      this.eventData.saveMyEvent(this.my_comp).then((file) => {
+        let toast = this.toastCtrl.create({
+          message: "Successfully cached event",
+          showCloseButton: true,
+          duration: 3000,
+          position: 'bottom',
+        });
+        toast.present().then(() => {
+          this.hideLoading();
+        }, (err) => {
+          console.log("Error with toast? " + err.message);
+        });
+      }, (err) => {
+        // :(
+      });
+    }
   }
 
   confirmClear() {

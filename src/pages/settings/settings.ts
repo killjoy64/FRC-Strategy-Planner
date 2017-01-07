@@ -15,6 +15,7 @@ export class SettingsPage {
   team_number: number;
   push_notifications: boolean;
   auto_receive: boolean;
+  auto_save: boolean;
 
   constructor(private navCtrl: NavController, private deploy: Deploy, private loadCtrl: LoadingController, private alertCtrl: AlertController) {
     this.version = Config.VERSION;
@@ -33,6 +34,10 @@ export class SettingsPage {
 
   enableAutoReceive() {
     console.log("Updating auto receive to: " + this.auto_receive);
+  }
+
+  enableAutoSaveMyEvent() {
+    console.log("Updating auto receive to: " + this.auto_save);
   }
 
   openChangeLog() {
