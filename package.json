@@ -33,12 +33,17 @@
     "typescript": "2.0.6"
   },
   "cordovaPlugins": [
-    "cordova-plugin-whitelist",
-    "cordova-plugin-statusbar",
+    "com-sarriaroman-photoviewer",
+    "cordova-plugin-camera",
+    "cordova-plugin-compat",
     "cordova-plugin-console",
     "cordova-plugin-device",
+    "cordova-plugin-file",
     "cordova-plugin-splashscreen",
-    "ionic-plugin-keyboard"
+    "cordova-plugin-statusbar",
+    "cordova-plugin-whitelist",
+    "ionic-plugin-keyboard",
+    "ionic-plugin-deploy"
   ],
   "cordovaPlatforms": [],
   "description": "A Revolutionary Strategy App for FRC Teams."

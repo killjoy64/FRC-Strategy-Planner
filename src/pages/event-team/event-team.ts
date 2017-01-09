@@ -125,6 +125,7 @@ export class EventTeamPage {
             navTransition.then(() => {
               self.takePicture();
             });
+            return false;
           }
         },
         {
@@ -134,6 +135,7 @@ export class EventTeamPage {
             navTransition.then(() => {
               self.getPicture();
             });
+            return false;
           }
         },
         {
@@ -163,10 +165,10 @@ export class EventTeamPage {
       if (currentName.indexOf("?") > -1) {
         currentName = currentName.substring(0, currentName.indexOf("?"));
       }
-      self.src = imageData;
       File.moveFile(AppDirectory.getTempDir(), currentName, AppDirectory.getPermDir(), "avatars/" + self.team.team_number + ".jpg").then((entry) => {
-        console.log("SUCCESSFULLY MOVED FILE");
+        self.src = AppDirectory.getPermDir() + "avatars/" + self.team.team_number + ".jpg";
         self.team.avatar_url = self.src;
+        console.log("SUCCESSFULLY MOVED - AVATAR SRC: " + self.src);
       }).catch((err) => {
         console.log("ERROR MOVING FILE: " + err.message);
       });
@@ -175,7 +177,7 @@ export class EventTeamPage {
       if (!self.src) {
         self.src = null;
       }
-      console.log(err);
+      console.log("Error locating avatar: " + err.message);
     });
   }
 
@@ -190,10 +192,10 @@ export class EventTeamPage {
       targetHeight: 720
     }).then((imageData) => {
       let currentName = imageData.replace(/^.*[\\\/]/, '');
-      self.src = imageData;
       File.moveFile(AppDirectory.getTempDir(), currentName, AppDirectory.getPermDir(), "avatars/" + self.team.team_number + ".jpg").then((entry) => {
-        console.log("SUCCESSFULLY MOVED FILE");
+        self.src = AppDirectory.getPermDir() + "avatars/" + self.team.team_number + ".jpg";
         self.team.avatar_url = self.src;
+        console.log("SUCCESSFULLY MOVED - AVATAR SRC: " + self.src);
       }).catch((err) => {
         console.log("ERROR MOVING FILE: " + err.message);
       });

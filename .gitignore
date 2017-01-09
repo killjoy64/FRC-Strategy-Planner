@@ -26,13 +26,12 @@ platforms/
 plugins/
 plugins/android.json
 plugins/ios.json
+www/
 $RECYCLE.BIN/
-
-.io-config.json
-frcsp.keystore
 
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
 
 *.apk
+frcsp.keystore

@@ -1,6 +1,6 @@
 export class Config {
 
-  public static VERSION: string = "2.5.2";
+  public static VERSION: string = "2.5.5";
 
   public static IS_BROWSER: boolean = false;
   public static TEAM_NUMBER: number = null;
