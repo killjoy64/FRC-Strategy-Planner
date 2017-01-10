@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { File, Entry } from 'ionic-native';
 import { NavController, Platform } from 'ionic-angular';
 import { FieldPage } from '../field/field';
+import  {AppDirectory } from "../../util/file-reader";
 
 declare var cordova: any;
 
@@ -11,32 +12,20 @@ declare var cordova: any;
 })
 export class OpenFilePage {
 
-  fs:string;
   public static hasData: boolean;
   files: Entry[];
 
   constructor(public navCtrl: NavController, private platform: Platform) {
     this.platform = platform;
     this.files = null;
-    if (this.platform.is("android")) {
-      this.fs = cordova.file.externalDataDirectory;
-    } else if (this.platform.is("ios")) {
-      this.fs = cordova.file.documentsDirectory;
-    } else if (this.platform.is("windows")) {
-
-    }
   }
 
   ionViewWillLoad() {
-    File.listDir(this.fs, "strategy-saves").then((entries:Entry[]) => {
+    File.listDir(AppDirectory.getPermDir(), "strategy-saves").then((entries:Entry[]) => {
       this.files = entries;
       console.log(this.files.length + " FILES FOUND IN SAVES DIRECTORY");
     }).catch(err => {
-      File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
-        console.log("Free space after dir: " + freeSpace);
-      }).catch(err => {
-        console.log(err.message);
-      });
+      console.log(err.message);
     });
   }
 

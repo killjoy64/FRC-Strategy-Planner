@@ -98,27 +98,6 @@ export class FieldPage {
   this.currentLoad = null;
 
     if (!Config.IS_BROWSER) {
-
-      if (this.platform.is("android")) {
-        this.fs = cordova.file.externalDataDirectory;
-        console.log("Android file system detected.")
-      } else if (this.platform.is("ios")) {
-        this.fs = cordova.file.documentsDirectory;
-        console.log("iOS file system detected.")
-      } else if (this.platform.is("windows")) {
-
-      }
-
-      File.checkDir(this.fs, 'strategy-saves').then((bool) => {
-        console.log('strategy-saves found')
-      }).catch(err => {
-        File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
-          console.log("Successfully created strategy-saves")
-        });
-      });
-    }
-
-    if (!Config.IS_BROWSER) {
       window.addEventListener('native.keyboardshow', () => {
         document.body.classList.add("keyboard-is-open");
       });
@@ -300,6 +279,8 @@ export class FieldPage {
     let canvas_bg = document.getElementById("canvas-bg");
     let img = canvas_bg.querySelector("img");
 
+    console.log("HEIGHTS: " + img.clientHeight + " | " + this.canvas.height + " | " + canvas_bg.clientHeight);
+
     if (img.clientHeight != this.canvas.height || img.clientHeight != canvas_bg.clientHeight) {
       let loading = this.loadCtrl.create({
         content: 'Loading field...'
@@ -314,6 +295,9 @@ export class FieldPage {
         this.canvas.setAttribute("width", this.canvas_container.clientWidth + "");
         this.canvas.setAttribute("height", img.clientHeight + "");
         loading.dismiss();
+
+        console.log("NEW HEIGHTS: " + img.clientHeight + " | " + this.canvas.height + " | " + canvas_bg.clientHeight);
+
       }, 250);
     }
   }
@@ -607,8 +591,8 @@ export class FieldPage {
       img.setAttribute("src", selectedImg.getAttribute("src"));
       img.addEventListener("load", () => {
         console.log(x + " | " + y + " WIDTH/HEIGHT: " + img.width + ", " + img.height);
-        let w = img.height * .1;
-        let h = img.height * .1;
+        let w = img.height * .08;
+        let h = img.height * .08;
         self.context.drawImage(img, x - (w/2), y - (h/2), w, h);
       });
     }

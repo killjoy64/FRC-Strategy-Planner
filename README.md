@@ -1,4 +1,4 @@
-# FRC Strategy Planner - v2.5.5 ALPHA
+# FRC Strategy Planner - v2.6.0 ALPHA
 FRC Strategy Planner is a cross-platform web application that will allow FRC users to easily develop strategies and draw on the FRC field.
 
 # (1/4/2017) Started cleanup process for app release.

@@ -1,5 +1,6 @@
 import { Platform } from 'ionic-angular';
 import {File, FileError, Entry} from 'ionic-native';
+import {Config} from "./config";
 
 declare var cordova: any;
 
@@ -184,6 +185,7 @@ export class AppDirectory {
 
   private static fs: string;
   private static cache: string;
+  private static config: string;
 
   constructor() {}
 
@@ -202,23 +204,18 @@ export class AppDirectory {
 
         if (platform.is("android")) {
           this.fs = cordova.file.externalDataDirectory;
+          this.cache = cordova.file.externalApplicationStorageDirectory + "cache/";
+          this.config = cordova.file.dataDirectory;
           p = "ANDROID";
         } else if (platform.is("ios")) {
           this.fs = cordova.file.documentsDirectory;
+          this.cache = cordova.file.documentsDirectory;
+          this.config = cordova.file.syncedDataDirectory;
           p = "ANDROID";
         } else if (platform.is("windows")) {
           this.fs = cordova.file.dataDirectory;
-          p = "WINDOWS";
-        }
-
-        if (platform.is("android")) {
-          this.cache = cordova.file.externalApplicationStorageDirectory + "cache/";
-          p = "ANDROID";
-        } else if (platform.is("ios")) {
-          this.cache = cordova.file.documentsDirectory;
-          p = "ANDROID";
-        } else if (platform.is("windows")) {
           this.cache = cordova.file.cacheDirectory;
+          this.config = cordova.file.syncedDataDirectory;
           p = "WINDOWS";
         }
 
@@ -226,6 +223,7 @@ export class AppDirectory {
         console.log("MAPPED DIRECTORIES: ");
         console.log("PERM: " + this.fs);
         console.log("TEMP: " + this.cache);
+        console.log("CONFIG: " + this.config);
 
       }
 
@@ -238,7 +236,7 @@ export class AppDirectory {
       console.log('avatars successfully found');
     }).catch(err => {
       File.createDir(this.fs, "avatars", false).then((freeSpace) => {
-        console.log("Successfully created directory avatars")
+        console.log("Successfully created directory avatars");
       }).catch((err => {
         console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));
@@ -248,7 +246,7 @@ export class AppDirectory {
       console.log('notes successfully found');
     }).catch(err => {
       File.createDir(this.fs, "notes", false).then((freeSpace) => {
-        console.log("Successfully created directory notes")
+        console.log("Successfully created directory notes");
       }).catch((err => {
         console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));
@@ -258,10 +256,64 @@ export class AppDirectory {
       console.log('JSON successfully found');
     }).catch(err => {
       File.createDir(this.fs, "json", false).then((freeSpace) => {
-        console.log("Successfully created directory JSON")
+        console.log("Successfully created directory JSON");
       }).catch((err => {
         console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));
+    });
+
+    File.checkDir(this.fs, 'strategy-saves').then((bool) => {
+      console.log('JSON successfully found');
+    }).catch(err => {
+      File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
+        console.log("Successfully created directory strategy-saves");
+      }).catch((err => {
+        console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
+      }));
+    });
+  }
+
+  public static checkConfig() {
+    File.checkFile(this.config, "config.json").then((bool:boolean) => {
+      if (bool == true) {
+        console.log("CONFIG WAS FOUND");
+        this.loadConfig();
+      }
+      if (bool == false) {
+        console.log("CONFIG NOT FOUND - CREATING CONFIG");
+        File.writeFile(this.config, "config.json", JSON.stringify(Config.getJSON()), []).then((fileEntry) => {
+          console.log("CREATED DEFAULT CONFIG SUCCESSFULLY");
+        }).catch((err) => {
+          console.log(err);
+        });
+      }
+    }).catch((err:FileError) => {
+      console.log("CONFIG NOT FOUND - CREATING CONFIG");
+      File.writeFile(this.config, "config.json", JSON.stringify(Config.getJSON()), []).then((fileEntry) => {
+        console.log("CREATED DEFAULT CONFIG SUCCESSFULLY");
+      }).catch((err) => {
+        console.log(err);
+      });
+    });
+  }
+
+  public static loadConfig() {
+    File.readAsText(this.config, "config.json").then((data:string) => {
+      let configJSON = JSON.parse(data);
+      Config.TEAM_NUMBER = configJSON.team_number;
+    }, (err:FileError) => {
+      console.log(err.message);
+    });
+  }
+
+  public static saveConfig() {
+    let config = {
+      "team_number": Config.TEAM_NUMBER
+    }
+    File.writeFile(this.config, "config.json", JSON.stringify(config), { replace: true }).then((fileEntry) => {
+      console.log("SAVED CONFIG SETTINGS SUCCESSFULLY");
+    }).catch((err) => {
+      console.log(err.message);
     });
   }
 
@@ -271,6 +323,10 @@ export class AppDirectory {
 
   public static getTempDir() {
     return this.cache;
+  }
+
+  public static getConfigDir() {
+    return this.config;
   }
 
 }

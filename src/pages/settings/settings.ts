@@ -3,6 +3,7 @@ import { Deploy } from '@ionic/cloud-angular';
 import { NavController, LoadingController, AlertController } from 'ionic-angular';
 import { Config } from '../../util/config';
 import { AboutLibrariesPage } from '../../pages/about-libraries/about-libraries';
+import { AppDirectory } from "../../util/file-reader";
 
 @Component({
   selector: 'page-settings',
@@ -19,13 +20,18 @@ export class SettingsPage {
 
   constructor(private navCtrl: NavController, private deploy: Deploy, private loadCtrl: LoadingController, private alertCtrl: AlertController) {
     this.version = Config.VERSION;
+
+    if (Config.TEAM_NUMBER) {
+      this.team_number = Config.TEAM_NUMBER;
+    }
+
   }
 
   ionViewWillLeave() {
     if (this.team_number) {
       Config.TEAM_NUMBER = this.team_number;
     }
-    console.log(Config.TEAM_NUMBER);
+    AppDirectory.saveConfig();
   }
 
   enablePushNotifications() {

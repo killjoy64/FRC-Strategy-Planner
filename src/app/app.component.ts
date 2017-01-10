@@ -6,7 +6,7 @@ import { AppDirectory } from '../util/file-reader';
 import { Config } from '../util/config';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
 })
 export class FRCSP {
   rootPage = LoginPage;
@@ -22,6 +22,7 @@ export class FRCSP {
       if (!Config.IS_BROWSER) {
         AppDirectory.init(platform);
         AppDirectory.createDirs();
+        AppDirectory.checkConfig();
       }
 
       setTimeout(function () {
