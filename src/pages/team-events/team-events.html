@@ -25,6 +25,11 @@
       <div>
         Date: {{ event.start_date }} - {{ event.end_date }}
       </div>
+      <div class="text-center">
+        <button ion-button (click)="openEventPage(event.key)">
+          <span>View</span>
+        </button>
+      </div>
     </ion-card-content>
   </ion-card>
   <button ion-button icon-only id="scroll-top-events" (click)="scrollToTop()" class="hidden scroll" color="primary">

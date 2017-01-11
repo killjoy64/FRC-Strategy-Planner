@@ -42,10 +42,12 @@ export class EventTeamsPage {
   }
 
   openTeamPage(team) {
-    this.navCtrl.push(EventTeamPage, {
-      event: this.event,
-      team: team
-    });
+    if (team) {
+      this.navCtrl.push(EventTeamPage, {
+        event: this.event,
+        team: team
+      });
+    }
   }
 
   checkScroll(e) {

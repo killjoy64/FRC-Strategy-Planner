@@ -4,6 +4,7 @@ import {NgModule, ErrorHandler, enableProdMode} from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { FRCSP } from './app.component';
 import { NotesPage } from '../pages/notes/notes';
+import { EventPage } from '../pages/event/event';
 import { LoginPage } from '../pages/login/login';
 import { StatsPage } from '../pages/stats/stats';
 import { FieldPage } from '../pages/field/field';
@@ -39,6 +40,7 @@ if (!Config.DEBUG) {
   declarations: [
     FRCSP,
     NotesPage,
+    EventPage,
     StatsPage,
     FieldPage,
     SettingsPage,
@@ -66,6 +68,7 @@ if (!Config.DEBUG) {
   entryComponents: [
     FRCSP,
     NotesPage,
+    EventPage,
     StatsPage,
     FieldPage,
     SettingsPage,

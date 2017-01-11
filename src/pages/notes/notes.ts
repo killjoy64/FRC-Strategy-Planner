@@ -51,7 +51,11 @@ export class NotesPage {
     this.openRequests = 0;
     this.requestID = 0;
     this.requestOpen = false;
-    this.eventYear = 2016;
+    if (!Config.DEBUG) {
+      this.eventYear = 2017;
+    } else {
+      this.eventYear = 2016;
+    }
     this.initialized = false;
     this.loading = false;
 

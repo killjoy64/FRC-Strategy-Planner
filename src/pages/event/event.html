@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title><span *ngIf="my_comp">{{ my_comp.short_name }} </span>Event</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div id="loading-event" class="loading hidden" style="display: none;">
+    <ion-spinner></ion-spinner>
+    <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
+  </div>
+  <ion-card *ngIf="my_comp && my_comp != null">
+    <ion-card-header>
+      <span>{{ my_comp.year }} - </span>
+      <span *ngIf="my_comp.week">Week {{ my_comp.week + " - " }}</span>
+      <span>{{ my_comp.short_name }}</span>
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <span><b>{{ my_comp.event_type_string }} Event</b></span>
+      </div>
+      <div>
+        <span>Location: {{ my_comp.location }}</span>
+      </div>
+      <div>
+        <span>Website: <a href="{{ my_comp.website }}">{{ my_comp.website }}</a></span>
+      </div>
+      <div>
+        Date: {{ my_comp.start_date }} - {{ my_comp.end_date }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <div id="cards" class="hidden">
+    <div class="custom-md-panel">
+      <div class="custom-md-card">
+        <button ion-button full color="secondary">
+          <span class="custom-md-card-header">Stats</span>
+          <span class="fa fa-3x fa-line-chart"></span>
+        </button>
+      </div>
+      <div class="custom-md-card">
+        <button ion-button full color="danger" (click)="openEventTeamsPage()">
+          <span class="custom-md-card-header">Teams</span>
+          <span class="fa fa-3x fa-android"></span>
+        </button>
+      </div>
+      <div class="custom-md-card">
+        <button ion-button full color="secondary" (click)="openEventRankingsPage()">
+          <span class="custom-md-card-header">Ranks</span>
+          <span class="fa fa-3x fa-list-ol"></span>
+        </button>
+      </div>
+    </div>
+    <div class="custom-md-panel">
+      <div class="custom-md-card">
+        <button ion-button full color="primary" (click)="openEventMatchesPage()">
+          <span class="custom-md-card-header">Matches</span>
+          <span class="fa fa-3x fa-calendar"></span>
+        </button>
+      </div>
+      <div class="custom-md-card">
+        <button ion-button full color="caution" (click)="openEventAwardsPage()">
+          <span class="custom-md-card-header">Awards</span>
+          <span class="fa fa-3x fa-trophy"></span>
+        </button>
+      </div>
+      <div class="custom-md-card">
+        <button ion-button full color="primary">
+          <span class="custom-md-card-header">Elims</span>
+          <span class="fa fa-3x fa-check-circle"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</ion-content>

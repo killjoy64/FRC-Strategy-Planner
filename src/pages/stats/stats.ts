@@ -9,6 +9,7 @@ import { EventsSorter } from "../../util/sorting";
 import { EventFilter } from '../../util/filter';
 import { Keyboard } from 'ionic-native';
 import {Config} from "../../util/config";
+import {EventPage} from "../event/event";
 
 declare var cordova: any;
 
@@ -143,6 +144,12 @@ export class StatsPage {
     this.events = null;
     this.sorted_events = null;
     this.eventFilter = null;
+  }
+
+  openEventPage(key) {
+    this.navCtrl.push(EventPage, {
+      event_key: key
+    });
   }
 
   openInfoPage() {

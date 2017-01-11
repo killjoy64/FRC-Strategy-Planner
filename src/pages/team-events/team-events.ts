@@ -4,6 +4,7 @@ import {EventsSorter} from '../../util/sorting';
 import {EventFilter} from '../../util/filter';
 import {Config} from '../../util/config';
 import { Keyboard } from 'ionic-native';
+import {EventPage} from "../event/event";
 
 @Component({
   selector: 'page-team-events',
@@ -36,6 +37,12 @@ export class TeamEventsPage {
         document.body.classList.remove("keyboard-is-open");
       });
     }
+  }
+
+  openEventPage(key) {
+    this.navCtrl.push(EventPage, {
+      event_key: key
+    });
   }
 
   checkScroll(e) {
