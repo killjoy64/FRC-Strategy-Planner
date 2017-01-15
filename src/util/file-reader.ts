@@ -263,7 +263,7 @@ export class AppDirectory {
     });
 
     File.checkDir(this.fs, 'strategy-saves').then((bool) => {
-      console.log('JSON successfully found');
+      console.log('strategy-saves successfully found');
     }).catch(err => {
       File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
         console.log("Successfully created directory strategy-saves");

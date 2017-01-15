@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>My Event</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content (ionScroll)="checkScroll($event)">
+  <ion-card *ngIf="!my_comp && my_comp == null">
+    <ion-card-header class="blue">Search for Your Event</ion-card-header>
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-label>Select Your District </ion-label>
+          <ion-select [(ngModel)]="myDistrict" placeholder="Select a District" (ionChange)="updateEvents()">
+            <ion-option *ngFor="let district of districts" value="{{ district.key }}">{{ district.name }}</ion-option>
+          </ion-select>
+        </ion-row>
+        <ion-row *ngIf="myEvents">
+          <ion-label>Select Your Event </ion-label>
+          <ion-select [(ngModel)]="my_comp_key" placeholder="Select an Event" (ionChange)="getMyEvent(my_comp_key)">
+            <ion-option *ngFor="let event of myEvents" value="{{ event.key }}">{{ event.short_name }} Event</ion-option>
+          </ion-select>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+  <ion-card *ngIf="my_comp && my_comp != null">
+    <button class="clear-event" ion-button full color="danger" [disabled]="loading" (click)="resetMyEvent()">
+      <span>Search for Another Event</span>
+    </button>
+  </ion-card>
+  <ion-card *ngIf="my_comp && my_comp != null">
+    <button class="clear-event" ion-button full color="primary" [disabled]="loading" (click)="cacheEvent()">
+      <span>Cache this event's data as is</span>
+    </button>
+  </ion-card>
+  <ion-card *ngIf="my_comp && my_comp != null">
+    <button class="clear-event" ion-button full color="secondary" [disabled]="loading" (click)="getMyEvent(my_comp_key)">
+      <span>Update Event Information</span>
+    </button>
+  </ion-card>
+  <div id="loading" class="loading hidden" style="display: none;">
+    <ion-spinner></ion-spinner>
+    <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
+  </div>
+  <ion-card *ngIf="my_comp && my_comp != null">
+    <ion-card-header>
+      <span>{{ my_comp.year }} - </span>
+      <span *ngIf="my_comp.week">Week {{ my_comp.week + " - " }}</span>
+      <span>{{ my_comp.short_name }}</span>
+    </ion-card-header>
+    <ion-card-content>
+      <div>
+        <span><b>{{ my_comp.event_type_string }} Event</b></span>
+      </div>
+      <div>
+        <span>Location: {{ my_comp.location }}</span>
+      </div>
+      <div>
+        <span>Website: <a href="{{ my_comp.website }}">{{ my_comp.website }}</a></span>
+      </div>
+      <div>
+        Date: {{ my_comp.start_date }} - {{ my_comp.end_date }}
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <div id="event-cards" class="hidden">
+    <div class="custom-md-panel">
+      <div class="custom-md-card">
+        <button ion-button full color="secondary">
+          <span class="custom-md-card-header">Stats</span>
+          <span class="fa fa-3x fa-line-chart"></span>
+        </button>
+      </div>
+      <div class="custom-md-card">
+        <button ion-button full color="danger" (click)="openEventTeamsPage()">
+          <span class="custom-md-card-header">Teams</span>
+          <span class="fa fa-3x fa-android"></span>
+        </button>
+      </div>
+      <div class="custom-md-card">
+        <button ion-button full color="secondary" (click)="openEventRankingsPage()">
+          <span class="custom-md-card-header">Ranks</span>
+          <span class="fa fa-3x fa-list-ol"></span>
+        </button>
+      </div>
+    </div>
+    <div class="custom-md-panel">
+      <div class="custom-md-card">
+        <button ion-button full color="primary" (click)="openEventMatchesPage()">
+          <span class="custom-md-card-header">Matches</span>
+          <span class="fa fa-3x fa-calendar"></span>
+        </button>
+      </div>
+      <div class="custom-md-card">
+        <button ion-button full color="caution" (click)="openEventAwardsPage()">
+          <span class="custom-md-card-header">Awards</span>
+          <span class="fa fa-3x fa-trophy"></span>
+        </button>
+      </div>
+      <div class="custom-md-card">
+        <button ion-button full color="primary" (click)="openEventElimsPage()">
+          <span class="custom-md-card-header">Elims</span>
+          <span class="fa fa-3x fa-check-circle"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <button ion-button icon-only (click)="scrollToTop()" class="hidden scroll" style="display: none">
+    <ion-icon name="arrow-up"></ion-icon>
+  </button>
+</ion-content>

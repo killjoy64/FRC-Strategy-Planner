@@ -90,7 +90,6 @@ export class SettingsPage {
             });
             alert.present();
           } else {
-            let self = this;
             let alert = this.alertCtrl.create({
               title: 'No Update Found',
               message: 'You are up-to-date!',

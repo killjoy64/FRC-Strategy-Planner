@@ -3,7 +3,6 @@ import {NavController, NavParams, Content} from 'ionic-angular';
 import {EventsSorter} from '../../util/sorting';
 import {EventFilter} from '../../util/filter';
 import {Config} from '../../util/config';
-import { Keyboard } from 'ionic-native';
 import {EventPage} from "../event/event";
 
 @Component({
@@ -46,7 +45,6 @@ export class TeamEventsPage {
   }
 
   checkScroll(e) {
-    let scroll = document.getElementById("scroll");
     if (e.scrollTop >= 150) {
       if (document.getElementById("scroll-top-events").classList.contains("hidden")) {
         document.getElementById("scroll-top-events").classList.remove("hidden");

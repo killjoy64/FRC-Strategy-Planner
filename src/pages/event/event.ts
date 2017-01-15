@@ -8,6 +8,7 @@ import {EventTeamsPage} from "../event-teams/event-teams";
 import {EventMatchesPage} from "../event-matches/event-matches";
 import {EventRankingsPage} from "../event-rankings/event-rankings";
 import {EventAwardsPage} from "../event-awards/event-awards";
+import {EventElimsPage} from "../event-elims/event-elims";
 
 @Component({
   selector: 'page-event',
@@ -151,6 +152,22 @@ export class EventPage {
         });
       });
 
+    }
+  }
+
+  openEventElimsPage() {
+    if (this.my_comp) {
+      let loading = this.loadCtrl.create({
+        content: 'Loading information...'
+      });
+
+      loading.present().then(() => {
+        this.navCtrl.push(EventElimsPage, {
+          event: this.my_comp
+        }).then(() => {
+          loading.dismiss();
+        });
+      });
     }
   }
 

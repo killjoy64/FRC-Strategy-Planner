@@ -2,10 +2,11 @@ import {Component, ViewChild} from '@angular/core';
 import {NavController, AlertController, LoadingController, Content, Platform, Loading, ToastController} from 'ionic-angular';
 import {File} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
-import {NotesPage} from '../notes/notes';
+import {MyEventPage} from '../my-event/my-event';
 import {MatchSorter} from '../../util/sorting';
 import {MatchConverter} from '../../util/string-converter';
 import {Config} from '../../util/config';
+import {AppDirectory} from "../../util/file-reader";
 
 declare var cordova: any;
 
@@ -73,16 +74,12 @@ export class FieldPage {
   robot_team_alliance: string;
   robots: any;
 
-  /* File System declarations */
-  platform:any;
-  fs:string;
-
   currentLoad: Loading;
 
   /* Allows us to pass data */
   public static savedStrat: any;
 
-  constructor(private alertCtrl: AlertController, private loadCtrl: LoadingController, private navCtrl: NavController, private plt: Platform, private toastCtrl: ToastController) {
+  constructor(private alertCtrl: AlertController, private loadCtrl: LoadingController, private navCtrl: NavController, private toastCtrl: ToastController) {
   this.matchSorter = new MatchSorter();
   this.matchConverter = new MatchConverter();
 
@@ -92,8 +89,6 @@ export class FieldPage {
   this.robots = [];
   this.saves = [];
   this.redos = [];
-
-  this.platform = plt;
 
   this.currentLoad = null;
 
@@ -118,8 +113,8 @@ export class FieldPage {
         this.currentLoad.present();
       }
     }
-    if (NotesPage.CURRENT_EVENT) {
-      this.my_comp = NotesPage.CURRENT_EVENT;
+    if (MyEventPage.CURRENT_EVENT) {
+      this.my_comp = MyEventPage.CURRENT_EVENT;
       let items = this.my_comp.matches;
       if (Config.TEAM_NUMBER) {
         let u_items = this.getMatchesForTeam(Config.TEAM_NUMBER, items);
@@ -382,7 +377,7 @@ export class FieldPage {
           handler: (data) => {
             if (!Config.IS_BROWSER) {
               console.log(data.fileName);
-              File.writeFile(this.fs + "/strategy-saves", data.fileName + ".png", self.canvas.toDataURL("image/png"), []).then((fileEntry) => {
+              File.writeFile(AppDirectory.getPermDir(), "strategy-saves/" + data.fileName + ".png", self.canvas.toDataURL("image/png"), []).then((fileEntry) => {
                 console.log("Saved file successfully");
                 alert.dismiss().then(() => {
                   self.togglePalette(this.EDIT);
@@ -390,7 +385,7 @@ export class FieldPage {
                   let toast = self.toastCtrl.create({
                     message: "Successfully saved file " + data.fileName + ".png",
                     showCloseButton: true,
-                    duration: 3000,
+                    duration: 1500,
                     position: 'bottom',
                   });
                   toast.present();
@@ -402,7 +397,7 @@ export class FieldPage {
                 let toast = self.toastCtrl.create({
                   message: "Error saving file!",
                   showCloseButton: true,
-                  duration: 3000,
+                  duration: 1500,
                   position: 'bottom',
                 });
                 toast.present();
@@ -414,7 +409,7 @@ export class FieldPage {
                 let toast = self.toastCtrl.create({
                   message: "Successfully saved file " + data.fileName + ".png",
                   showCloseButton: true,
-                  duration: 3000,
+                  duration: 1500,
                   position: 'bottom',
                 });
                 toast.present().then(() => {

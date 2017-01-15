@@ -1,0 +1,160 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Search</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="viewType" (ionChange)="checkIfDataCached()">
+      <ion-segment-button value="event">
+        Events
+      </ion-segment-button>
+      <ion-segment-button value="team">
+        Teams
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content (ionScroll)="checkScroll($event)">
+
+  <div [ngSwitch]="viewType">
+
+    <div *ngSwitchCase="'event'">
+      <ion-card>
+        <ion-card-header class="blue">Get Events by Year</ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-input left type="number" [(ngModel)]="eventYear" placeholder="e.g. 2017"></ion-input>
+              </ion-col>
+              <ion-col center>
+                <button ion-button (click)="getEvents(eventYear)">Search</button>
+              </ion-col>
+              <ion-col center>
+                <button ion-button (click)="clearEvents()">Clear</button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+
+      <div id="loading-1" class="loading hidden" style="display: none;">
+        <ion-spinner></ion-spinner>
+        <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
+      </div>
+
+      <div *ngIf="sorted_events">
+        <ion-searchbar (ionInput)="eventFilter.filterEvents($event)"></ion-searchbar>
+      </div>
+
+      <div *ngIf="sorted_events">
+        <ion-card *ngFor="let event of eventFilter.getFilteredData()">
+          <ion-card-header>
+            <span>{{ event.year }} - </span>
+            <span *ngIf="event.week != null">Week {{ event.week + " - " }}</span>
+            <span>{{ event.short_name }}</span>
+          </ion-card-header>
+          <ion-card-content>
+            <div>
+              <span><b>{{ event.name }}</b></span>
+            </div>
+            <div>
+              <span>Location: {{ event.location }}</span>
+            </div>
+            <div>
+              <span>Website: <a href="{{ event.website }}">{{ event.website }}</a></span>
+            </div>
+            <div>
+              Date: {{ event.start_date }} - {{ event.end_date }}
+            </div>
+            <div class="text-center">
+              <button ion-button (click)="openEventPage(event.key)">
+                <span>View</span>
+              </button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <button ion-button icon-only (click)="scrollToTop()" class="hidden scroll">
+        <ion-icon name="arrow-up"></ion-icon>
+      </button>
+    </div>
+
+    <!--- --->
+
+    <div *ngSwitchCase="'team'">
+      <ion-card>
+        <ion-card-header class="blue">Search For FRC Team By Number</ion-card-header>
+        <ion-card-content>
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <ion-input left type="number" [(ngModel)]="teamNumber" placeholder="e.g. 4003"></ion-input>
+              </ion-col>
+              <ion-col center>
+                <button ion-button (click)="getTeamInfo(teamNumber)">Search</button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card-content>
+      </ion-card>
+
+      <div id="loading-2" class="loading hidden" style="display: none;">
+        <ion-spinner></ion-spinner>
+        <p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>
+      </div>
+
+      <div id="teams-number" class="hidden">
+        <div class="custom-md-panel">
+          <div class="custom-md-card team orange">
+            <div class="custom-md-card-content">
+              <div>
+                {{ team?.nickname || "" }}
+              </div>
+              <div>
+                Years in FIRST: {{ team?.years || "" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="teams-cards" class="hidden">
+        <div class="custom-md-panel">
+          <div class="custom-md-card">
+            <button ion-button full color="secondary" (click)="openInfoPage()">
+              <span class="custom-md-card-header">Info</span>
+              <span class="fa fa-3x fa-question-circle"></span>
+            </button>
+          </div>
+          <div class="custom-md-card">
+            <button ion-button full color="danger" (click)="openRobotsPage()">
+              <span class="custom-md-card-header">Robots</span>
+              <span class="fa fa-3x fa-android"></span>
+            </button>
+          </div>
+        </div>
+        <div class="custom-md-panel">
+          <div class="custom-md-card">
+            <button ion-button full color="primary" (click)="openEventsPage()">
+              <span class="custom-md-card-header">Events</span>
+              <span class="fa fa-3x fa-calendar"></span>
+            </button>
+          </div>
+          <div class="custom-md-card">
+            <button ion-button full color="caution" (click)="openAwardsPage()">
+              <span class="custom-md-card-header">Awards</span>
+              <span class="fa fa-3x fa-trophy"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button ion-button icon-only (click)="scrollToTop()" class="hidden scroll" style="display: none;">
+        <ion-icon name="arrow-up"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+</ion-content>

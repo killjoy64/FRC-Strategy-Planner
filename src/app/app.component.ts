@@ -5,13 +5,18 @@ import { LoginPage } from '../pages/login/login';
 import { AppDirectory } from '../util/file-reader';
 import { Config } from '../util/config';
 
+import { FirebaseService } from '../providers/firebase-service';
+
 @Component({
   templateUrl: 'app.html',
+  providers: [FirebaseService]
 })
 export class FRCSP {
   rootPage = LoginPage;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform, fb: FirebaseService) {
+
+    fb.init();
 
     platform.ready().then(() => {
       StatusBar.styleDefault();

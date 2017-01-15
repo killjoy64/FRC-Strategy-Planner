@@ -3,10 +3,10 @@ import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
 import {NgModule, ErrorHandler, enableProdMode} from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { FRCSP } from './app.component';
-import { NotesPage } from '../pages/notes/notes';
+import { MyEventPage } from '../pages/my-event/my-event';
 import { EventPage } from '../pages/event/event';
 import { LoginPage } from '../pages/login/login';
-import { StatsPage } from '../pages/stats/stats';
+import { SearchPage } from '../pages/search/search';
 import { FieldPage } from '../pages/field/field';
 import { SettingsPage } from '../pages/settings/settings';
 import { OpenFilePage } from '../pages/open-file/open-file';
@@ -17,6 +17,7 @@ import { TeamRobotsPage } from '../pages/team-robots/team-robots';
 import { EventTeamsPage } from '../pages/event-teams/event-teams';
 import { EventMatchesPage } from '../pages/event-matches/event-matches';
 import { EventRankingsPage } from '../pages/event-rankings/event-rankings';
+import { EventElimsPage } from '../pages/event-elims/event-elims';
 import { EventAwardsPage } from "../pages/event-awards/event-awards";
 import { EventTeamPage } from '../pages/event-team/event-team';
 import { TabsPage } from '../pages/tab-directory/tab-directory';
@@ -39,9 +40,9 @@ if (!Config.DEBUG) {
 @NgModule({
   declarations: [
     FRCSP,
-    NotesPage,
+    MyEventPage,
     EventPage,
-    StatsPage,
+    SearchPage,
     FieldPage,
     SettingsPage,
     OpenFilePage,
@@ -52,6 +53,7 @@ if (!Config.DEBUG) {
     EventTeamsPage,
     EventMatchesPage,
     EventRankingsPage,
+    EventElimsPage,
     EventAwardsPage,
     EventTeamPage,
     LoginPage,
@@ -67,9 +69,9 @@ if (!Config.DEBUG) {
   bootstrap: [IonicApp],
   entryComponents: [
     FRCSP,
-    NotesPage,
+    MyEventPage,
     EventPage,
-    StatsPage,
+    SearchPage,
     FieldPage,
     SettingsPage,
     OpenFilePage,
@@ -80,6 +82,7 @@ if (!Config.DEBUG) {
     EventTeamsPage,
     EventMatchesPage,
     EventRankingsPage,
+    EventElimsPage,
     EventAwardsPage,
     EventTeamPage,
     LoginPage,

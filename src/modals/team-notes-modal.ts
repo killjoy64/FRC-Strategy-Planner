@@ -29,7 +29,7 @@ export class TeamNotesModal {
     let toast = this.toastCtrl.create({
       message: msg,
       showCloseButton: true,
-      duration: 3000,
+      duration: 1500,
       position: 'bottom',
     });
     toast.present();

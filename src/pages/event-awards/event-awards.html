@@ -12,9 +12,6 @@
     </ion-card-header>
     <ion-card-content>
       <div>
-        {{ award.event_key }}
-      </div>
-      <div>
         Recipients: <span *ngFor="let recipient of award.recipient_list">{{ recipient.team_number }} </span>
       </div>
     </ion-card-content>

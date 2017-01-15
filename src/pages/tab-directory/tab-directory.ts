@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NotesPage } from '../notes/notes';
-import { StatsPage } from '../stats/stats';
+import { MyEventPage } from '../my-event/my-event';
+import { SearchPage } from '../search/search';
 import { FieldPage } from '../field/field';
 import { SettingsPage } from '../settings/settings';
 
@@ -10,8 +10,8 @@ import { SettingsPage } from '../settings/settings';
 })
 export class TabsPage {
 
-  notes: any = NotesPage;
-  stats: any = StatsPage;
+  my_event: any = MyEventPage;
+  search: any = SearchPage;
   field: any = FieldPage;
   settings: any = SettingsPage;
 

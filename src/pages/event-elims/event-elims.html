@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ event.short_name }} Elims</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content (ionScroll)="checkScroll($event)">
+
+  <button id="scroll" ion-button icon-only (click)="scrollToTop()" class="hidden">
+    <ion-icon name="arrow-up"></ion-icon>
+  </button>
+
+</ion-content>

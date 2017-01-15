@@ -1,8 +1,8 @@
-import {Component, ViewChild, Sanitizer, SecurityContext} from '@angular/core';
-import {NavController, NavParams, Content, ActionSheetController, ModalController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {NavParams, Content, ActionSheetController, ModalController} from 'ionic-angular';
 import {MatchSorter} from '../../util/sorting';
 import {MatchConverter} from '../../util/string-converter';
-import {Camera, File, Entry, FileError, PhotoViewer} from "ionic-native";
+import {Camera, File, PhotoViewer} from "ionic-native";
 import {TeamAvatar, AppDirectory, TeamNotes} from '../../util/file-reader';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Config} from '../../util/config';
@@ -46,7 +46,6 @@ export class EventTeamPage {
         }
       }
     }
-
   }
 
   ngAfterViewInit() {
