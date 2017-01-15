@@ -6,6 +6,16 @@
 
 <ion-content (ionScroll)="checkScroll($event)">
 
+  <br/>
+  <span>SAVE OPTION HERE EVENTUALLY SHOWING YOUR ALLIANCE PICKS</span>
+  <br/>
+
+  <div class="team-elim-container">
+    <div *ngFor="let team of teams" class="team-elim" (click)="selectTeam(team, $event)">
+      {{ team.team_number }}
+    </div>
+  </div>
+
   <button id="scroll" ion-button icon-only (click)="scrollToTop()" class="hidden">
     <ion-icon name="arrow-up"></ion-icon>
   </button>

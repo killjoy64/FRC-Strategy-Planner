@@ -25,4 +25,14 @@ export class FirebaseService {
     console.log("Firebase successfully initialized");
   }
 
+  login(email, password) {
+    return new Promise((resolve, reject) => {
+      firebase.auth().signInWithEmailAndPassword(email, password).then((user: firebase.User) => {
+        resolve(user);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
 }

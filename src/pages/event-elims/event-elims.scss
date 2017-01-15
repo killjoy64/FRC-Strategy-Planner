@@ -1,0 +1,19 @@
+page-event-elims {
+
+  .team-elim-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+
+  .team-elim {
+    width: 25%;
+    height: 35px;
+    border: 2px solid #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

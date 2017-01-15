@@ -4,8 +4,7 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 import { LoginPage } from '../pages/login/login';
 import { AppDirectory } from '../util/file-reader';
 import { Config } from '../util/config';
-
-import { FirebaseService } from '../providers/firebase-service';
+import {FirebaseService} from "../providers/firebase-service";
 
 @Component({
   templateUrl: 'app.html',
@@ -16,13 +15,14 @@ export class FRCSP {
 
   constructor(platform: Platform, fb: FirebaseService) {
 
+    // TODO - Check if internet connection exists, otherwise don't initialize.
     fb.init();
 
     platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
 
-      console.log("CONFIG BROWSER: " + Config.IS_BROWSER);
+      console.log("BROWSER CONFIGURATION: " + Config.IS_BROWSER);
 
       if (!Config.IS_BROWSER) {
         AppDirectory.init(platform);
