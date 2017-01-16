@@ -1,11 +1,22 @@
 page-event-elims {
 
+  .clear-event {
+    margin: 0 !important;
+  }
+
   .team-elim-container {
     display: flex;
     justify-content: flex-start;
     align-items: center;
     text-align: center;
     flex-wrap: wrap;
+  }
+
+  .team-elim-header {
+    background-color: #ededed;
+    width: 100%;
+    padding: 10px;
+    font-size: 1.5em;
   }
 
   .team-elim {
@@ -16,4 +27,18 @@ page-event-elims {
     justify-content: center;
     align-items: center;
   }
+
+  .do-not-pick {
+    text-decoration: line-through;
+  }
+
+  .pick-me {
+    color: #32db64;
+  }
+
+  .none {
+    color: #000000 !important;
+    text-decoration: none !important;
+  }
+
 }

@@ -6,11 +6,24 @@
 
 <ion-content (ionScroll)="checkScroll($event)">
 
-  <br/>
-  <span>SAVE OPTION HERE EVENTUALLY SHOWING YOUR ALLIANCE PICKS</span>
-  <br/>
+  <div class="team-elim-container" *ngIf="pickList.length > 0">
+    <div class="team-elim-header">Pick List</div>
+    <div *ngFor="let team of pickList" class="team-elim pick none" (click)="selectTeam(team, $event)">
+      {{ team.team_number }}
+    </div>
+    <br/>
+  </div>
+
+  <div class="team-elim-container" *ngIf="noList.length > 0">
+    <div class="team-elim-header">No List</div>
+    <div *ngFor="let team of noList" class="team-elim no-pick none" (click)="selectTeam(team, $event)">
+      {{ team.team_number }}
+    </div>
+    <br/>
+  </div>
 
   <div class="team-elim-container">
+    <div class="team-elim-header">Teams Available</div>
     <div *ngFor="let team of teams" class="team-elim" (click)="selectTeam(team, $event)">
       {{ team.team_number }}
     </div>

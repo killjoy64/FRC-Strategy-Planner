@@ -18,7 +18,6 @@ export class TeamAwardsPage {
   }
 
   checkScroll(e) {
-    let scroll = document.getElementById("scroll");
     if (e.scrollTop >= 150) {
       if (document.getElementById("scroll-top-awards").classList.contains("hidden")) {
         document.getElementById("scroll-top-awards").classList.remove("hidden");

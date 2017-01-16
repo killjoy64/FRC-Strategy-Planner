@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {NavController, AlertController, LoadingController, Content, Platform, Loading, ToastController} from 'ionic-angular';
+import {NavController, AlertController, LoadingController, Content, Loading, ToastController} from 'ionic-angular';
 import {File} from 'ionic-native';
 import {OpenFilePage} from '../open-file/open-file';
 import {MyEventPage} from '../my-event/my-event';
