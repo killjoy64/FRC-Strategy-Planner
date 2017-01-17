@@ -14,7 +14,7 @@ export class MyEvent {
 
   saveMyEvent(event) {
     let eventJSON = JSON.stringify(event);
-    let promise = File.writeFile(this.fs, "json/my_event.json", eventJSON, []).then((fileEntry) => {
+    let promise = File.writeFile(this.fs, "json/my_event.json", eventJSON, { replace: true }).then((fileEntry) => {
       console.log("Saved MY_EVENT.JSON successfully");
       return fileEntry;
     }).catch((err) => {
@@ -122,7 +122,7 @@ export class TeamNotes {
   }
 
   saveNotes(team, data) {
-    let promise = File.writeFile(this.fs, "notes/" + team + ".dat", data, []).then((fileEntry) => {
+    let promise = File.writeFile(this.fs, "notes/" + team + ".dat", data, { replace: true }).then((fileEntry) => {
       console.log("Saved file successfully");
       return fileEntry;
     }).catch((err) => {

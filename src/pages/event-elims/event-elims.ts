@@ -3,6 +3,7 @@ import {NavParams, Content, ActionSheetController, ModalController} from 'ionic-
 import {PhotoViewer} from 'ionic-native';
 import {TeamSorter} from "../../util/sorting";
 import {TeamNotesModal} from '../../modals/team-notes-modal';
+import {MyEvent} from "../../util/file-reader";
 
 @Component({
   selector: 'page-event-elims',
@@ -12,6 +13,7 @@ export class EventElimsPage {
 
   @ViewChild(Content) content: Content;
 
+  eventData: MyEvent;
   teamSorter: TeamSorter;
 
   pickList: any;
@@ -28,14 +30,28 @@ export class EventElimsPage {
     this.noList = [];
   }
 
-  ionViewDidLeave() {
-    // Also save to the event JSON somehow...
+  ionViewWillLeave() {
+    let needToCache = false;
+
     if (this.pickList.length > 0) {
       this.event.pickList = this.pickList;
+      needToCache = true;
     }
 
     if (this.noList.length > 0) {
       this.event.noList = this.noList;
+      needToCache = true;
+    }
+
+    if (needToCache) {
+      this.eventData = new MyEvent();
+      this.eventData.saveMyEvent(this.event).then((file) => {
+        // saved
+        console.log("Successfully cached the event");
+      }, (err) => {
+        // :(
+        console.log("Error savcing event data!");
+      });
     }
   }
 

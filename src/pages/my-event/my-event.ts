@@ -5,7 +5,7 @@ import {EventTeamsPage} from "../event-teams/event-teams";
 import {EventMatchesPage} from "../event-matches/event-matches";
 import {EventRankingsPage} from "../event-rankings/event-rankings";
 import {EventAwardsPage} from "../event-awards/event-awards";
-import {AppDirectory, TeamAvatar, MyEvent} from '../../util/file-reader';
+import {AppDirectory, TeamAvatar, MyEvent, TeamNotes} from '../../util/file-reader';
 import {Entry} from "ionic-native";
 import {Config} from "../../util/config";
 import {EventElimsPage} from "../event-elims/event-elims";
@@ -413,6 +413,14 @@ export class MyEventPage {
 
                 for (let i = 0; i < this.my_comp.teams.length; i++) {
                   let team_number:string = this.my_comp.teams[i].team_number;
+                  let teamNote = new TeamNotes();
+
+                  teamNote.getNotes(this.my_comp.teams[i]).then((data) => {
+                    this.my_comp.teams[i].team_notes = data;
+                  }, (err) => {
+                    console.log("Error getting notes:" + err.message);
+                  });
+
                   for (let j = 0; j < data.length; j++) {
                     let length = data[j].name.length;
                     let name = data[j].name.substring(0, length-4);
@@ -422,6 +430,8 @@ export class MyEventPage {
                     }
                   }
                 }
+
+                this.cacheEvent();
 
                 this.hideLoading();
               }, err => {

@@ -13,6 +13,8 @@ export class TeamNotesModal {
   team: any;
   text: any;
 
+  didSave: boolean;
+
   constructor(private navParams: NavParams, private viewCtrl: ViewController, private alertCtrl: AlertController, private toastCtrl: ToastController) {
     this.team = navParams.get("team");
     this.teamNote = new TeamNotes();
@@ -22,6 +24,8 @@ export class TeamNotesModal {
     } else {
       this.text = "";
     }
+
+    this.didSave = false;
 
   }
 
@@ -52,7 +56,9 @@ export class TeamNotesModal {
           {
             text: 'Yes',
             handler: () => {
-              let data = {}
+              let data = {
+                'didSave': this.didSave
+              };
               self.viewCtrl.dismiss(data);
             }
           }
@@ -70,6 +76,7 @@ export class TeamNotesModal {
     // Save Text!
     this.teamNote.saveNotes(this.team.team_number, this.text).then((entry) => {
       this.team.team_notes = this.text;
+      this.didSave = true;
       this.showToast("Successfully saved " + this.team.team_number + ".dat");
     }, (err) => {
       this.showToast("Error trying to save file!");

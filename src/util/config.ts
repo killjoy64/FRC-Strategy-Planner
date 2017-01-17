@@ -1,9 +1,9 @@
 export class Config {
 
-  public static VERSION: string = "2.9.4";
+  public static VERSION: string = "2.10.3";
 
   /* Controls whether the device is the browser. Disables native features if it is. */
-  public static IS_BROWSER: boolean = true;
+  public static IS_BROWSER: boolean = false;
 
   /* Controls whether we are debugging the application. Changes event dates and AngularJS enableProdMode() */
   public static DEBUG: boolean = false;

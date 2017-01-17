@@ -3,7 +3,7 @@ import {NavParams, Content, ActionSheetController, ModalController} from 'ionic-
 import {MatchSorter} from '../../util/sorting';
 import {MatchConverter} from '../../util/string-converter';
 import {Camera, File, PhotoViewer} from "ionic-native";
-import {TeamAvatar, AppDirectory, TeamNotes} from '../../util/file-reader';
+import {TeamAvatar, AppDirectory, TeamNotes, MyEvent} from '../../util/file-reader';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Config} from '../../util/config';
 import {TeamNotesModal} from '../../modals/team-notes-modal';
@@ -22,6 +22,7 @@ export class EventTeamPage {
   @ViewChild(Content) content: Content;
 
   src: any;
+  eventData: MyEvent;
   teamNote: TeamNotes;
   teamAvatar: TeamAvatar;
   team: any;
@@ -29,9 +30,12 @@ export class EventTeamPage {
   matches: any;
   sorted_matches: any;
 
+  needToCache: boolean;
+
   constructor(private modalCtrl: ModalController, private navParams: NavParams, private actionCtrl: ActionSheetController, public sanitizer: DomSanitizer) {
     this.matchSorter = new MatchSorter();
     this.matchConverter = new MatchConverter();
+    this.eventData = new MyEvent();
     this.team = navParams.get("team");
     this.event = navParams.get("event");
     this.matches = [];
@@ -45,6 +49,20 @@ export class EventTeamPage {
           this.matches.push(match);
         }
       }
+    }
+
+    this.needToCache = false;
+  }
+
+  ionViewWillLeave() {
+    if (this.needToCache) {
+      this.eventData.saveMyEvent(this.event).then((file) => {
+        // saved
+        console.log("Successfully cached the event");
+      }, (err) => {
+        // :(
+        console.log("Error savcing event data!");
+      });
     }
   }
 
@@ -95,7 +113,11 @@ export class EventTeamPage {
       team: this.team
     });
     modal.onDidDismiss(data => {
-      console.log(data);
+      this.eventData.saveMyEvent(this.event).then((file) => {
+        console.log("Successfully cached the event");
+      }, (err) => {
+        console.log("Error savcing event data!");
+      });
     });
     modal.present();
   }
@@ -167,6 +189,7 @@ export class EventTeamPage {
       File.moveFile(AppDirectory.getTempDir(), currentName, AppDirectory.getPermDir(), "avatars/" + self.team.team_number + ".jpg").then((entry) => {
         self.src = AppDirectory.getPermDir() + "avatars/" + self.team.team_number + ".jpg";
         self.team.avatar_url = self.src;
+        self.needToCache = true;
         console.log("SUCCESSFULLY MOVED - AVATAR SRC: " + self.src);
       }).catch((err) => {
         console.log("ERROR MOVING FILE: " + err.message);
@@ -194,6 +217,7 @@ export class EventTeamPage {
       File.moveFile(AppDirectory.getTempDir(), currentName, AppDirectory.getPermDir(), "avatars/" + self.team.team_number + ".jpg").then((entry) => {
         self.src = AppDirectory.getPermDir() + "avatars/" + self.team.team_number + ".jpg";
         self.team.avatar_url = self.src;
+        self.needToCache = true;
         console.log("SUCCESSFULLY MOVED - AVATAR SRC: " + self.src);
       }).catch((err) => {
         console.log("ERROR MOVING FILE: " + err.message);

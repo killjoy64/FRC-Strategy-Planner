@@ -29,11 +29,11 @@
       <span>Search for Another Event</span>
     </button>
   </ion-card>
-  <ion-card *ngIf="my_comp && my_comp != null">
-    <button class="clear-event" ion-button full color="primary" [disabled]="loading" (click)="cacheEvent()">
-      <span>Cache this event's data as is</span>
-    </button>
-  </ion-card>
+  <!--<ion-card *ngIf="my_comp && my_comp != null">-->
+    <!--<button class="clear-event" ion-button full color="primary" [disabled]="loading" (click)="cacheEvent()">-->
+      <!--<span>Cache this event's data as is</span>-->
+    <!--</button>-->
+  <!--</ion-card>-->
   <ion-card *ngIf="my_comp && my_comp != null">
     <button class="clear-event" ion-button full color="secondary" [disabled]="loading" (click)="getMyEvent(my_comp_key)">
       <span>Update Event Information</span>
