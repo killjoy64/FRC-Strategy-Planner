@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="tech.kyleflynn.frcsp" version="2.5.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="tech.kyleflynn.frcsp" version="2.10.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>FRCSP</name>
   <description>FRC Strategy Planner</description>
   <author email="webmaster@stacktracemusic.com" href="http://www.stacktracemusic.com/">Kyle Flynn | STM</author>

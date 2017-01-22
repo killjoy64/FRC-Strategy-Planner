@@ -1,6 +1,6 @@
 export class Config {
 
-  public static VERSION: string = "2.10.3";
+  public static VERSION: string = "2.10.5";
 
   /* Controls whether the device is the browser. Disables native features if it is. */
   public static IS_BROWSER: boolean = false;

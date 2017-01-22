@@ -105,8 +105,6 @@ export class MatchFilter {
   public filterMatches(e) {
     let value = e.target.value;
 
-    console.log(value);
-
     if (value && value.trim() != '' && value != null) {
       this.matchesFilter = this.matches.filter((match) => {
 

@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only color="primary" (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Debug Logger</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="logger" *ngIf="logs">
+    <div *ngFor="let log of logs">
+      {{ log }}
+    </div>
+  </div>
+</ion-content>

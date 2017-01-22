@@ -6,7 +6,7 @@ import {Camera, File, PhotoViewer} from "ionic-native";
 import {TeamAvatar, AppDirectory, TeamNotes, MyEvent} from '../../util/file-reader';
 import {DomSanitizer} from '@angular/platform-browser';
 import {Config} from '../../util/config';
-import {TeamNotesModal} from '../../modals/team-notes-modal';
+import {TeamNotesModal} from '../../modals/team-notes-modal/team-notes-modal';
 
 declare var cordova: any;
 

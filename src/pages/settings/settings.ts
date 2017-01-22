@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Deploy } from '@ionic/cloud-angular';
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import {NavController, LoadingController, AlertController, ModalController} from 'ionic-angular';
 import { Config } from '../../util/config';
 import { AboutLibrariesPage } from '../../pages/about-libraries/about-libraries';
 import { AppDirectory } from "../../util/file-reader";
+import {LoggerModal} from "../../modals/logger-modal/logger-modal";
 
 @Component({
   selector: 'page-settings',
@@ -18,7 +19,7 @@ export class SettingsPage {
   auto_receive: boolean;
   auto_save: boolean;
 
-  constructor(private navCtrl: NavController, private deploy: Deploy, private loadCtrl: LoadingController, private alertCtrl: AlertController) {
+  constructor(private modalCtrl: ModalController, private navCtrl: NavController, private deploy: Deploy, private loadCtrl: LoadingController, private alertCtrl: AlertController) {
     this.version = Config.VERSION;
 
     if (Config.TEAM_NUMBER) {
@@ -53,6 +54,11 @@ export class SettingsPage {
   openLibraries() {
     console.log("Libraries!");
     this.navCtrl.push(AboutLibrariesPage);
+  }
+
+  openDebugLog() {
+    let modal = this.modalCtrl.create(LoggerModal);
+    modal.present();
   }
 
   checkForUpdate() {

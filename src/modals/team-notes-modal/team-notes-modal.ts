@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, ViewController, AlertController, ToastController } from 'ionic-angular';
-import { TeamNotes } from '../util/file-reader';
+import { TeamNotes } from '../../util/file-reader';
 
 @Component({
   selector: 'team-notes-modal',

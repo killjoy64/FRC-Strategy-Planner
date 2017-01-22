@@ -1,6 +1,7 @@
 import { Platform } from 'ionic-angular';
 import {File, FileError, Entry} from 'ionic-native';
 import {Config} from "./config";
+import {DebugLogger, LoggerLevel} from './debug-logger';
 
 declare var cordova: any;
 
@@ -15,10 +16,10 @@ export class MyEvent {
   saveMyEvent(event) {
     let eventJSON = JSON.stringify(event);
     let promise = File.writeFile(this.fs, "json/my_event.json", eventJSON, { replace: true }).then((fileEntry) => {
-      console.log("Saved MY_EVENT.JSON successfully");
+      DebugLogger.log(LoggerLevel.INFO, "Saved MY_EVENT.JSON successfully");
       return fileEntry;
     }).catch((err) => {
-      console.log(err);
+      DebugLogger.log(LoggerLevel.ERROR, err.message);
     });
     return promise;
   }
@@ -67,7 +68,7 @@ export class MyEvent {
 
     }).catch((err:FileError) => {
       fileEntries = null;
-      console.log("Error Listing Contents - " + err.message);
+      DebugLogger.log(LoggerLevel.ERROR, "Error Listing Contents - " + err.message);
       return null;
     });
 
@@ -89,7 +90,7 @@ export class TeamAvatar {
     let promise = File.listDir(AppDirectory.getPermDir(), "avatars").then((entries:Entry[]) => {
       return entries;
     }).catch((err:FileError) => {
-      console.log("ERROR GETTING AVATARS - " + err.message);
+      DebugLogger.log(LoggerLevel.ERROR, "ERROR GETTING AVATARS - " + err.message);
     });
     return promise;
   }
@@ -97,15 +98,15 @@ export class TeamAvatar {
   public getAvatar(team) {
     let promise = File.checkFile(this.fs, "avatars/" + team + ".jpg").then((bool:boolean) => {
       if (bool == true) {
-        console.log("FOUND AVATAR FOR TEAM " + team);
+        DebugLogger.log(LoggerLevel.INFO, "FOUND AVATAR FOR TEAM " + team);
         return this.fs + "avatars/" + team + ".jpg";
       }
       if (bool == false) {
-        console.log("NO AVATAR FOR TEAM " + team);
+        DebugLogger.log(LoggerLevel.WARN, "NO AVATAR FOR TEAM " + team);
         return "";
       }
     }).catch((err:FileError) => {
-      console.log("ERROR FINDING AVATAR FOR TEAM " + team + " - " + err.message);
+      DebugLogger.log(LoggerLevel.ERROR, "ERROR FINDING AVATAR FOR TEAM " + team + " - " + err.message);
     });
 
     return promise;
@@ -123,10 +124,10 @@ export class TeamNotes {
 
   saveNotes(team, data) {
     let promise = File.writeFile(this.fs, "notes/" + team + ".dat", data, { replace: true }).then((fileEntry) => {
-      console.log("Saved file successfully");
+      DebugLogger.log(LoggerLevel.INFO, "Saved file successfully");
       return fileEntry;
     }).catch((err) => {
-      console.log(err);
+      DebugLogger.log(LoggerLevel.ERROR, err.message);
     });
     return promise;
   }
@@ -171,7 +172,7 @@ export class TeamNotes {
 
     }).catch((err:FileError) => {
       fileEntries = null;
-      console.log("Error Listing Contents - " + err.message);
+      DebugLogger.log(LoggerLevel.ERROR, "Error Listing Contents - " + err.message);
       return null;
     });
 
@@ -193,14 +194,14 @@ export class AppDirectory {
     let p = "";
 
     if (!cordova) {
-      console.log("CORDOVA NOT DEFINED - SEVERE ERROR");
+      DebugLogger.log(LoggerLevel.ERROR, "CORDOVA NOT DEFINED - SEVERE ERROR");
     } else {
-      console.log("CORDOVA: " + cordova);
+      DebugLogger.log(LoggerLevel.INFO, "CORDOVA: " + cordova);
 
       if (!cordova.file) {
-        console.log("CORDOVA FILE PLUGIN NOT FOUND - SEVERE ERROR");
+        DebugLogger.log(LoggerLevel.ERROR, "CORDOVA FILE PLUGIN NOT FOUND - SEVERE ERROR");
       } else {
-        console.log("CORDOVA FILE: " + cordova.file);
+        DebugLogger.log(LoggerLevel.INFO, "CORDOVA FILE: " + cordova.file);
 
         if (platform.is("android")) {
           this.fs = cordova.file.externalDataDirectory;
@@ -219,11 +220,10 @@ export class AppDirectory {
           p = "WINDOWS";
         }
 
-        console.log("SUCCESSFULLY MAPPED DIRECTORIES FOR " + p);
-        console.log("MAPPED DIRECTORIES: ");
-        console.log("PERM: " + this.fs);
-        console.log("TEMP: " + this.cache);
-        console.log("CONFIG: " + this.config);
+        DebugLogger.log(LoggerLevel.INFO, "SUCCESSFULLY MAPPED DIRECTORIES FOR " + p);
+        DebugLogger.log(LoggerLevel.INFO, "PERM: " + this.fs);
+        DebugLogger.log(LoggerLevel.INFO, "TEMP: " + this.cache);
+        DebugLogger.log(LoggerLevel.INFO, "CONFIG: " + this.config);
 
       }
 
@@ -233,42 +233,42 @@ export class AppDirectory {
 
   public static createDirs() {
     File.checkDir(this.fs, 'avatars').then((bool) => {
-      console.log('avatars successfully found');
+      DebugLogger.log(LoggerLevel.INFO, 'avatars successfully found');
     }).catch(err => {
       File.createDir(this.fs, "avatars", false).then((freeSpace) => {
-        console.log("Successfully created directory avatars");
+        DebugLogger.log(LoggerLevel.INFO, "Successfully created directory avatars");
       }).catch((err => {
-        console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
+        DebugLogger.log(LoggerLevel.ERROR, "SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));
     });
 
     File.checkDir(this.fs, 'notes').then((bool) => {
-      console.log('notes successfully found');
+      DebugLogger.log(LoggerLevel.INFO, 'notes successfully found');
     }).catch(err => {
       File.createDir(this.fs, "notes", false).then((freeSpace) => {
-        console.log("Successfully created directory notes");
+        DebugLogger.log(LoggerLevel.INFO, "Successfully created directory notes");
       }).catch((err => {
-        console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
+        DebugLogger.log(LoggerLevel.ERROR, "SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));
     });
 
     File.checkDir(this.fs, 'json').then((bool) => {
-      console.log('JSON successfully found');
+      DebugLogger.log(LoggerLevel.INFO, 'JSON successfully found');
     }).catch(err => {
       File.createDir(this.fs, "json", false).then((freeSpace) => {
-        console.log("Successfully created directory JSON");
+        DebugLogger.log(LoggerLevel.INFO, "Successfully created directory JSON");
       }).catch((err => {
-        console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
+        DebugLogger.log(LoggerLevel.ERROR, "SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));
     });
 
     File.checkDir(this.fs, 'strategy-saves').then((bool) => {
-      console.log('strategy-saves successfully found');
+      DebugLogger.log(LoggerLevel.INFO, 'strategy-saves successfully found');
     }).catch(err => {
       File.createDir(this.fs, "strategy-saves", false).then((freeSpace) => {
-        console.log("Successfully created directory strategy-saves");
+        DebugLogger.log(LoggerLevel.INFO, "Successfully created directory strategy-saves");
       }).catch((err => {
-        console.log("SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
+        DebugLogger.log(LoggerLevel.ERROR, "SEVERE ERROR WHILE CREATING DIRECTORY: " + err.message);
       }));
     });
   }
@@ -276,23 +276,23 @@ export class AppDirectory {
   public static checkConfig() {
     File.checkFile(this.config, "config.json").then((bool:boolean) => {
       if (bool == true) {
-        console.log("CONFIG WAS FOUND");
+        DebugLogger.log(LoggerLevel.INFO, "CONFIG FOUND. LOADING CONFIG...");
         this.loadConfig();
       }
       if (bool == false) {
-        console.log("CONFIG NOT FOUND - CREATING CONFIG");
+        DebugLogger.log(LoggerLevel.WARN, "CONFIG NOT FOUND - CREATING CONFIG");
         File.writeFile(this.config, "config.json", JSON.stringify(Config.getJSON()), []).then((fileEntry) => {
-          console.log("CREATED DEFAULT CONFIG SUCCESSFULLY");
+          DebugLogger.log(LoggerLevel.INFO, "CREATED DEFAULT CONFIG SUCCESSFULLY");
         }).catch((err) => {
-          console.log(err);
+          DebugLogger.log(LoggerLevel.ERROR, err.message);
         });
       }
     }).catch((err:FileError) => {
-      console.log("CONFIG NOT FOUND - CREATING CONFIG");
+      DebugLogger.log(LoggerLevel.INFO, "CONFIG NOT FOUND - CREATING CONFIG");
       File.writeFile(this.config, "config.json", JSON.stringify(Config.getJSON()), []).then((fileEntry) => {
-        console.log("CREATED DEFAULT CONFIG SUCCESSFULLY");
+        DebugLogger.log(LoggerLevel.INFO, "CREATED DEFAULT CONFIG SUCCESSFULLY");
       }).catch((err) => {
-        console.log(err);
+        DebugLogger.log(LoggerLevel.ERROR, err.message);
       });
     });
   }
@@ -302,7 +302,7 @@ export class AppDirectory {
       let configJSON = JSON.parse(data);
       Config.TEAM_NUMBER = configJSON.team_number;
     }, (err:FileError) => {
-      console.log(err.message);
+      DebugLogger.log(LoggerLevel.ERROR, err.message);
     });
   }
 
@@ -311,9 +311,9 @@ export class AppDirectory {
       "team_number": Config.TEAM_NUMBER
     }
     File.writeFile(this.config, "config.json", JSON.stringify(config), { replace: true }).then((fileEntry) => {
-      console.log("SAVED CONFIG SETTINGS SUCCESSFULLY");
+      DebugLogger.log(LoggerLevel.INFO, "SAVED CONFIG SETTINGS SUCCESSFULLY");
     }).catch((err) => {
-      console.log(err.message);
+      DebugLogger.log(LoggerLevel.ERROR, err.message);
     });
   }
 

@@ -4,7 +4,8 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 import { LoginPage } from '../pages/login/login';
 import { AppDirectory } from '../util/file-reader';
 import { Config } from '../util/config';
-import {FirebaseService} from "../providers/firebase-service";
+import { FirebaseService } from "../providers/firebase-service";
+import { DebugLogger, LoggerLevel } from '../util/debug-logger';
 
 @Component({
   templateUrl: 'app.html',
@@ -22,7 +23,9 @@ export class FRCSP {
       StatusBar.styleDefault();
       Splashscreen.hide();
 
-      console.log("BROWSER CONFIGURATION: " + Config.IS_BROWSER);
+      DebugLogger.init();
+
+      DebugLogger.log(LoggerLevel.INFO, "BROWSER CONFIGURATION: " + Config.IS_BROWSER);
 
       if (!Config.IS_BROWSER) {
         AppDirectory.init(platform);

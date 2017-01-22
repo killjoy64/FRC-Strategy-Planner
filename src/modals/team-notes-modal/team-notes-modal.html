@@ -5,12 +5,17 @@
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-title>{{ team.team_number }} Notes</ion-title>
+    <ion-title>{{ team.team_number }} Pit Scouting</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-label stacked>Add a Note</ion-label>
+  <ion-label stacked>General</ion-label>
+  <ion-list>
+
+  </ion-list>
+  <ion-label stacked>Autonomous</ion-label>
+  <ion-label stacked>TeleOp</ion-label>
   <textarea [(ngModel)]="text" id="notes" placeholder="TYPE TEXT HERE..."></textarea>
   <button ion-button full color="primary" (click)="saveText()">
     <span>Save</span>

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
+import { DebugLogger, LoggerLevel } from '../util/debug-logger';
 
 @Injectable()
 export class FirebaseService {
@@ -7,7 +8,7 @@ export class FirebaseService {
   public db: any;
 
   constructor() {
-    console.log('Firebase Service Provider Initialized');
+    DebugLogger.log(LoggerLevel.INFO, 'Firebase Service Provider Initialized');
   }
 
   init() {
@@ -22,7 +23,7 @@ export class FirebaseService {
 
     this.db = firebase.database().ref('/');
 
-    console.log("Firebase successfully initialized");
+    DebugLogger.log(LoggerLevel.INFO, "Firebase successfully initialized");
   }
 
   login(email, password) {

@@ -2,7 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {NavParams, Content, ActionSheetController, ModalController} from 'ionic-angular';
 import {PhotoViewer} from 'ionic-native';
 import {TeamSorter} from "../../util/sorting";
-import {TeamNotesModal} from '../../modals/team-notes-modal';
+import {TeamNotesModal} from '../../modals/team-notes-modal/team-notes-modal';
 import {MyEvent} from "../../util/file-reader";
 
 @Component({

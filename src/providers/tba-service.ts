@@ -3,24 +3,14 @@ import { Http, Headers, Response } from '@angular/http';
 import {AlertController} from 'ionic-angular';
 import 'rxjs/add/operator/map';
 import {Observable} from "rxjs/Rx";
+import {DebugLogger, LoggerLevel} from '../util/debug-logger';
 
 @Injectable()
 export class TBAService {
 
-  data: any;
-
   constructor(public http: Http, private alertCtrl: AlertController) {
-    console.log('TBA Service Provider Initialized');
+    DebugLogger.log(LoggerLevel.INFO, 'TBA Service Provider Initialized');
   }
-
-  reset() {
-    this.data = null;
-  }
-
-  requestLocalFile(fs, file) {
-    return this.http.get(fs + file).map((response:Response) => response.json());
-  }
-
 
   /* START TEAM SPECIFIC AJAX REQUESTS */
   requestTeamInfo(team) {

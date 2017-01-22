@@ -24,7 +24,8 @@ import { TabsPage } from '../pages/tab-directory/tab-directory';
 import { AboutChangelogPage } from '../pages/about-changelog/about-changelog';
 import { AboutLibrariesPage } from '../pages/about-libraries/about-libraries';
 
-import { TeamNotesModal } from '../modals/team-notes-modal';
+import { LoggerModal } from '../modals/logger-modal/logger-modal';
+import { TeamNotesModal } from '../modals/team-notes-modal/team-notes-modal';
 import {Config} from "../util/config";
 
 const cloudSettings: CloudSettings = {
@@ -60,7 +61,8 @@ if (!Config.DEBUG) {
     TabsPage,
     AboutChangelogPage,
     AboutLibrariesPage,
-    TeamNotesModal
+    TeamNotesModal,
+    LoggerModal
   ],
   imports: [
     IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'}),
@@ -89,7 +91,8 @@ if (!Config.DEBUG) {
     TabsPage,
     AboutChangelogPage,
     AboutLibrariesPage,
-    TeamNotesModal
+    TeamNotesModal,
+    LoggerModal
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
