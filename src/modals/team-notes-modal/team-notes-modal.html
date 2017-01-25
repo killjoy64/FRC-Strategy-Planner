@@ -12,15 +12,68 @@
 <ion-content padding>
   <ion-label stacked>General</ion-label>
   <ion-list>
-
+    <ion-item>
+      <ion-label>Drive Train</ion-label>
+      <ion-select [(ngModel)]="drive_train" (ionChange)="checkDriveTrain()">
+        <ion-option value="Treads">Treads</ion-option>
+        <ion-option value="Wheels">Wheels</ion-option>
+        <ion-option value="Mecanum">Mecanum</ion-option>
+        <ion-option value="Omni">Omni</ion-option>
+        <ion-option value="Other">Other</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="drive_train == 'other'">
+      <textarea [(ngModel)]="drive_train_other" id="other_drive_train"  placeholder="Additional info..." rows="1"></textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label>Shooting</ion-label>
+      <ion-select [(ngModel)]="shooting">
+        <ion-option value="High Goal">High Goal</ion-option>
+        <ion-option value="Low Goal">Low Goal</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Gears</ion-label>
+      <ion-select [(ngModel)]="gears">
+        <ion-option value="Yes">Yes</ion-option>
+        <ion-option value="No">No</ion-option>
+      </ion-select>
+    </ion-item>
   </ion-list>
   <ion-label stacked>Autonomous</ion-label>
+  <ion-list>
+    <ion-item>
+      <ion-label>Primary Strategy</ion-label>
+    </ion-item>
+    <ion-item>
+      <textarea [(ngModel)]="auto_strategy" id="auto_strategy"  placeholder="Autonomous info..." rows="2"></textarea>
+    </ion-item>
+  </ion-list>
   <ion-label stacked>TeleOp</ion-label>
-  <textarea [(ngModel)]="text" id="notes" placeholder="TYPE TEXT HERE..."></textarea>
-  <button ion-button full color="primary" (click)="saveText()">
-    <span>Save</span>
-  </button>
-  <button ion-button full color="primary" (click)="clearText()">
-    <span>Clear</span>
-  </button>
+  <ion-list>
+    <ion-list>
+      <ion-item>
+        <ion-label>Primary Strategy</ion-label>
+      </ion-item>
+      <ion-item>
+        <textarea [(ngModel)]="teleop_strategy" id="teleop_strategy"  placeholder="Teleop info..." rows="2"></textarea>
+      </ion-item>
+    </ion-list>
+  </ion-list>
+  <ion-label stacked>Additional Info</ion-label>
+  <ion-list>
+    <ion-item>
+      <textarea [(ngModel)]="more_info" id="notes" placeholder="Additional info about this team" rows="3"></textarea>
+    </ion-item>
+    <ion-item>
+      <button ion-button full color="primary" (click)="saveText()">
+        <span>Save</span>
+      </button>
+    </ion-item>
+    <ion-item>
+      <button ion-button full color="danger" (click)="clearText()">
+        <span>Clear</span>
+      </button>
+    </ion-item>
+  </ion-list>
 </ion-content>

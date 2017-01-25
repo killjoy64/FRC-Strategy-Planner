@@ -122,17 +122,7 @@ export class TeamNotes {
     this.fs = AppDirectory.getPermDir();
   }
 
-  saveNotes(team, data) {
-    let promise = File.writeFile(this.fs, "notes/" + team + ".dat", data, { replace: true }).then((fileEntry) => {
-      DebugLogger.log(LoggerLevel.INFO, "Saved file successfully");
-      return fileEntry;
-    }).catch((err) => {
-      DebugLogger.log(LoggerLevel.ERROR, err.message);
-    });
-    return promise;
-  }
-
-  getNotes(team) {
+  getPitForm(team) {
     let fileEntry = null;
     let fileEntries:Entry[] = null;
 
@@ -140,7 +130,7 @@ export class TeamNotes {
       fileEntries = entries;
 
       for (let i = 0; i < fileEntries.length; i++) {
-        if (fileEntries[i].name == team.team_number + ".dat") {
+        if (fileEntries[i].name == team.team_number + ".json") {
           fileEntry = fileEntries[i];
           break;
         }
@@ -177,7 +167,10 @@ export class TeamNotes {
     });
 
     return promise;
+  }
 
+  savePitForm(team, data) {
+    return File.writeFile(this.fs, "notes/" + team + ".json", JSON.stringify(data), { replace: true });
   }
 
 }

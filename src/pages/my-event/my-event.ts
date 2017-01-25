@@ -9,6 +9,7 @@ import {AppDirectory, TeamAvatar, MyEvent, TeamNotes} from '../../util/file-read
 import {Entry} from "ionic-native";
 import {Config} from "../../util/config";
 import {EventElimsPage} from "../event-elims/event-elims";
+import {LoggerLevel, DebugLogger} from "../../util/debug-logger";
 
 @Component({
   selector: 'page-my-event',
@@ -415,10 +416,16 @@ export class MyEventPage {
                   let team_number:string = this.my_comp.teams[i].team_number;
                   let teamNote = new TeamNotes();
 
-                  teamNote.getNotes(this.my_comp.teams[i]).then((data) => {
-                    this.my_comp.teams[i].team_notes = data;
+                  // teamNote.getNotes(this.my_comp.teams[i]).then((data) => {
+                  //   this.my_comp.teams[i].team_notes = data;
+                  // }, (err) => {
+                  //   console.log("Error getting notes:" + err.message);
+                  // });
+
+                  teamNote.getPitForm(this.my_comp.teams[i]).then((data:string) => {
+                    this.my_comp.teams[i].team_notes = JSON.parse(data);
                   }, (err) => {
-                    console.log("Error getting notes:" + err.message);
+                    DebugLogger.log(LoggerLevel.ERROR, "Error getting notes:" + err.message);
                   });
 
                   for (let j = 0; j < data.length; j++) {

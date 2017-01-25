@@ -7,6 +7,7 @@ import {TeamAvatar, AppDirectory, TeamNotes, MyEvent} from '../../util/file-read
 import {DomSanitizer} from '@angular/platform-browser';
 import {Config} from '../../util/config';
 import {TeamNotesModal} from '../../modals/team-notes-modal/team-notes-modal';
+import {DebugLogger, LoggerLevel} from "../../util/debug-logger";
 
 declare var cordova: any;
 
@@ -78,11 +79,10 @@ export class EventTeamPage {
       });
 
       this.teamNote = new TeamNotes();
-      this.teamNote.getNotes(this.team).then((data) => {
-        this.team.team_notes = data;
-        console.log("Team Notes: " + this.team.team_notes);
+      this.teamNote.getPitForm(this.team).then((data:string) => {
+        this.team.team_notes = JSON.parse(data);
       }, (err) => {
-        console.log("Error getting notes:" + err.message);
+        DebugLogger.log(LoggerLevel.ERROR, "Error getting notes:" + err.message);
       });
     }
 

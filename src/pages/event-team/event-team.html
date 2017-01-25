@@ -13,7 +13,6 @@
   <ion-list>
     <ion-item text-wrap>
       <ion-thumbnail item-left (click)="openPictureSheet()">
-        <!-- id="{{ team.team_number }}-avatar" -->
         <img src="assets/option-robots.png" class="avatar" *ngIf="!src">
         <img src="{{ src }}" class="avatar" *ngIf="src">
       </ion-thumbnail>
@@ -21,14 +20,26 @@
       <h3>{{ team.nickname }}</h3>
       <p>{{ team.motto }}</p>
     </ion-item>
-    <ion-item *ngIf="team.team_notes">
-      {{ team.team_notes }}
-    </ion-item>
     <ion-item>
       Event: {{ event.short_name }}
     </ion-item>
     <ion-item *ngIf="event.stats.oprs">
       OPR: {{ event.stats.oprs[team.team_number] }}
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="team.team_notes">
+    <ion-item *ngIf="team.team_notes.drive_train">
+      Drive Train: {{ team.team_notes.drive_train }}
+    </ion-item>
+    <ion-item *ngIf="team.team_notes.drive_train_other">
+      {{ team.team_notes.drive_train_other }}
+    </ion-item>
+    <ion-item *ngIf="team.team_notes.shooting">
+      Shooting: {{ team.team_notes.shooting }}
+    </ion-item>
+    <ion-item *ngIf="team.team_notes.gears">
+      Gears: {{ team.team_notes.gears }}
     </ion-item>
   </ion-list>
 
