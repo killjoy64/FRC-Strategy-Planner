@@ -4,6 +4,8 @@ import { NavController } from 'ionic-angular';
 import { ConnectionManager } from "../../util/connection-manager";
 import {TabsPage} from "../tab-directory/tab-directory";
 
+import { Style } from '../../util/style';
+
 @Component({
   selector: 'page-start',
   templateUrl: 'startup.html'
@@ -29,11 +31,16 @@ export class StartupPage {
   }
 
   showLoginPartial() {
-
+    Style.fadeOut("spinner").then(() => {
+      document.getElementById("logo").classList.add("slid-up");
+      Style.fadeIn("login-partial").then(() => {
+        console.log("done fading in");
+      });
+    });
   }
 
   showCreatePartial() {
-    
+
   }
 
   openTabs() {

@@ -21300,6 +21300,14 @@ sub {
   transition: all 0.3s ease-in-out;
 }
 
+.display-none {
+  display: none;
+}
+
+display-block {
+  display: block;
+}
+
 body.keyboard-is-open .tabbar {
   display: none;
 }
@@ -21324,6 +21332,10 @@ page-start #spinner {
   right: 37.5%;
 }
 
+page-start #login-partial {
+  margin-top: 80%;
+}
+
 page-start ion-spinner * {
   stroke: #ffffff !important;
   fill: #ffffff !important;
@@ -21345,4 +21357,10 @@ page-start .startup {
   height: 50%;
   left: 25%;
   right: 25%;
+}
+
+page-start .slid-up {
+  transition: 0.3s ease-in-out;
+  -webkit-transform: translateY(-15%);
+  transform: translateY(-15%);
 }

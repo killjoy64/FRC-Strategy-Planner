@@ -16,6 +16,10 @@ page-start {
     right: 37.5%;
   }
 
+  #login-partial {
+    margin-top: 80%;
+  }
+
   ion-spinner * {
     stroke: #ffffff !important;
     fill: #ffffff !important;
@@ -31,6 +35,15 @@ page-start {
     height: 50%;
     left: 25%;
     right: 25%;
+  }
+
+  .slid-up {
+    transition: 0.3s ease-in-out;
+    -webkit-transform: translateY(-15%);
+    -moz-transform: translateY(-15%);
+    -ms-transform: translateY(-15%);
+    -o-transform: translateY(-15%);
+    transform: translateY(-15%);
   }
 
 }

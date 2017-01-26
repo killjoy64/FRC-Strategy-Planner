@@ -47,6 +47,14 @@
   transition: all 0.3s ease-in-out;
 }
 
+.display-none {
+  display: none;
+}
+
+display-block {
+  display: block;
+}
+
 body.keyboard-is-open .tabbar {
   display: none;
 }
