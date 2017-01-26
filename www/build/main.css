@@ -21275,3 +21275,44 @@ sub {
     padding-top: calc(16px + 20px);
   }
 }
+
+page-start ion-content {
+  background-color: #387ef5 !important;
+}
+
+page-start #logo {
+  margin-top: 15%;
+}
+
+page-start #spinner {
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-content: flex-start;
+  -ms-flex-line-pack: start;
+  align-content: flex-start;
+  width: 25%;
+  height: 25%;
+}
+
+page-start ion-spinner * {
+  stroke: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+page-start .startup {
+  background-color: transparent !important;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 50%;
+  height: 50%;
+  margin-right: auto;
+  margin-left: auto;
+}
