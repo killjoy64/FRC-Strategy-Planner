@@ -1,21 +1,13 @@
+/**
+ * Created by Kyle Flynn on 1/25/2017.
+ */
+
 export class Config {
 
-  public static VERSION: string = "2.11.7";
+  public static VERSION: string = "3.0.0";
 
-  /* Controls whether the device is the browser. Disables native features if it is. */
   public static IS_BROWSER: boolean = false;
-
-  /* Controls whether we are debugging the application. Changes event dates and AngularJS enableProdMode() */
-  public static DEBUG: boolean = false;
-
+  public static DEBUG_MODE: boolean = false;
   public static TEAM_NUMBER: number = null;
-
-  constructor() {}
-
-  public static getJSON() {
-    return {
-      "team_number": this.TEAM_NUMBER
-    };
-  }
 
 }

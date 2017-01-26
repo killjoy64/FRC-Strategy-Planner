@@ -1,8 +1,13 @@
+/**
+ * Created by Kyle Flynn on 1/25/2017.
+ */
+
 import { Component } from '@angular/core';
-import { MyEventPage } from '../my-event/my-event';
-import { SearchPage } from '../search/search';
-import { FieldPage } from '../field/field';
-import { SettingsPage } from '../settings/settings';
+
+import { TeamsAndEventsPage } from '../tab-teams-events/tab-teams-events';
+import { FieldPage } from '../tab-field/tab-field';
+import { SettingsPage } from '../tab-settings/tab-settings';
+import { CloudPage } from '../tab-my-cloud/tab-my-cloud';
 
 @Component({
   selector: 'page-tabs',
@@ -10,12 +15,11 @@ import { SettingsPage } from '../settings/settings';
 })
 export class TabsPage {
 
-  my_event: any = MyEventPage;
-  search: any = SearchPage;
+  tba: any = TeamsAndEventsPage;
   field: any = FieldPage;
   settings: any = SettingsPage;
+  cloud: any = CloudPage;
 
-  constructor() {
-  }
+  constructor() {}
 
 }

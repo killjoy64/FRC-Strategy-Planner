@@ -1,98 +1,36 @@
-import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
-
-import {NgModule, ErrorHandler, enableProdMode} from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { FRCSP } from './app.component';
-import { MyEventPage } from '../pages/my-event/my-event';
-import { EventPage } from '../pages/event/event';
-import { LoginPage } from '../pages/login/login';
-import { SearchPage } from '../pages/search/search';
-import { FieldPage } from '../pages/field/field';
-import { SettingsPage } from '../pages/settings/settings';
-import { OpenFilePage } from '../pages/open-file/open-file';
-import { TeamAwardsPage } from '../pages/team-awards/team-awards';
-import { TeamEventsPage } from '../pages/team-events/team-events';
-import { TeamInfoPage } from '../pages/team-info/team-info';
-import { TeamRobotsPage } from '../pages/team-robots/team-robots';
-import { EventTeamsPage } from '../pages/event-teams/event-teams';
-import { EventMatchesPage } from '../pages/event-matches/event-matches';
-import { EventRankingsPage } from '../pages/event-rankings/event-rankings';
-import { EventElimsPage } from '../pages/event-elims/event-elims';
-import { EventAwardsPage } from "../pages/event-awards/event-awards";
-import { EventTeamPage } from '../pages/event-team/event-team';
+
 import { TabsPage } from '../pages/tab-directory/tab-directory';
-import { AboutChangelogPage } from '../pages/about-changelog/about-changelog';
-import { AboutLibrariesPage } from '../pages/about-libraries/about-libraries';
-
-import { LoggerModal } from '../modals/logger-modal/logger-modal';
-import { TeamNotesModal } from '../modals/team-notes-modal/team-notes-modal';
-import {Config} from "../util/config";
-
-const cloudSettings: CloudSettings = {
-  'core': {
-    'app_id': 'add5520f'
-  }
-};
-
-if (!Config.DEBUG) {
-  enableProdMode();
-}
+import { TeamsAndEventsPage } from '../pages/tab-teams-events/tab-teams-events';
+import { FieldPage } from '../pages/tab-field/tab-field';
+import { SettingsPage } from '../pages/tab-settings/tab-settings';
+import { CloudPage } from '../pages/tab-my-cloud/tab-my-cloud';
+import { StartupPage } from '../pages/startup/startup';
 
 @NgModule({
   declarations: [
     FRCSP,
-    MyEventPage,
-    EventPage,
-    SearchPage,
+    TabsPage,
+    TeamsAndEventsPage,
     FieldPage,
     SettingsPage,
-    OpenFilePage,
-    TeamAwardsPage,
-    TeamEventsPage,
-    TeamInfoPage,
-    TeamRobotsPage,
-    EventTeamsPage,
-    EventMatchesPage,
-    EventRankingsPage,
-    EventElimsPage,
-    EventAwardsPage,
-    EventTeamPage,
-    LoginPage,
-    TabsPage,
-    AboutChangelogPage,
-    AboutLibrariesPage,
-    TeamNotesModal,
-    LoggerModal
+    CloudPage,
+    StartupPage
   ],
   imports: [
-    IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'}),
-    CloudModule.forRoot(cloudSettings)
+    IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     FRCSP,
-    MyEventPage,
-    EventPage,
-    SearchPage,
+    TabsPage,
+    TeamsAndEventsPage,
     FieldPage,
     SettingsPage,
-    OpenFilePage,
-    TeamAwardsPage,
-    TeamEventsPage,
-    TeamInfoPage,
-    TeamRobotsPage,
-    EventTeamsPage,
-    EventMatchesPage,
-    EventRankingsPage,
-    EventElimsPage,
-    EventAwardsPage,
-    EventTeamPage,
-    LoginPage,
-    TabsPage,
-    AboutChangelogPage,
-    AboutLibrariesPage,
-    TeamNotesModal,
-    LoggerModal
+    CloudPage,
+    StartupPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
