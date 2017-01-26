@@ -14,3 +14,43 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+#scroll {
+  color: #ffffff;
+  position: fixed;
+  bottom: 12.5%;
+  right: 5%;
+}
+
+.scroll {
+  color: #ffffff;
+  position: fixed;
+  bottom: 12.5%;
+  right: 5%;
+}
+
+.hidden {
+  opacity: 0.0;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.visible {
+  opacity: 1.0;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+body.keyboard-is-open .tabbar {
+  display: none;
+}
+
+body.keyboard-is-open .scroll-content {
+  margin-bottom: 0 !important;
+}

@@ -21276,6 +21276,38 @@ sub {
   }
 }
 
+#scroll {
+  color: #ffffff;
+  position: fixed;
+  bottom: 12.5%;
+  right: 5%;
+}
+
+.scroll {
+  color: #ffffff;
+  position: fixed;
+  bottom: 12.5%;
+  right: 5%;
+}
+
+.hidden {
+  opacity: 0.0;
+  transition: all 0.3s ease-in-out;
+}
+
+.visible {
+  opacity: 1.0;
+  transition: all 0.3s ease-in-out;
+}
+
+body.keyboard-is-open .tabbar {
+  display: none;
+}
+
+body.keyboard-is-open .scroll-content {
+  margin-bottom: 0 !important;
+}
+
 page-start ion-content {
   background-color: #387ef5 !important;
 }
@@ -21285,14 +21317,11 @@ page-start #logo {
 }
 
 page-start #spinner {
-  -webkit-justify-content: flex-start;
-  -ms-flex-pack: start;
-  justify-content: flex-start;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
+  margin-top: 75%;
   width: 25%;
   height: 25%;
+  left: 37.5%;
+  right: 37.5%;
 }
 
 page-start ion-spinner * {
@@ -21302,6 +21331,7 @@ page-start ion-spinner * {
 
 page-start .startup {
   background-color: transparent !important;
+  position: absolute;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -21313,6 +21343,6 @@ page-start .startup {
   align-items: center;
   width: 50%;
   height: 50%;
-  margin-right: auto;
-  margin-left: auto;
+  left: 25%;
+  right: 25%;
 }

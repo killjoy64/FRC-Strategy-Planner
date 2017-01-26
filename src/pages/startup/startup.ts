@@ -20,6 +20,22 @@ export class StartupPage {
     });
   }
 
+  ionViewDidEnter() {
+
+    setTimeout(() => {
+      this.showLoginPartial();
+    }, 1000);
+
+  }
+
+  showLoginPartial() {
+
+  }
+
+  showCreatePartial() {
+    
+  }
+
   openTabs() {
 
     this.navCtrl.push(TabsPage);

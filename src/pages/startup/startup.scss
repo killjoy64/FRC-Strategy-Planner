@@ -9,10 +9,11 @@ page-start {
   }
 
   #spinner {
-    justify-content: flex-start;
-    align-content: flex-start;
+    margin-top: 75%;
     width: 25%;
     height: 25%;
+    left: 37.5%;
+    right: 37.5%;
   }
 
   ion-spinner * {
@@ -22,13 +23,14 @@ page-start {
 
   .startup {
     background-color: transparent !important;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 50%;
     height: 50%;
-    margin-right: auto;
-    margin-left: auto;
+    left: 25%;
+    right: 25%;
   }
 
 }
