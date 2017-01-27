@@ -21292,12 +21292,12 @@ sub {
 
 .hidden {
   opacity: 0.0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .visible {
   opacity: 1.0;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.5s ease-in-out;
 }
 
 .display-none {
@@ -21314,6 +21314,10 @@ body.keyboard-is-open .tabbar {
 
 body.keyboard-is-open .scroll-content {
   margin-bottom: 0 !important;
+}
+
+.no-pad {
+  padding: 0 !important;
 }
 
 page-start ion-content {
@@ -21333,6 +21337,10 @@ page-start #spinner {
 }
 
 page-start #login-partial {
+  margin-top: 80%;
+}
+
+page-start #create-partial {
   margin-top: 80%;
 }
 

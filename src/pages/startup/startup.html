@@ -3,7 +3,7 @@
   <ion-img id="logo" class="startup" src="assets/logo-possibility.png"></ion-img>
   <ion-spinner name="ios-small" id="spinner" class="startup" src="assets/preloader.gif"></ion-spinner>
 
-  <ion-card id="login-partial" class="hidden">
+  <ion-card id="login-partial" class="partial hidden">
     <ion-card-header>
       Login
     </ion-card-header>
@@ -20,6 +20,34 @@
         </button>
         <button id="offline-btn" ion-button block color="danger">
           Go Offline
+        </button>
+        <button id="create-btn" ion-button block color="secondary" (click)="showCreatePartial()">
+          Create an Account
+        </button>
+      </div>
+    </ion-list>
+  </ion-card>
+
+  <ion-card id="create-partial" class="partial hidden">
+    <ion-card-header>
+      Create an Account
+    </ion-card-header>
+    <ion-list inset>
+      <ion-item>
+        <ion-input type="text" placeholder="Name"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Email" [(ngModel)]="email"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+      <div class="buttons">
+        <button ion-button block (click)="validateInfo()">
+          Create Account
+        </button>
+        <button ion-button block color="danger" (click)="showLoginPartial()">
+          Cancel
         </button>
       </div>
     </ion-list>

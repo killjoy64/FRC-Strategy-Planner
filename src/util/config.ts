@@ -10,4 +10,10 @@ export class Config {
   public static DEBUG_MODE: boolean = false;
   public static TEAM_NUMBER: number = null;
 
+  public static getJSON() {
+    return {
+      "team_number": this.TEAM_NUMBER
+    };
+  }
+
 }

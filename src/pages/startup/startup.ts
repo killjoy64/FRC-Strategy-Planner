@@ -25,21 +25,38 @@ export class StartupPage {
   ionViewDidEnter() {
 
     setTimeout(() => {
-      this.showLoginPartial();
+      this.animateIntro();
     }, 1000);
 
   }
 
-  showLoginPartial() {
+  animateIntro() {
     Style.fadeOut("spinner").then(() => {
       document.getElementById("logo").classList.add("slid-up");
+      this.showLoginPartial();
+    });
+  }
+
+  showLoginPartial() {
+    if (document.getElementById("create-partial").classList.contains("hidden")) {
       Style.fadeIn("login-partial").then(() => {
-        console.log("done fading in");
+      });
+    } else {
+      Style.fadeOut("create-partial").then(() => {
+        Style.fadeIn("login-partial").then(() => {
+        });
+      });
+    }
+  }
+
+  showCreatePartial() {
+    Style.fadeOut("login-partial").then(() => {
+      Style.fadeIn("create-partial").then(() => {
       });
     });
   }
 
-  showCreatePartial() {
+  validateInfo() {
 
   }
 
