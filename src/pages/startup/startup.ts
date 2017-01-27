@@ -33,27 +33,19 @@ export class StartupPage {
   animateIntro() {
     Style.fadeOut("spinner").then(() => {
       document.getElementById("logo").classList.add("slid-up");
-      this.showLoginPartial();
+      Style.fadeIn("login-partial").then(() => {
+      });
     });
   }
 
   showLoginPartial() {
-    if (document.getElementById("create-partial").classList.contains("hidden")) {
-      Style.fadeIn("login-partial").then(() => {
-      });
-    } else {
-      Style.fadeOut("create-partial").then(() => {
-        Style.fadeIn("login-partial").then(() => {
-        });
-      });
-    }
+    Style.translateX("login-partial", 0).then(() => {});
+    Style.translateX("create-partial", 125).then(() => {});
   }
 
   showCreatePartial() {
-    Style.fadeOut("login-partial").then(() => {
-      Style.fadeIn("create-partial").then(() => {
-      });
-    });
+    Style.translateX("login-partial", -125).then(() => {});
+    Style.translateX("create-partial", 0).then(() => {});
   }
 
   validateInfo() {

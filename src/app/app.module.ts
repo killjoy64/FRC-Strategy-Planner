@@ -1,3 +1,5 @@
+import { CloudSettings, CloudModule } from '@ionic/cloud-angular';
+
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { FRCSP } from './app.component';
@@ -8,6 +10,12 @@ import { FieldPage } from '../pages/tab-field/tab-field';
 import { SettingsPage } from '../pages/tab-settings/tab-settings';
 import { CloudPage } from '../pages/tab-my-cloud/tab-my-cloud';
 import { StartupPage } from '../pages/startup/startup';
+
+const cloudSettings: CloudSettings = {
+  'core': {
+    'app_id': 'add5520f'
+  }
+};
 
 @NgModule({
   declarations: [
@@ -20,7 +28,8 @@ import { StartupPage } from '../pages/startup/startup';
     StartupPage
   ],
   imports: [
-    IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'})
+    IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'}),
+    CloudModule.forRoot(cloudSettings)
   ],
   bootstrap: [IonicApp],
   entryComponents: [

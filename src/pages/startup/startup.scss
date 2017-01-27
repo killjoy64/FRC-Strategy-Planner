@@ -1,5 +1,12 @@
 page-start {
 
+  body {
+    width: 100vw !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+    position: fixed !important;
+  }
+
   ion-content {
     background-color: #387ef5 !important;
   }
@@ -30,7 +37,8 @@ page-start {
   }
 
   .partial {
-
+    transition: 0.5s ease-in-out;
+    position: fixed !important;
   }
 
   .startup {
