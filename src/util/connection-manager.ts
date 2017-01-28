@@ -72,7 +72,7 @@ export class ConnectionManager {
   hideLoader() {
     if (this.loadCtrl && this.timeoutID) {
       clearTimeout(this.timeoutID);
-      this.curLoad.dismiss();
+      return this.curLoad.dismiss();
     }
   }
 

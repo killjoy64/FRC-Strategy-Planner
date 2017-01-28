@@ -10,6 +10,7 @@ import { DebugLogger, LoggerLevel } from '../util/debug-logger';
 export class FirebaseService {
 
   public db: any;
+  public auth: any;
 
   constructor() {
     DebugLogger.log(LoggerLevel.INFO, 'Firebase Service Provider Initialized');
@@ -26,8 +27,28 @@ export class FirebaseService {
     firebase.initializeApp(fbConf);
 
     this.db = firebase.database();
+    this.auth = firebase.auth();
 
     DebugLogger.log(LoggerLevel.INFO, "Firebase successfully initialized");
+  }
+
+  createTeamAccount(name, email, team, uid) {
+    return firebase.database().ref('teams/' + team + '/users/' + uid).set({
+      name: name,
+      email: email,
+      authenticated: false,
+      role : 'member'
+    });
+  }
+
+  createUser(email, password) {
+    return new Promise((resolve, reject) => {
+      firebase.auth().createUserWithEmailAndPassword(email, password).then((user: firebase.User) => {
+        resolve(user);
+      }).catch((error) => {
+        reject(error);
+      });
+    });
   }
 
   login(email, password) {
