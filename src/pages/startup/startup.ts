@@ -24,9 +24,11 @@ export class StartupPage {
   team: number;
   newEmail: string;
   newPass: string;
+  resetEmail: string;
 
   invalidMsg: string;
   loginMsg: string;
+  resetMsg: string;
 
   constructor(private navCtrl: NavController, private alertCtrl: AlertController, private loadCtrl: LoadingController, private fb: FirebaseService) {
     this.connection = new ConnectionManager();
@@ -40,9 +42,11 @@ export class StartupPage {
     this.team = null;
     this.newEmail = null;
     this.newPass = null;
+    this.resetEmail = null;
 
     this.invalidMsg = null;
     this.loginMsg = null;
+    this.resetMsg = null;
   }
 
   ionViewDidEnter() {
@@ -64,6 +68,7 @@ export class StartupPage {
   showLoginPartial() {
     Style.translateX("login-partial", 0).then(() => {});
     Style.translateX("create-partial", 125).then(() => {});
+    Style.translateX("reset-partial", -125).then(() => {});
   }
 
   showCreatePartial() {
@@ -71,8 +76,32 @@ export class StartupPage {
     Style.translateX("create-partial", 0).then(() => {});
   }
 
+  showResetPartial() {
+    Style.translateX("login-partial", 125).then(() => {});
+    Style.translateX("reset-partial", 0).then(() => {});
+  }
+
+  sendResetEmail() {
+    if (!this.resetEmail || !this.resetEmail.match(/^([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)@([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)[\\.]([a-zA-Z]{2,9})$/)) {
+      this.resetMsg = "You must provide a valid email address.";
+      return;
+    }
+
+    this.connection.showLoader("Connecting to database...", 5000);
+    this.resetMsg = null;
+    this.fb.resetPassword(this.resetEmail).then(() => {
+      this.connection.hideLoader().then(() => {
+        this.connection.showAlert("Email Sent", "An email regarding the next steps to reset your password has been sent.");
+      });
+    }).catch((error) => {
+      this.connection.hideLoader().then(() => {
+        this.connection.showAlert("Error", "Error sending email. " + error.message);
+      });
+    });
+  }
+
   validateInfo() {
-    if (!this.name || this.name.length < 1) {
+    if (!this.name || this.name.length < 1 || !this.name.match(/^[0-9a-zA-Z\s]*$/)) {
       this.invalidMsg = "You must provide a valid name.";
       return;
     }
@@ -96,15 +125,26 @@ export class StartupPage {
   createAccount(name, team, newEmail, newPass) {
     this.connection.showLoader("Connecting to database...", 5000);
 
-    this.fb.createUser(newEmail, newPass).then((user: firebase.User) => {
-      this.fb.createTeamAccount(name, newEmail, team, user.uid).then(() => {
-        this.connection.hideLoader();
+    try {
+      this.fb.createUser(newEmail, newPass).then((user: firebase.User) => {
+        this.fb.createTeamAccount(name, newEmail, team, user.uid).then(() => {
+          this.connection.hideLoader();
+        }).catch((error) => {
+          this.connection.hideLoader().then(() => {
+            this.connection.showAlert("Error", "Error assigning user to team. " + error.message);
+            DebugLogger.log(LoggerLevel.ERROR, "Error assigning user to team: " + error.message);
+          });
+        });
       }).catch((error) => {
-        DebugLogger.log(LoggerLevel.ERROR, "Error setting database information: " + error.message);
+        this.connection.hideLoader().then(() => {
+          this.connection.showAlert("Error", "Error creating account. " + error.message);
+          DebugLogger.log(LoggerLevel.ERROR, "Error creating account: " + error.message);
+        });
       });
-    }).catch((error) => {
+    } catch (ex) {
+      DebugLogger.log(LoggerLevel.ERROR, "Error creating account: " + ex);
+    }
 
-    });
   }
 
   login() {

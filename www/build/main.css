@@ -21356,7 +21356,7 @@ page-start ion-content {
 }
 
 page-start #logo {
-  margin-top: 15%;
+  margin-top: 8%;
 }
 
 page-start #spinner {
@@ -21368,11 +21368,15 @@ page-start #spinner {
 }
 
 page-start #login-partial {
-  margin-top: 80%;
+  margin-top: 55%;
 }
 
 page-start #create-partial {
-  margin-top: 80%;
+  margin-top: 55%;
+}
+
+page-start #reset-partial {
+  margin-top: 55%;
 }
 
 page-start ion-spinner * {
@@ -21405,8 +21409,8 @@ page-start .startup {
 
 page-start .slid-up {
   transition: 0.3s ease-in-out;
-  -webkit-transform: translateY(-15%);
-  transform: translateY(-15%);
+  -webkit-transform: translateY(-25%);
+  transform: translateY(-25%);
 }
 
 page-start .item-inner, page-start .item, page-start .input {

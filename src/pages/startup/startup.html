@@ -14,9 +14,14 @@
       <ion-item>
         <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
       </ion-item>
+      <br/>
       <div>
         <span *ngIf="loginMsg" class="danger">{{ loginMsg }}</span>
       </div>
+      <div>
+        <a (click)="showResetPartial()">Forgot your password?</a>
+      </div>
+      <br/>
       <div class="buttons">
         <button ion-button block (click)="login()">
           Login
@@ -54,6 +59,31 @@
           Create Account
         </button>
         <button ion-button block color="danger" (click)="showLoginPartial()">
+          Cancel
+        </button>
+      </div>
+    </ion-list>
+  </ion-card>
+
+  <ion-card id="reset-partial" class="partial" style="transform: translateX(-125%)">
+    <ion-card-header>
+      Reset Your Password
+    </ion-card-header>
+    <ion-list inset>
+      <ion-item>
+        <span>Enter your email</span>
+      </ion-item>
+      <ion-item>
+        <ion-input type="text" placeholder="Email" [(ngModel)]="resetEmail"></ion-input>
+      </ion-item>
+      <div>
+        <span *ngIf="resetMsg" class="danger">{{ invalidMsg }}</span>
+      </div>
+      <div class="buttons">
+        <button ion-button block (click)="sendResetEmail()">
+          Send Email
+        </button>
+        <button ion-button block (click)="showLoginPartial()" color="danger">
           Cancel
         </button>
       </div>

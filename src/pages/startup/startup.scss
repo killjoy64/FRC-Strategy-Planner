@@ -16,7 +16,7 @@ page-start {
   }
 
   #logo {
-    margin-top: 15%;
+    margin-top: 8%;
   }
 
   #spinner {
@@ -28,11 +28,15 @@ page-start {
   }
 
   #login-partial {
-    margin-top: 80%;
+    margin-top: 55%;
   }
 
   #create-partial {
-    margin-top: 80%;
+    margin-top: 55%;
+  }
+
+  #reset-partial {
+    margin-top: 55%;
   }
 
   ion-spinner * {
@@ -59,11 +63,11 @@ page-start {
 
   .slid-up {
     transition: 0.3s ease-in-out;
-    -webkit-transform: translateY(-15%);
-    -moz-transform: translateY(-15%);
-    -ms-transform: translateY(-15%);
-    -o-transform: translateY(-15%);
-    transform: translateY(-15%);
+    -webkit-transform: translateY(-25%);
+    -moz-transform: translateY(-25%);
+    -ms-transform: translateY(-25%);
+    -o-transform: translateY(-25%);
+    transform: translateY(-25%);
   }
 
   .item-inner, .item, .input {

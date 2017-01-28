@@ -33,6 +33,9 @@ export class FirebaseService {
   }
 
   createTeamAccount(name, email, team, uid) {
+    if (firebase.apps.length < 1) {
+      this.init();
+    }
     return firebase.database().ref('teams/' + team + '/users/' + uid).set({
       name: name,
       email: email,
@@ -43,6 +46,9 @@ export class FirebaseService {
 
   createUser(email, password) {
     return new Promise((resolve, reject) => {
+      if (firebase.apps.length < 1) {
+        this.init();
+      }
       firebase.auth().createUserWithEmailAndPassword(email, password).then((user: firebase.User) => {
         resolve(user);
       }).catch((error) => {
@@ -53,9 +59,25 @@ export class FirebaseService {
 
   login(email, password) {
     return new Promise((resolve, reject) => {
+      if (firebase.apps.length < 1) {
+        this.init();
+      }
       firebase.auth().signInWithEmailAndPassword(email, password).then((user: firebase.User) => {
         resolve(user);
       }).catch((error) => {
+        reject(error);
+      });
+    });
+  }
+
+  resetPassword(email) {
+    return new Promise((resolve, reject) => {
+      if (firebase.apps.length < 1) {
+        this.init();
+      }
+      firebase.auth().sendPasswordResetEmail(email).then(() => {
+        resolve();
+      }, (error) => {
         reject(error);
       });
     });
