@@ -21327,6 +21327,10 @@ page-start body {
   position: fixed !important;
 }
 
+page-start ion-card-header {
+  background-color: #ececec !important;
+}
+
 page-start ion-content {
   background-color: #387ef5 !important;
 }
@@ -21383,4 +21387,8 @@ page-start .slid-up {
   transition: 0.3s ease-in-out;
   -webkit-transform: translateY(-15%);
   transform: translateY(-15%);
+}
+
+page-start .item-inner, page-start .item, page-start .input {
+  padding: 0 !important;
 }

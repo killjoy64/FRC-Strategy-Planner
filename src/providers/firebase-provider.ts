@@ -25,7 +25,7 @@ export class FirebaseService {
 
     firebase.initializeApp(fbConf);
 
-    this.db = firebase.database().ref('/');
+    this.db = firebase.database();
 
     DebugLogger.log(LoggerLevel.INFO, "Firebase successfully initialized");
   }

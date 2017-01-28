@@ -7,6 +7,10 @@ page-start {
     position: fixed !important;
   }
 
+  ion-card-header {
+    background-color: #ececec !important;
+  }
+
   ion-content {
     background-color: #387ef5 !important;
   }
@@ -60,6 +64,10 @@ page-start {
     -ms-transform: translateY(-15%);
     -o-transform: translateY(-15%);
     transform: translateY(-15%);
+  }
+
+  .item-inner, .item, .input {
+    padding: 0 !important;
   }
 
 }

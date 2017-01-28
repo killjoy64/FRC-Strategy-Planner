@@ -58,7 +58,6 @@ export class AppDirectory {
         // Making sure everything else is initialized
         this.createDirs();
         this.checkConfig();
-        this.loadConfig();
       }
 
     }
@@ -92,7 +91,12 @@ export class AppDirectory {
       }
       if (bool == false) {
         DebugLogger.log(LoggerLevel.WARN, "CONFIG NOT FOUND - CREATING CONFIG");
-        File.writeFile(this.config, "config.json", JSON.stringify(Config.getJSON()), []).then((fileEntry) => {
+
+        let config = {
+          "team_number": Config.TEAM_NUMBER
+        };
+
+        File.writeFile(this.config, "config.json", JSON.stringify(config), []).then((fileEntry) => {
           DebugLogger.log(LoggerLevel.INFO, "CREATED DEFAULT CONFIG SUCCESSFULLY");
         }).catch((err) => {
           DebugLogger.log(LoggerLevel.ERROR, err.message);
@@ -100,7 +104,12 @@ export class AppDirectory {
       }
     }).catch((err:FileError) => {
       DebugLogger.log(LoggerLevel.INFO, "CONFIG NOT FOUND - CREATING CONFIG");
-      File.writeFile(this.config, "config.json", JSON.stringify(Config.getJSON()), []).then((fileEntry) => {
+
+      let config = {
+        "team_number": Config.TEAM_NUMBER
+      };
+
+      File.writeFile(this.config, "config.json", JSON.stringify(config), []).then((fileEntry) => {
         DebugLogger.log(LoggerLevel.INFO, "CREATED DEFAULT CONFIG SUCCESSFULLY");
       }).catch((err) => {
         DebugLogger.log(LoggerLevel.ERROR, err.message);
@@ -120,7 +129,7 @@ export class AppDirectory {
   public static saveConfig() {
     let config = {
       "team_number": Config.TEAM_NUMBER
-    }
+    };
     File.writeFile(this.config, "config.json", JSON.stringify(config), { replace: true }).then((fileEntry) => {
       DebugLogger.log(LoggerLevel.INFO, "SAVED CONFIG SETTINGS SUCCESSFULLY");
     }).catch((err) => {
@@ -136,7 +145,7 @@ export class AppDirectory {
     return this.cache;
   }
 
-  public static getConfigDir() {
+  public static getConfDir() {
     return this.config;
   }
 
