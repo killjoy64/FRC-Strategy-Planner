@@ -1,7 +1,12 @@
 page-field {
 
-  body {
+  ion-content {
     background-color: #084533 !important;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0;
   }
 
   #canvas-img {

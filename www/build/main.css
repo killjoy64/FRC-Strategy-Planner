@@ -21496,8 +21496,13 @@ page-start .item-inner, page-start .item, page-start .input {
   }
 }
 
-page-field body {
+page-field ion-content {
   background-color: #084533 !important;
+}
+
+page-field canvas {
+  position: absolute;
+  top: 0;
 }
 
 page-field #canvas-img {

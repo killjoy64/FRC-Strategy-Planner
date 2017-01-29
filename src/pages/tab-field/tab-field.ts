@@ -27,11 +27,11 @@ export class FieldPage {
 
   ionViewDidEnter() {
     this.content = document.getElementById("content");
-    this.canvas_img = document.getElementById("canvas-img")
+    this.canvas_img = document.getElementById("canvas-img");
     this.canvas_manager = new Canvas(this.content, this.canvas_img);
     setTimeout(() => {
       this.canvas_manager.resize();
-    }, 50);
+    }, 100);
   }
 
 }
