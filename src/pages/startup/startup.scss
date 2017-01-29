@@ -74,4 +74,81 @@ page-start {
     padding: 0 !important;
   }
 
+  /* START MEDIA QUERIES */
+  @media only screen and (max-height: 1024px)  {
+    #logo {
+      margin-top: 20%;
+    }
+    #login-partial {
+      margin-top: 77%;
+    }
+    #create-partial {
+      margin-top: 77%;
+    }
+    #reset-partial {
+      margin-top: 77%;
+    }
+  }
+
+  @media only screen and (max-height: 736px)  {
+    #logo {
+      margin-top: 12.5%;
+    }
+    #login-partial {
+      margin-top: 72%;
+    }
+    #create-partial {
+      margin-top: 72%;
+    }
+    #reset-partial {
+      margin-top: 72%;
+    }
+  }
+
+  @media only screen and (max-height: 667px)  {
+    #logo {
+      margin-top: 12.5%;
+    }
+    #login-partial {
+      margin-top: 67.5%;
+    }
+
+    #create-partial {
+      margin-top: 67.5%;
+    }
+    #reset-partial {
+      margin-top: 67.5%;
+    }
+  }
+
+  @media only screen and (max-height: 640px)  {
+    #logo {
+      margin-top: 10%;
+    }
+    #login-partial {
+      margin-top: 67.5%;
+    }
+    #create-partial {
+      margin-top: 67.5%;
+    }
+    #reset-partial {
+      margin-top: 67.5%;
+    }
+  }
+
+  @media only screen and (max-height: 568px)  {
+    #logo {
+      margin-top: 5%;
+    }
+    #login-partial {
+      margin-top: 55%;
+    }
+    #create-partial {
+      margin-top: 55%;
+    }
+    #reset-partial {
+      margin-top: 55%;
+    }
+  }
+
 }

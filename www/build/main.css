@@ -21340,6 +21340,10 @@ body.keyboard-is-open .scroll-content {
   padding: 0 !important;
 }
 
+page-start {
+  /* START MEDIA QUERIES */
+}
+
 page-start body {
   width: 100vw !important;
   height: 100vh !important;
@@ -21415,4 +21419,88 @@ page-start .slid-up {
 
 page-start .item-inner, page-start .item, page-start .input {
   padding: 0 !important;
+}
+
+@media only screen and (max-height: 1024px) {
+  page-start #logo {
+    margin-top: 20%;
+  }
+  page-start #login-partial {
+    margin-top: 77%;
+  }
+  page-start #create-partial {
+    margin-top: 77%;
+  }
+  page-start #reset-partial {
+    margin-top: 77%;
+  }
+}
+
+@media only screen and (max-height: 736px) {
+  page-start #logo {
+    margin-top: 12.5%;
+  }
+  page-start #login-partial {
+    margin-top: 72%;
+  }
+  page-start #create-partial {
+    margin-top: 72%;
+  }
+  page-start #reset-partial {
+    margin-top: 72%;
+  }
+}
+
+@media only screen and (max-height: 667px) {
+  page-start #logo {
+    margin-top: 12.5%;
+  }
+  page-start #login-partial {
+    margin-top: 67.5%;
+  }
+  page-start #create-partial {
+    margin-top: 67.5%;
+  }
+  page-start #reset-partial {
+    margin-top: 67.5%;
+  }
+}
+
+@media only screen and (max-height: 640px) {
+  page-start #logo {
+    margin-top: 10%;
+  }
+  page-start #login-partial {
+    margin-top: 67.5%;
+  }
+  page-start #create-partial {
+    margin-top: 67.5%;
+  }
+  page-start #reset-partial {
+    margin-top: 67.5%;
+  }
+}
+
+@media only screen and (max-height: 568px) {
+  page-start #logo {
+    margin-top: 5%;
+  }
+  page-start #login-partial {
+    margin-top: 55%;
+  }
+  page-start #create-partial {
+    margin-top: 55%;
+  }
+  page-start #reset-partial {
+    margin-top: 55%;
+  }
+}
+
+page-field body {
+  background-color: #084533 !important;
+}
+
+page-field #canvas-img {
+  width: 100vw;
+  left: 0;
 }
