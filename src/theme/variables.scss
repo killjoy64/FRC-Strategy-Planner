@@ -35,7 +35,15 @@ $colors: (
   color: #387ef5;
 }
 
+.primary-bg {
+  background-color: #387ef5;
+}
+
 .secondary {
+  color: #32db64;
+}
+
+.secondary-bg {
   color: #32db64;
 }
 
@@ -43,12 +51,24 @@ $colors: (
   color: #f53d3d;
 }
 
+.danger-bg {
+  background-color: #f53d3d;
+}
+
 .light {
   color: #f4f4f4;
 }
 
+.light-bg {
+  background-color: #f4f4f4;
+}
+
 .dark {
   color: #222;
+}
+
+.dark-bg {
+  background-color: #222;
 }
 
 // App iOS Variables

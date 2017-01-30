@@ -41,4 +41,16 @@ page-field {
     z-index: 101;
   }
 
+  .button-md {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+  }
+
+  @media only screen and (max-height: 1024px)  {
+    .button {
+      height: 66px !important;
+    }
+  }
+
 }
