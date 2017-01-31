@@ -21559,6 +21559,10 @@ page-field #canvas-img img {
   margin-right: auto;
 }
 
+page-field .active-menu {
+  background-color: #1a5087;
+}
+
 page-field .button {
   z-index: 101;
 }
@@ -21567,8 +21571,60 @@ page-field .button-md {
   box-shadow: none;
 }
 
+page-field .palette {
+  z-index: 99;
+  position: absolute;
+  width: 100vw;
+  min-height: 50vh;
+  top: 0;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease-in-out;
+}
+
+page-field .palette-up {
+  opacity: 0.0;
+  -webkit-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+
+page-field .palette-down {
+  opacity: 1.0;
+  -webkit-transform: translateY(0%);
+  transform: translateY(0%);
+}
+
+@media only screen and (max-height: 1366px) {
+  page-field .button {
+    height: 6.5rem !important;
+  }
+  page-field .palette {
+    top: 4.5em;
+  }
+}
+
 @media only screen and (max-height: 1024px) {
   page-field .button {
-    height: 66px !important;
+    height: 6.5rem !important;
+  }
+  page-field .palette {
+    top: 4.8em;
+  }
+}
+
+@media only screen and (max-height: 736px) {
+  page-field .button {
+    height: 4.2rem !important;
+  }
+  page-field .palette {
+    top: 3.0em;
+  }
+}
+
+@media only screen and (max-height: 640px) {
+  page-field .button {
+    height: 3.6rem !important;
+  }
+  page-field .palette {
+    top: 2.5em;
   }
 }

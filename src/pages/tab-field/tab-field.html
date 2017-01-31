@@ -1,27 +1,45 @@
 <ion-content id="content">
 
   <div id="canvas-menu" class="primary-bg">
-    <button ion-button>
+    <button id="view-btn" ion-button (click)="openViewPalette()" class="menu-button">
       <span class="fa fa-hand-paper-o"></span>
     </button>
-    <button ion-button>
+    <button id="draw-btn" ion-button (click)="openDrawPalette()" class="menu-button">
       <span class="fa fa-pencil"></span>
     </button>
-    <button ion-button>
+    <button id="field-btn" ion-button (click)="openFieldPalette()" class="menu-button">
       <span class="fa fa-futbol-o"></span>
     </button>
-    <button ion-button>
+    <button id="robot-btn" ion-button (click)="openRobotPalette()" class="menu-button">
       <span class="fa fa-android"></span>
     </button>
-    <button ion-button>
+    <button id="save-btn" ion-button (click)="openSavePalette()" class="menu-button">
       <span class="fa fa-save"></span>
     </button>
-    <button ion-button>
+    <button id="open-btn" ion-button (click)="openFilePalette()" class="menu-button">
       <span class="fa fa-folder-open"></span>
     </button>
   </div>
 
   <ion-img id="canvas-img" src="assets/2017-field.jpg"></ion-img>
-  <canvas></canvas>
+  <canvas (click)="resetPalettes()"></canvas>
+
+  <div id="draw-palette" class="palette palette-up">
+    <div class="palette-header">
+      <span>Draw Menu</span>
+    </div>
+  </div>
+
+  <div id="field-palette" class="palette palette-up">
+    <div class="palette-header">
+      <span>Field Menu</span>
+    </div>
+  </div>
+
+  <div id="robot-palette" class="palette palette-up">
+    <div class="palette-header">
+      <span>Robot Menu</span>
+    </div>
+  </div>
 
 </ion-content>

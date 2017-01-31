@@ -4,6 +4,7 @@
 
 export class Canvas {
 
+  menu: any;
   canvas: any;
   context: any;
   content: any;
@@ -11,6 +12,7 @@ export class Canvas {
   img: any;
 
   constructor(content, img) {
+    this.menu = document.getElementById("canvas-menu");
     this.canvas = document.querySelector("canvas");
     this.context = this.canvas.getContext("2d");
     this.content = content;
@@ -25,6 +27,9 @@ export class Canvas {
     this.canvas.setAttribute("height", totalHeight + "px");
     this.canvas.setAttribute("width", totalWidth + "px");
     this.canvas.style.left = this.img.offsetLeft + "px";
+
+    this.canvas.style.top = this.menu.clientHeight + "px";
+    this.canvas_img.style.marginTop = this.menu.clientHeight + "px";
   }
 
 }
