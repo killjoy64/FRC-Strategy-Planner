@@ -57,6 +57,7 @@ page-field {
     width: 100vw;
     min-height: 50vh;
     top: 0;
+    padding: 10px;
     background-color: #f9f9f9;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -98,6 +99,7 @@ page-field {
     }
     .palette {
       top: 4.8em;
+      padding: 15px;
     }
   }
 

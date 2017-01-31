@@ -33,29 +33,34 @@ export class FieldPage {
     this.canvas_manager = new Canvas(this.content, this.canvas_img);
     setTimeout(() => {
       this.canvas_manager.resize();
+      this.openViewPalette();
     }, 100);
   }
 
   public openViewPalette() {
     this.last_palette = "view-palette";
     this.resetPalettes();
+    this.resetMenuButtons();
     document.getElementById("view-btn").classList.add("active-menu");
   }
 
   public openDrawPalette() {
     this.resetPalettes();
+    this.resetMenuButtons();
     this.openPalette("draw-palette");
     document.getElementById("draw-btn").classList.add("active-menu");
   }
 
   public openFieldPalette() {
     this.resetPalettes();
+    this.resetMenuButtons();
     this.openPalette("field-palette");
     document.getElementById("field-btn").classList.add("active-menu");
   }
 
   public openRobotPalette() {
     this.resetPalettes();
+    this.resetMenuButtons();
     this.openPalette("robot-palette");
     document.getElementById("robot-btn").classList.add("active-menu");
   }
@@ -63,6 +68,7 @@ export class FieldPage {
   public openSavePalette() {
     this.last_palette = "save-palette";
     this.resetPalettes();
+    this.resetMenuButtons();
     document.getElementById("save-btn").classList.add("active-menu");
     this.saveCanvas();
   }
@@ -70,9 +76,11 @@ export class FieldPage {
   public openFilePalette() {
     this.last_palette = "file-palette";
     this.resetPalettes();
+    this.resetMenuButtons();
     document.getElementById("open-btn").classList.add("active-menu");
     this.openFileModal();
   }
+
 
   private resetPalettes() {
     let palettes = document.getElementsByClassName("palette");
@@ -81,7 +89,9 @@ export class FieldPage {
       palettes[i].classList.remove("palette-down");
       palettes[i].classList.add("palette-up");
     }
+  }
 
+  private resetMenuButtons() {
     let buttons = document.getElementsByClassName("menu-button");
 
     for (let i = 0; i < buttons.length; i++) {
@@ -90,15 +100,14 @@ export class FieldPage {
   }
 
   private openPalette(id) {
-    this.resetPalettes();
-
     if (this.last_palette != id) {
       let palette = document.getElementById(id);
       palette.classList.remove("palette-up");
       palette.classList.add("palette-down");
+      this.last_palette = id;
+    } else {
+      this.last_palette = "null";
     }
-
-    this.last_palette = id;
   }
 
   saveCanvas() {
