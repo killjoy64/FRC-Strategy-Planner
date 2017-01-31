@@ -64,6 +64,11 @@ page-field {
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
+    font-family: cursive;
+  }
+
+  .palette-header {
+    font-size: 1.5em;
   }
 
   .palette-up {
@@ -91,6 +96,9 @@ page-field {
     .palette {
       top: 4.5em;
     }
+    .palette-header {
+      font-size: 2.5em;
+    }
   }
 
   @media only screen and (max-height: 1024px)  {
@@ -101,6 +109,9 @@ page-field {
       top: 4.8em;
       padding: 15px;
     }
+    .palette-header {
+      font-size: 2.0em;
+    }
   }
 
   @media only screen and (max-height: 736px)  {
@@ -110,6 +121,9 @@ page-field {
     .palette {
       top: 3.0em;
     }
+    .palette-header {
+      font-size: 1.75em;
+    }
   }
 
   @media only screen and (max-height: 640px)  {
@@ -118,6 +132,9 @@ page-field {
     }
     .palette {
       top: 2.5em;
+    }
+    .palette-header {
+      font-size: 1.5em;
     }
   }
 

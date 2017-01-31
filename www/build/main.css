@@ -21580,6 +21580,11 @@ page-field .palette {
   padding: 10px;
   background-color: #f9f9f9;
   transition: all 0.3s ease-in-out;
+  font-family: cursive;
+}
+
+page-field .palette-header {
+  font-size: 1.5em;
 }
 
 page-field .palette-up {
@@ -21601,6 +21606,9 @@ page-field .palette-down {
   page-field .palette {
     top: 4.5em;
   }
+  page-field .palette-header {
+    font-size: 2.5em;
+  }
 }
 
 @media only screen and (max-height: 1024px) {
@@ -21611,6 +21619,9 @@ page-field .palette-down {
     top: 4.8em;
     padding: 15px;
   }
+  page-field .palette-header {
+    font-size: 2.0em;
+  }
 }
 
 @media only screen and (max-height: 736px) {
@@ -21620,6 +21631,9 @@ page-field .palette-down {
   page-field .palette {
     top: 3.0em;
   }
+  page-field .palette-header {
+    font-size: 1.75em;
+  }
 }
 
 @media only screen and (max-height: 640px) {
@@ -21628,5 +21642,8 @@ page-field .palette-down {
   }
   page-field .palette {
     top: 2.5em;
+  }
+  page-field .palette-header {
+    font-size: 1.5em;
   }
 }

@@ -2,9 +2,9 @@
  * Created by Kyle Flynn on 1/26/2017.
  */
 
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, Content } from 'ionic-angular';
 import { ConnectionManager } from "../../util/connection-manager";
 import { Canvas } from "./canvas";
 
@@ -13,6 +13,8 @@ import { Canvas } from "./canvas";
   templateUrl: 'tab-field.html'
 })
 export class FieldPage {
+
+  @ViewChild(Content) page_content: Content;
 
   connection: ConnectionManager;
 
@@ -23,6 +25,8 @@ export class FieldPage {
 
   last_palette: any;
 
+  draw_mode: string;
+
   constructor(public navCtrl: NavController) {
     this.connection = new ConnectionManager();
   }
@@ -30,7 +34,7 @@ export class FieldPage {
   ionViewDidEnter() {
     this.content = document.getElementById("content");
     this.canvas_img = document.getElementById("canvas-img");
-    this.canvas_manager = new Canvas(this.content, this.canvas_img);
+    this.canvas_manager = new Canvas(this.page_content, this.content, this.canvas_img);
     setTimeout(() => {
       this.canvas_manager.resize();
       this.openViewPalette();
@@ -41,6 +45,7 @@ export class FieldPage {
     this.last_palette = "view-palette";
     this.resetPalettes();
     this.resetMenuButtons();
+    this.canvas_manager.updateMode("view");
     document.getElementById("view-btn").classList.add("active-menu");
   }
 
@@ -48,6 +53,7 @@ export class FieldPage {
     this.resetPalettes();
     this.resetMenuButtons();
     this.openPalette("draw-palette");
+    this.canvas_manager.updateMode("draw");
     document.getElementById("draw-btn").classList.add("active-menu");
   }
 
@@ -55,6 +61,7 @@ export class FieldPage {
     this.resetPalettes();
     this.resetMenuButtons();
     this.openPalette("field-palette");
+    this.canvas_manager.updateMode("field");
     document.getElementById("field-btn").classList.add("active-menu");
   }
 
@@ -62,6 +69,7 @@ export class FieldPage {
     this.resetPalettes();
     this.resetMenuButtons();
     this.openPalette("robot-palette");
+    this.canvas_manager.updateMode("robot");
     document.getElementById("robot-btn").classList.add("active-menu");
   }
 
@@ -81,6 +89,9 @@ export class FieldPage {
     this.openFileModal();
   }
 
+  public updateDrawMode() {
+    this.canvas_manager.updateMode(this.draw_mode);
+  }
 
   private resetPalettes() {
     let palettes = document.getElementsByClassName("palette");
@@ -89,6 +100,7 @@ export class FieldPage {
       palettes[i].classList.remove("palette-down");
       palettes[i].classList.add("palette-up");
     }
+    this.canvas_manager.setEditable(true);
   }
 
   private resetMenuButtons() {
@@ -104,6 +116,7 @@ export class FieldPage {
       let palette = document.getElementById(id);
       palette.classList.remove("palette-up");
       palette.classList.add("palette-down");
+      this.canvas_manager.setEditable(false);
       this.last_palette = id;
     } else {
       this.last_palette = "null";
