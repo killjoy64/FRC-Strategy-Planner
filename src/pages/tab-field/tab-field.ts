@@ -7,6 +7,7 @@ import { Component, ViewChild } from '@angular/core';
 import { NavController, Content } from 'ionic-angular';
 import { ConnectionManager } from "../../util/connection-manager";
 import { Canvas } from "./canvas";
+import { Style } from "../../util/style";
 
 @Component({
   selector: 'page-field',
@@ -27,17 +28,34 @@ export class FieldPage {
 
   draw_mode: string;
 
+  color: string;
+  red: number;
+  green: number;
+  blue: number;
+  size: number;
+
   constructor(public navCtrl: NavController) {
     this.connection = new ConnectionManager();
+
+    this.color = "";
+    this.red = 0;
+    this.green = 0;
+    this.blue = 0;
+    this.size = 3;
+    this.draw_mode = "pencil";
   }
 
   ionViewDidEnter() {
     this.content = document.getElementById("content");
     this.canvas_img = document.getElementById("canvas-img");
     this.canvas_manager = new Canvas(this.page_content, this.content, this.canvas_img);
+
+    this.updateColor();
+    this.updateSize();
     setTimeout(() => {
       this.canvas_manager.resize();
       this.openViewPalette();
+      Style.fadeIn("canvas-img");
     }, 100);
   }
 
@@ -90,7 +108,7 @@ export class FieldPage {
   }
 
   public updateDrawMode() {
-    this.canvas_manager.updateMode(this.draw_mode);
+    this.canvas_manager.setDrawMode(this.draw_mode);
   }
 
   private resetPalettes() {
@@ -112,6 +130,7 @@ export class FieldPage {
   }
 
   private openPalette(id) {
+    console.log(this.last_palette + " | " + id);
     if (this.last_palette != id) {
       let palette = document.getElementById(id);
       palette.classList.remove("palette-up");
@@ -129,6 +148,16 @@ export class FieldPage {
 
   openFileModal() {
 
+  }
+
+  updateSize() {
+    this.canvas_manager.updateSize(this.size);
+  }
+
+  updateColor() {
+    this.canvas_manager.updateColor(this.red, this.green, this.blue);
+    this.color = "rgb(" + this.red + "," + this.green + "," + this.blue + ")";
+    document.getElementById("color-val").style.background = this.color;
   }
 
 }

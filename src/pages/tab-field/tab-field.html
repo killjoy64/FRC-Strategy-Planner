@@ -21,12 +21,48 @@
     </button>
   </div>
 
-  <ion-img id="canvas-img" src="assets/2017-field.jpg"></ion-img>
+  <img id="canvas-img" class="hidden" src="assets/2017-field.jpg" cache="true" />
   <canvas (tap)="resetPalettes()"></canvas>
 
   <div id="draw-palette" class="palette palette-up">
     <div class="palette-header">
       <span>Draw Menu</span>
+    </div>
+    <div class="palette-content">
+      <div class="flex-content">
+        <ion-range min="0" max="255" [(ngModel)]="red" color="red" color="danger" class="flex-content-item" (ionChange)="updateColor()">
+          <ion-label range-left color="danger">R</ion-label>
+          <ion-label range-right color="danger">{{ red }}</ion-label>
+        </ion-range>
+        <ion-range min="0" max="255" [(ngModel)]="green" color="green" color="secondary" class="flex-content-item" (ionChange)="updateColor()">
+          <ion-label range-left color="secondary">G</ion-label>
+          <ion-label range-right color="secondary">{{ green }}</ion-label>
+        </ion-range>
+      </div>
+      <div class="flex-content">
+        <ion-range min="0" max="255" [(ngModel)]="blue" color="blue" color="primary" class="flex-content-item" (ionChange)="updateColor()">
+          <ion-label range-left color="primary">B</ion-label>
+          <ion-label range-right color="primary">{{ blue }}</ion-label>
+        </ion-range>
+        <ion-range min="1" max="10" [(ngModel)]="size" class="flex-content-item" (ionChange)="updateSize()">
+          <ion-label range-left color="primary">Size</ion-label>
+          <ion-label range-right color="primary">{{ size }}</ion-label>
+        </ion-range>
+      </div>
+      <ion-segment [(ngModel)]="draw_mode" color="primary" (ionChange)="updateDrawMode()">
+        <ion-segment-button value="pencil">
+          Pencil
+        </ion-segment-button>
+        <ion-segment-button value="line">
+          Line
+        </ion-segment-button>
+        <ion-segment-button value="eraser">
+          Eraser
+        </ion-segment-button>
+      </ion-segment>
+      <div id="color-val">
+
+      </div>
     </div>
   </div>
 

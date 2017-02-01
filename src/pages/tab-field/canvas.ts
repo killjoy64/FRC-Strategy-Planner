@@ -13,12 +13,17 @@ export class Canvas {
   context: any;
   content: any;
   canvas_img: any;
-  img: any;
 
   mode: string;
   drawMode: string;
 
   can_edit: boolean;
+
+  color: string;
+  red: number;
+  green: number;
+  blue: number;
+  size: number;
 
   constructor(contentRef, content, img) {
     this.page_content = contentRef;
@@ -27,10 +32,15 @@ export class Canvas {
     this.context = this.canvas.getContext("2d");
     this.content = content;
     this.canvas_img = img;
-    this.img = this.canvas_img.querySelector("img");
     this.mode = null;
     this.drawMode = null;
     this.can_edit = false;
+
+    this.color = "";
+    this.red = 0;
+    this.green = 0;
+    this.blue = 0;
+    this.size = 3;
 
     this.bindListeners();
   }
@@ -41,9 +51,17 @@ export class Canvas {
         if (this.mode == "draw") {
           this.startDrawing(e);
         } else if (this.mode == "field") {
-          this.drawObject();
+          this.drawObject(e);
         } else if (this.mode == "robot") {
-          this.drawTeam();
+          this.drawTeam(e);
+        }
+      } else {
+        if (this.mode == "draw") {
+          e.preventDefault();
+        } else if (this.mode == "field") {
+          e.preventDefault();
+        } else if (this.mode = "robot") {
+          e.preventDefault();
         }
       }
     });
@@ -52,6 +70,14 @@ export class Canvas {
       if (this.can_edit) {
         if (this.mode == "draw") {
           this.drawPoint(e);
+        }
+      } else {
+        if (this.mode == "draw") {
+          e.preventDefault();
+        } else if (this.mode == "field") {
+          e.preventDefault();
+        } else if (this.mode = "robot") {
+          e.preventDefault();
         }
       }
     });
@@ -66,12 +92,12 @@ export class Canvas {
   }
 
   public resize() {
-    let totalHeight = this.img.clientHeight;
-    let totalWidth = this.img.clientWidth;
+    let totalHeight = this.canvas_img.clientHeight;
+    let totalWidth = this.canvas_img.clientWidth;
     this.canvas_img.style.height = totalHeight + "px";
     this.canvas.setAttribute("height", totalHeight + "px");
     this.canvas.setAttribute("width", totalWidth + "px");
-    this.canvas.style.left = this.img.offsetLeft + "px";
+    this.canvas.style.left = this.canvas_img.offsetLeft + "px";
 
     this.canvas.style.top = this.menu.clientHeight + "px";
     this.canvas_img.style.marginTop = this.menu.clientHeight + "px";
@@ -85,21 +111,31 @@ export class Canvas {
     this.mode = mode;
   }
 
-  public setDrawMode(mode) {
-    if (mode == "pencil") {
+  public setDrawMode(draw_mode) {
+    if (draw_mode == "pencil") {
       this.context.globalCompositeOperation = "source-over";
-    } else if (mode == "line") {
+    } else if (draw_mode == "line") {
       // TODO - Implement line tool
-    } else if (mode == "eraser") {
+    } else if (draw_mode == "eraser") {
       this.context.globalCompositeOperation = "destination-out";
     }
   }
 
-  private drawTeam() {
+  public updateColor(r, g, b) {
+    let color = "rgb(" + r + "," + g + "," + b + ")";
+    this.context.strokeStyle = color;
+    this.context.fillStyle = color;
+  }
+
+  public updateSize(size) {
+    this.size = size;
+  }
+
+  private drawTeam(e) {
 
   }
 
-  private drawObject() {
+  private drawObject(e) {
 
   }
 
@@ -109,11 +145,9 @@ export class Canvas {
 
   private drawPoint(e) {
     e.preventDefault();
-    // this.updateColor();
-    let x = e.touches[0].pageX;
+    let x = e.touches[0].pageX - this.canvas_img.offsetLeft;
     let y = e.touches[0].pageY - this.menu.clientHeight + this.page_content.scrollTop;
-    // let r = this.size;
-    let r = 2;
+    let r = this.size;
     this.context.lineTo(x, y);
     this.context.stroke();
     this.context.beginPath();
@@ -127,6 +161,5 @@ export class Canvas {
   private endDrawing() {
     this.context.beginPath();
   }
-
 
 }

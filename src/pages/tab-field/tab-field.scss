@@ -4,6 +4,10 @@ page-field {
     background-color: #084533 !important;
   }
 
+  ion-range {
+    padding: 0 !important;
+  }
+
   canvas {
     margin-left: auto;
     margin-right: auto;
@@ -27,14 +31,16 @@ page-field {
   }
 
   #canvas-img {
+    position: absolute;
     background-color: #084533 !important;
     width: 100vw;
     left: 0;
   }
 
-  #canvas-img img {
-    margin-left: auto;
-    margin-right: auto;
+  #color-val {
+    border: 1px solid #999999;
+    margin-top: 25px;
+    height: 5vh !important;
   }
 
   .active-menu {
@@ -53,7 +59,7 @@ page-field {
 
   .palette {
     z-index: 99;
-    position: absolute;
+    position: fixed;
     width: 100vw;
     min-height: 50vh;
     top: 0;
@@ -69,6 +75,19 @@ page-field {
 
   .palette-header {
     font-size: 1.5em;
+  }
+
+  .palette-content {
+    font-size: 1.1em;
+  }
+
+  .flex-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .flex-content-item {
+    width: 100%;
   }
 
   .palette-up {
@@ -90,6 +109,13 @@ page-field {
   }
 
   @media only screen and (max-height: 1366px)  {
+    ion-range {
+      padding: 10px !important;
+    }
+    #canvas-img {
+      width: 60vw;
+      left: 20vw;
+    }
     .button {
       height: 6.5rem !important;
     }
@@ -99,9 +125,23 @@ page-field {
     .palette-header {
       font-size: 2.5em;
     }
+    .palette-content {
+      font-size: 2.0em;
+    }
+    .flex-content {
+      display: flex;
+      flex-direction: row;
+    }
   }
 
   @media only screen and (max-height: 1024px)  {
+    ion-range {
+      padding: 10px 16px !important;
+    }
+    #canvas-img {
+      width: 80vw;
+      left: 10vw;
+    }
     .button {
       height: 6.5rem !important;
     }
@@ -112,9 +152,23 @@ page-field {
     .palette-header {
       font-size: 2.0em;
     }
+    .palette-content {
+      font-size: 1.5em;
+    }
+    .flex-content {
+      display: flex;
+      flex-direction: row;
+    }
   }
 
   @media only screen and (max-height: 736px)  {
+    ion-range {
+      padding: 0 !important;
+    }
+    #canvas-img {
+      width: 100vw;
+      left: 0;
+    }
     .button {
       height: 4.2rem !important;
     }
@@ -124,9 +178,23 @@ page-field {
     .palette-header {
       font-size: 1.75em;
     }
+    .palette-content {
+      font-size: 1.3em;
+    }
+    .flex-content {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   @media only screen and (max-height: 640px)  {
+    ion-range {
+      padding: 0 !important;
+    }
+    #canvas-img {
+      width: 100vw;
+      left: 0;
+    }
     .button {
       height: 3.6rem !important;
     }
@@ -135,6 +203,13 @@ page-field {
     }
     .palette-header {
       font-size: 1.5em;
+    }
+    .palette-content {
+      font-size: 1.1em;
+    }
+    .flex-content {
+      display: flex;
+      flex-direction: column;
     }
   }
 

@@ -21520,6 +21520,10 @@ page-field ion-content {
   background-color: #084533 !important;
 }
 
+page-field ion-range {
+  padding: 0 !important;
+}
+
 page-field canvas {
   margin-left: auto;
   margin-right: auto;
@@ -21549,14 +21553,16 @@ page-field #canvas-menu {
 }
 
 page-field #canvas-img {
+  position: absolute;
   background-color: #084533 !important;
   width: 100vw;
   left: 0;
 }
 
-page-field #canvas-img img {
-  margin-left: auto;
-  margin-right: auto;
+page-field #color-val {
+  border: 1px solid #999999;
+  margin-top: 25px;
+  height: 5vh !important;
 }
 
 page-field .active-menu {
@@ -21573,7 +21579,7 @@ page-field .button-md {
 
 page-field .palette {
   z-index: 99;
-  position: absolute;
+  position: fixed;
   width: 100vw;
   min-height: 50vh;
   top: 0;
@@ -21585,6 +21591,23 @@ page-field .palette {
 
 page-field .palette-header {
   font-size: 1.5em;
+}
+
+page-field .palette-content {
+  font-size: 1.1em;
+}
+
+page-field .flex-content {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
+page-field .flex-content-item {
+  width: 100%;
 }
 
 page-field .palette-up {
@@ -21600,6 +21623,13 @@ page-field .palette-down {
 }
 
 @media only screen and (max-height: 1366px) {
+  page-field ion-range {
+    padding: 10px !important;
+  }
+  page-field #canvas-img {
+    width: 60vw;
+    left: 20vw;
+  }
   page-field .button {
     height: 6.5rem !important;
   }
@@ -21609,9 +21639,27 @@ page-field .palette-down {
   page-field .palette-header {
     font-size: 2.5em;
   }
+  page-field .palette-content {
+    font-size: 2.0em;
+  }
+  page-field .flex-content {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
 }
 
 @media only screen and (max-height: 1024px) {
+  page-field ion-range {
+    padding: 10px 16px !important;
+  }
+  page-field #canvas-img {
+    width: 80vw;
+    left: 10vw;
+  }
   page-field .button {
     height: 6.5rem !important;
   }
@@ -21622,9 +21670,27 @@ page-field .palette-down {
   page-field .palette-header {
     font-size: 2.0em;
   }
+  page-field .palette-content {
+    font-size: 1.5em;
+  }
+  page-field .flex-content {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
 }
 
 @media only screen and (max-height: 736px) {
+  page-field ion-range {
+    padding: 0 !important;
+  }
+  page-field #canvas-img {
+    width: 100vw;
+    left: 0;
+  }
   page-field .button {
     height: 4.2rem !important;
   }
@@ -21634,9 +21700,27 @@ page-field .palette-down {
   page-field .palette-header {
     font-size: 1.75em;
   }
+  page-field .palette-content {
+    font-size: 1.3em;
+  }
+  page-field .flex-content {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+  }
 }
 
 @media only screen and (max-height: 640px) {
+  page-field ion-range {
+    padding: 0 !important;
+  }
+  page-field #canvas-img {
+    width: 100vw;
+    left: 0;
+  }
   page-field .button {
     height: 3.6rem !important;
   }
@@ -21645,5 +21729,16 @@ page-field .palette-down {
   }
   page-field .palette-header {
     font-size: 1.5em;
+  }
+  page-field .palette-content {
+    font-size: 1.1em;
+  }
+  page-field .flex-content {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
   }
 }
