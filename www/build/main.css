@@ -21543,6 +21543,20 @@ page-field ion-fab {
   border-radius: 20px !important;
 }
 
+page-field ion-select {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+page-field ion-select button {
+  height: 0 !important;
+  width: 0 !important;
+}
+
+page-field .select-icon {
+  width: 18px !important;
+}
+
 page-field #canvas-menu {
   position: fixed;
   display: -webkit-flex;
@@ -21569,6 +21583,26 @@ page-field #color-val {
   border: 1px solid #999999;
   margin-top: 25px;
   height: 5vh !important;
+}
+
+page-field #manual-controls {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+
+page-field #manual-controls button {
+  width: 50px !important;
+  margin: 5px !important;
 }
 
 page-field .active-menu {
@@ -21646,6 +21680,69 @@ page-field .fixed-fab {
 page-field .fab {
   z-index: 10 !important;
   border-radius: 20px !important;
+}
+
+page-field .field-item-row {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  height: 75px;
+  width: 100%;
+}
+
+page-field .field-item {
+  width: 75px;
+  height: 75px;
+  padding: 3px;
+  border: 2px solid #FFFFFF;
+}
+
+page-field .field-item > img {
+  width: 100%;
+  height: 100%;
+}
+
+page-field .selected {
+  border: 2px solid #0d81ff !important;
+  border-radius: 5px;
+}
+
+page-field .robot-row {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 3px;
+  border: 2px solid #FFFFFF;
+}
+
+page-field .robot {
+  width: 33%;
+  text-align: center;
+}
+
+page-field .red-robot {
+  color: #f30d0d;
+}
+
+page-field .blue-robot {
+  color: #0d81ff;
+}
+
+page-field .selected-robot {
+  border: 2px solid #0d81ff !important;
+  border-radius: 5px;
 }
 
 @media only screen and (max-height: 1366px) {

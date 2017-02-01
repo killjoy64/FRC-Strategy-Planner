@@ -29,6 +29,20 @@ page-field {
     border-radius: 20px !important;
   }
 
+  ion-select {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  ion-select button {
+    height: 0 !important;
+    width: 0 !important;
+  }
+
+  .select-icon {
+    width: 18px !important;
+  }
+
   #canvas-menu {
     position: fixed;
     display: flex;
@@ -49,6 +63,18 @@ page-field {
     border: 1px solid #999999;
     margin-top: 25px;
     height: 5vh !important;
+  }
+
+  #manual-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+  }
+
+  #manual-controls button {
+    width: 50px !important;
+    margin: 5px !important;
   }
 
   .active-menu {
@@ -136,6 +162,57 @@ page-field {
     -webkit-border-radius: 20px !important;
     -moz-border-radius: 20px !important;
     border-radius: 20px !important;
+  }
+
+  .field-item-row {
+    display: flex;
+    flex-direction: row;
+    height: 75px;
+    width: 100%;
+  }
+
+  .field-item {
+    width: 75px;
+    height: 75px;
+    padding: 3px;
+    border: 2px solid #FFFFFF;
+  }
+
+  .field-item > img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .selected {
+    border: 2px solid #0d81ff !important;
+    border-radius: 5px;
+  }
+
+  .robot-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    border: 2px solid #FFFFFF;
+  }
+
+  .robot {
+    width: 33%;
+    text-align: center;
+  }
+
+  .red-robot {
+    color: #f30d0d;
+  }
+
+  .blue-robot {
+    color: #0d81ff;
+  }
+
+  .selected-robot {
+    border: 2px solid #0d81ff !important;
+    border-radius: 5px;
   }
 
   @media only screen and (max-height: 1366px)  {

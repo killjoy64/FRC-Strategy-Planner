@@ -28,6 +28,9 @@ export class Canvas {
   blue: number;
   size: number;
 
+  current_object: any;
+  current_team: any;
+
   constructor(contentRef, content, img) {
     this.page_content = contentRef;
     this.menu = document.getElementById("canvas-menu");
@@ -52,7 +55,6 @@ export class Canvas {
 
   private bindListeners() {
     this.canvas.addEventListener("touchstart", (e) => {
-      console.log(this.mode + " | " + this.drawMode);
       if (this.can_edit) {
         if (this.mode == "draw") {
           if (this.drawMode == "pencil" || this.drawMode == "eraser") {
@@ -142,6 +144,8 @@ export class Canvas {
 
   public setDrawMode(draw_mode) {
     this.drawMode = draw_mode;
+    this.started_line = false;
+    this.drawing_line = false;
 
     if (draw_mode == "pencil") {
       this.context.globalCompositeOperation = "source-over";
@@ -162,12 +166,54 @@ export class Canvas {
     this.size = size;
   }
 
-  private drawTeam(e) {
+  public setObject(e) {
+    this.current_object = e;
+  }
 
+  public setTeam(e) {
+    this.current_team = e;
+  }
+
+  private drawTeam(e) {
+    if (this.current_team) {
+      let x = e.touches[0].pageX - this.canvas_img.offsetLeft;
+      let y = e.touches[0].pageY - this.menu.clientHeight + this.page_content.scrollTop;
+
+      if (this.current_team.alliance == "red-robot") {
+        this.context.fillStyle = "#ee0002";
+      } else {
+        this.context.fillStyle = "#2e74eb";
+      }
+
+      /* Get the width, in pixels, of the text */
+      let textWidth = this.context.measureText(this.current_team.team_number).width;
+      let width = 40;
+      let height = 30;
+
+      this.context.font = "12px arial";
+      this.context.textAlign = "center";
+      this.context.textBaseline = "middle";
+      this.context.fillRect(x - (width/2), y - (height/2), width, height);
+      this.context.fillStyle = "#ffffff";
+      this.context.fillText(this.current_team.team_number, x, y, width);
+    }
   }
 
   private drawObject(e) {
+    if (this.current_object) {
+      let self = this;
+      let x = e.touches[0].pageX - this.canvas_img.offsetLeft;
+      let y = e.touches[0].pageY - this.menu.clientHeight + this.page_content.scrollTop;
 
+      /* Since context is defined within canvas, we replaced it's image with our saved one */
+      let img = document.createElement('img');
+      img.setAttribute("src", this.current_object.getAttribute("src"));
+      img.addEventListener("load", () => {
+        let w = img.height * .08;
+        let h = img.height * .08;
+        self.context.drawImage(img, x - (w/2), y - (h/2), w, h);
+      });
+    }
   }
 
   private startLine(e) {

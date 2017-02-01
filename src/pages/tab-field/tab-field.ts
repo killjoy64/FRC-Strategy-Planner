@@ -4,7 +4,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 
-import { NavController, Content } from 'ionic-angular';
+import { Content, AlertController } from 'ionic-angular';
 import { ConnectionManager } from "../../util/connection-manager";
 import { Canvas } from "./canvas";
 import { Style } from "../../util/style";
@@ -20,7 +20,6 @@ export class FieldPage {
   connection: ConnectionManager;
 
   canvas_manager: Canvas;
-
   content: any;
   canvas_img: any;
 
@@ -34,7 +33,11 @@ export class FieldPage {
   blue: number;
   size: number;
 
-  constructor(public navCtrl: NavController) {
+  team_number: number;
+  team_alliance: string;
+  teams: any;
+
+  constructor(private alertCtrl: AlertController) {
     this.connection = new ConnectionManager();
 
     this.color = "";
@@ -43,6 +46,9 @@ export class FieldPage {
     this.blue = 0;
     this.size = 3;
     this.draw_mode = "pencil";
+    this.teams = [];
+    this.team_number = null;
+    this.team_alliance = null;
   }
 
   ionViewDidEnter() {
@@ -131,9 +137,8 @@ export class FieldPage {
   }
 
   private openPalette(id) {
-    console.log(this.last_palette + " | " + id);
+    let palette = document.getElementById(id);
     if (this.last_palette != id) {
-      let palette = document.getElementById(id);
       palette.classList.remove("palette-up");
       palette.classList.add("palette-down");
       this.canvas_manager.setEditable(false);
@@ -152,11 +157,82 @@ export class FieldPage {
   }
 
   clearCanvas() {
-    this.canvas_manager.clearCanvas();
+    let alert = this.alertCtrl.create({
+      title: 'Confirm Clear',
+      message: 'Are you sure you want to clear the field of everything?',
+      buttons: [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {}
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.canvas_manager.clearCanvas();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   undoCanvas() {
 
+  }
+
+  setObject(e) {
+    let items = document.getElementsByClassName("field-item");
+    for (let i = 0; i < items.length; i++) {
+      items[i].classList.remove("selected");
+    }
+    let item = e.path[1];
+    if (!item.classList.contains("field-item-row")) {
+      item.classList.add("selected");
+    }
+    let img = item.querySelector("img");
+    this.resetPalettes();
+    this.draw_mode = "pencil";
+    this.updateDrawMode();
+    this.canvas_manager.setObject(img);
+  }
+
+  addTeam() {
+    if (this.team_number && this.team_alliance) {
+      if (this.teams.length >= 6) {
+        this.teams.pop();
+      }
+      this.teams.unshift({
+        "team_number": this.team_number,
+        "alliance": this.team_alliance
+      });
+
+      setTimeout(()=> {
+        let manRobots = document.getElementById("manual-robots");
+        let robotItems = manRobots.getElementsByClassName("robot");
+
+        for (let i = 0; i < this.teams.length; i++) {
+          if (!robotItems[i].classList.contains(this.teams[i].alliance)) {
+            robotItems[i].classList.remove(this.teams[i].alliance == "red-robot" ? "blue-robot" : "red-robot");
+            robotItems[i].classList.add(this.teams[i].alliance);
+          }
+        }
+      }, 50);
+
+    }
+  }
+
+  setTeam(t, e) {
+    let teams = document.getElementsByClassName("robot");
+    for (let i = 0; i < teams.length; i++) {
+      teams[i].classList.remove("selected-robot");
+    }
+
+    let team = e.path[0];
+    if (!team.classList.contains("selected-robot")) {
+      team.classList.add("selected-robot");
+    }
+    this.canvas_manager.setTeam(t);
   }
 
   updateSize() {

@@ -79,11 +79,59 @@
     <div class="palette-header">
       <span>Field Menu</span>
     </div>
+    <div class="palette-content">
+      <div class="field-item-row">
+        <div class="field-item" (click)="setObject($event)">
+          <img src="assets/objects/2017/gear.png"/>
+        </div>
+        <div class="field-item" (click)="setObject($event)">
+          <img src="assets/objects/2017/wiffle_ball.png"/>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="robot-palette" class="palette palette-up">
     <div class="palette-header">
       <span>Robot Menu</span>
+    </div>
+    <div class="palette-content">
+      <div id="manual-controls">
+        <ion-input [(ngModel)]="team_number" type="number" placeholder="e.g. 3618"></ion-input>
+        <ion-select [(ngModel)]="team_alliance" placeholder="Choose Alliance">
+          <ion-option value="red-robot">Red Alliance</ion-option>
+          <ion-option value="blue-robot">Blue Alliance</ion-option>
+        </ion-select>
+        <button ion-button icon-only (click)="addTeam()">
+          <ion-icon name="add"></ion-icon>
+        </button>
+      </div>
+      <div>
+      </div>
+      <div id="manual-robots">
+        <div class="robot-row">
+          <div class="robot" (click)="setTeam(teams[0], $event)" *ngIf="teams[0]">
+            {{ teams[0].team_number }}
+          </div>
+          <div class="robot" (click)="setTeam(teams[1], $event)" *ngIf="teams[1]">
+            {{ teams[1].team_number }}
+          </div>
+          <div class="robot" (click)="setTeam(teams[2], $event)" *ngIf="teams[2]">
+            {{ teams[2].team_number }}
+          </div>
+        </div>
+        <div class="robot-row">
+          <div class="robot" (click)="setTeam(teams[3], $event)" *ngIf="teams[3]">
+            {{ teams[3].team_number }}
+          </div>
+          <div class="robot" (click)="setTeam(teams[4], $event)" *ngIf="teams[4]">
+            {{ teams[4].team_number }}
+          </div>
+          <div class="robot" (click)="setTeam(teams[5], $event)" *ngIf="teams[5]">
+            {{ teams[5].team_number }}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
