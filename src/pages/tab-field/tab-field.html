@@ -24,6 +24,15 @@
   <img id="canvas-img" class="hidden" src="assets/2017-field.jpg" cache="true" />
   <canvas (tap)="resetPalettes()"></canvas>
 
+  <div>
+    <ion-fab id="undo" right top class="fixed-fab">
+      <button ion-fab mini color="light" (click)="undoCanvas()"><span class="fa fa-undo"></span></button>
+    </ion-fab>
+    <ion-fab id="clear" right top class="fixed-fab">
+      <button ion-fab mini color="light" (click)="clearCanvas()"><span class="fa fa-trash"></span></button>
+    </ion-fab>
+  </div>
+
   <div id="draw-palette" class="palette palette-up">
     <div class="palette-header">
       <span>Draw Menu</span>

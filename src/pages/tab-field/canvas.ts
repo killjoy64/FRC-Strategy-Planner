@@ -19,6 +19,9 @@ export class Canvas {
 
   can_edit: boolean;
 
+  started_line: boolean;
+  drawing_line: boolean;
+
   color: string;
   red: number;
   green: number;
@@ -35,6 +38,8 @@ export class Canvas {
     this.mode = null;
     this.drawMode = null;
     this.can_edit = false;
+    this.started_line = false;
+    this.drawing_line = false;
 
     this.color = "";
     this.red = 0;
@@ -47,9 +52,18 @@ export class Canvas {
 
   private bindListeners() {
     this.canvas.addEventListener("touchstart", (e) => {
+      console.log(this.mode + " | " + this.drawMode);
       if (this.can_edit) {
         if (this.mode == "draw") {
-          this.startDrawing(e);
+          if (this.drawMode == "pencil" || this.drawMode == "eraser") {
+            this.startDrawing(e);
+          } else if (this.drawMode == "line") {
+            if (this.started_line) {
+              this.endLine(e);
+            } else {
+              this.startLine(e);
+            }
+          }
         } else if (this.mode == "field") {
           this.drawObject(e);
         } else if (this.mode == "robot") {
@@ -69,7 +83,11 @@ export class Canvas {
     this.canvas.addEventListener("touchmove", (e) => {
       if (this.can_edit) {
         if (this.mode == "draw") {
-          this.drawPoint(e);
+          if (this.drawMode == "pencil" || this.drawMode == "eraser") {
+            this.drawPoint(e);
+          } else if (this.drawMode == "line") {
+            this.drawing_line = true;
+          }
         }
       } else {
         if (this.mode == "draw") {
@@ -85,10 +103,20 @@ export class Canvas {
     this.canvas.addEventListener("touchend", (e) => {
       if (this.can_edit) {
         if (this.mode == "draw") {
-          this.endDrawing();
+          if (this.drawMode == "pencil" || this.drawMode == "eraser") {
+            this.endDrawing();
+          } else if (this.drawMode == "line") {
+            if (this.started_line && this.drawing_line) {
+              this.endLine(e);
+            }
+          }
         }
       }
     });
+  }
+
+  public clearCanvas() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   public resize() {
@@ -109,9 +137,12 @@ export class Canvas {
 
   public updateMode(mode) {
     this.mode = mode;
+    this.started_line = false;
   }
 
   public setDrawMode(draw_mode) {
+    this.drawMode = draw_mode;
+
     if (draw_mode == "pencil") {
       this.context.globalCompositeOperation = "source-over";
     } else if (draw_mode == "line") {
@@ -137,6 +168,27 @@ export class Canvas {
 
   private drawObject(e) {
 
+  }
+
+  private startLine(e) {
+    e.preventDefault();
+    let x = e.touches[0].pageX - this.canvas_img.offsetLeft;
+    let y = e.touches[0].pageY - this.menu.clientHeight + this.page_content.scrollTop;
+    this.context.beginPath();
+    this.context.moveTo(x, y);
+    this.started_line = true;
+  }
+
+  private endLine(e) {
+    e.preventDefault();
+    let x = e.changedTouches[0].pageX - this.canvas_img.offsetLeft;
+    let y = e.changedTouches[0].pageY - this.menu.clientHeight + this.page_content.scrollTop;
+    let r = this.size;
+    this.context.lineWidth = r * 2;
+    this.context.lineTo(x, y);
+    this.context.stroke();
+    this.drawing_line = false;
+    this.started_line = false;
   }
 
   private startDrawing(e) {

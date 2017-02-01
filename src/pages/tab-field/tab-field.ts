@@ -71,6 +71,7 @@ export class FieldPage {
     this.resetPalettes();
     this.resetMenuButtons();
     this.openPalette("draw-palette");
+    this.updateDrawMode();
     this.canvas_manager.updateMode("draw");
     document.getElementById("draw-btn").classList.add("active-menu");
   }
@@ -147,6 +148,14 @@ export class FieldPage {
   }
 
   openFileModal() {
+
+  }
+
+  clearCanvas() {
+    this.canvas_manager.clearCanvas();
+  }
+
+  undoCanvas() {
 
   }
 

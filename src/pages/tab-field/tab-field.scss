@@ -21,6 +21,14 @@ page-field {
     width: 100% !important;
   }
 
+  ion-fab {
+    margin: 8px !important;
+    width: 40px !important;
+    -webkit-border-radius: 20px !important;
+    -moz-border-radius: 20px !important;
+    border-radius: 20px !important;
+  }
+
   #canvas-menu {
     position: fixed;
     display: flex;
@@ -108,6 +116,28 @@ page-field {
     transform: translateY(0%);
   }
 
+  #undo {
+    top: 8vh;
+    right: 0;
+  }
+
+  #clear {
+    top: 15vh;
+    right: 0;
+  }
+
+  .fixed-fab {
+    position: fixed;
+    z-index: 10 !important;
+  }
+
+  .fab {
+    z-index: 10 !important;
+    -webkit-border-radius: 20px !important;
+    -moz-border-radius: 20px !important;
+    border-radius: 20px !important;
+  }
+
   @media only screen and (max-height: 1366px)  {
     ion-range {
       padding: 10px !important;
@@ -115,6 +145,14 @@ page-field {
     #canvas-img {
       width: 60vw;
       left: 20vw;
+    }
+    #undo {
+      top: 8vh;
+      right: 3vh;
+    }
+    #clear {
+      top: 12vh;
+      right: 3vh;
     }
     .button {
       height: 6.5rem !important;
@@ -141,6 +179,14 @@ page-field {
     #canvas-img {
       width: 80vw;
       left: 10vw;
+    }
+    #undo {
+      top: 8vh;
+      right: 2vh;
+    }
+    #clear {
+      top: 15vh;
+      right: 2vh;
     }
     .button {
       height: 6.5rem !important;
@@ -169,6 +215,14 @@ page-field {
       width: 100vw;
       left: 0;
     }
+    #undo {
+      top: 8vh;
+      right: 0;
+    }
+    #clear {
+      top: 15vh;
+      right: 0;
+    }
     .button {
       height: 4.2rem !important;
     }
@@ -194,6 +248,14 @@ page-field {
     #canvas-img {
       width: 100vw;
       left: 0;
+    }
+    #undo {
+      top: 8vh;
+      right: 0;
+    }
+    #clear {
+      top: 15vh;
+      right: 0;
     }
     .button {
       height: 3.6rem !important;
