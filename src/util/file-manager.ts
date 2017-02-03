@@ -1,4 +1,4 @@
-import {File, FileError, Entry} from "ionic-native";
+import { File, FileError, Entry, FileReader } from "ionic-native";
 import { DebugLogger, LoggerLevel } from "./debug-logger";
 import { Platform } from "ionic-angular";
 import { Config } from "./config";
@@ -28,10 +28,67 @@ export class FileWriter {
 
 }
 
-export class FileReader {
+export class FileGetter {
 
   public static readPermFile(location, file_name) {
+    if (!Config.IS_BROWSER) {
+      let fileEntry = null;
+      let fileEntries:Entry[] = null;
 
+      let promise = File.listDir(AppDirectory.getPermDir(), location).then((entries:Entry[]) => {
+        fileEntries = entries;
+
+        for (let i = 0; i < fileEntries.length; i++) {
+          if (fileEntries[i].name == file_name) {
+            fileEntry = fileEntries[i];
+            break;
+          }
+        }
+
+        let data = new Promise((resolve, reject) => {
+
+          if (fileEntry) {
+            fileEntry.file(function (file) {
+              var reader = new FileReader();
+
+              reader.onloadend = function() {
+                // team.team_notes = this.result;
+                resolve(this.result);
+              };
+
+              reader.readAsText(file);
+
+            }, function(error) {
+              reject(error);
+            });
+          } else {
+            reject({
+              code: "FILE_NOT_FOUND",
+              message: "Could not find file in directory " + location + "."
+            });
+          }
+
+        });
+
+        return data;
+
+      }).catch((err:FileError) => {
+        fileEntries = null;
+        DebugLogger.log(LoggerLevel.ERROR, "Error Listing Contents - " + err.message);
+        return null;
+      });
+
+      return promise;
+    } else {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject({
+            code: "APP_CONFIG_BROWSER_MODE",
+            message: "Could not read file. The app had trouble loading native features. Browser mode is ON."
+          });
+        }, 100);
+      });
+    }
   }
 
   public static getFiles(location) {

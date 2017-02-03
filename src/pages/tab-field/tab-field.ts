@@ -4,11 +4,11 @@
 
 import { Component, ViewChild } from '@angular/core';
 
-import { Content, AlertController, ToastController, ModalController } from 'ionic-angular';
+import {Content, AlertController, ToastController, ModalController, LoadingController} from 'ionic-angular';
 import { ConnectionManager } from "../../util/connection-manager";
 import { Canvas } from "./canvas";
 import { Style } from "../../util/style";
-import { FileWriter } from "../../util/file-manager";
+import {FileWriter, FileGetter} from "../../util/file-manager";
 import { LoggerLevel, DebugLogger } from "../../util/debug-logger";
 import {FieldFilesModal} from "../../modals/field-files-modal/field-files-modal";
 
@@ -40,8 +40,12 @@ export class FieldPage {
   team_alliance: string;
   teams: any;
 
-  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController, private modalCtrl: ModalController) {
+  strategy_file: any;
+
+  constructor(private alertCtrl: AlertController, private loadCtrl: LoadingController, private toastCtrl: ToastController, private modalCtrl: ModalController) {
     this.connection = new ConnectionManager();
+    this.connection.setAlertController(alertCtrl);
+    this.connection.setLoadController(loadCtrl);
 
     this.color = "";
     this.red = 0;
@@ -192,7 +196,19 @@ export class FieldPage {
   openFileModal() {
     let fileModal = this.modalCtrl.create(FieldFilesModal);
     fileModal.onDidDismiss(data => {
-      console.log(data);
+      if (data.file) {
+        DebugLogger.log(LoggerLevel.INFO, "Loading file " + data.file.name);
+        this.connection.showLoader("Loading file...", 5000);
+        FileGetter.readPermFile("strategy-files", data.file.name).then((base_image) => {
+          this.canvas_manager.loadCanvas(base_image).then(() => {
+            this.connection.hideLoader();
+          });
+          DebugLogger.log(LoggerLevel.INFO, "Loaded strategy file " + data.file.name);
+        }, (err) => {
+          this.connection.hideLoader();
+          DebugLogger.log(LoggerLevel.ERROR, data.file.name + ": " + err.message + " Code " + err.code);
+        });
+      }
       this.openViewPalette();
     });
     fileModal.present();

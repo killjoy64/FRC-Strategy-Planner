@@ -121,6 +121,21 @@ export class Canvas {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
+  public loadCanvas(base_image) {
+    return new Promise((resolve) => {
+      let img = document.createElement('img');
+      img.setAttribute("src", base_image);
+      img.addEventListener("load", () => {
+        this.clearCanvas();
+        setTimeout(() => {
+          this.context.drawImage(img, 0, 0);
+          resolve();
+          // this.saveState();
+        }, 150);
+      });
+    });
+  }
+
   public resize() {
     let totalHeight = this.canvas_img.clientHeight;
     let totalWidth = this.canvas_img.clientWidth;
@@ -184,7 +199,7 @@ export class Canvas {
       } else {
         this.context.fillStyle = "#2e74eb";
       }
-      
+
       let width = 40;
       let height = 30;
 

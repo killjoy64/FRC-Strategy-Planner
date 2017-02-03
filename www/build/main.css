@@ -21360,12 +21360,24 @@ body.keyboard-is-open .scroll-content {
   padding: 0 !important;
 }
 
+page-field-modal .open {
+  font-size: 1.0em !important;
+}
+
 page-field-modal .toolbar-background {
   background-color: #387ef5;
 }
 
 page-field-modal .toolbar-title {
   color: #f4f4f4 !important;
+}
+
+page-field-modal .file-name {
+  font-size: 1.7em;
+}
+
+page-field-modal .file-path {
+  font-size: 0.8em;
 }
 
 page-start {

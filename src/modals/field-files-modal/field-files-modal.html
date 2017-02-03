@@ -18,7 +18,14 @@
   </div>
 
   <div *ngIf="strategy_files">
-
+    <ion-list>
+      <ion-item *ngFor="let file of strategy_files" text-wrap>
+        <div class="file-name">{{ file.name }}</div>
+        <div class="file-path" *ngIf="file.modificationTime">Last Modified: {{ file.modificationTime.getMonth() + 1 }}/{{ file.modificationTime.getDate() }}/{{ file.modificationTime.getFullYear() }} - {{ file.modificationTime.toLocaleTimeString() }}</div>
+        <div class="file-path" *ngIf="file.size">Size: {{ file.size*0.001 }} KB</div>
+        <button ion-button clear item-right class="open" (click)="selectAndDismiss(file)">Open</button>
+      </ion-item>
+    </ion-list>
   </div>
 
 </ion-content>
