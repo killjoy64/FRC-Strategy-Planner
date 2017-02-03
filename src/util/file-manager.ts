@@ -1,13 +1,55 @@
-import { File, FileError } from "ionic-native";
+import {File, FileError, Entry} from "ionic-native";
 import { DebugLogger, LoggerLevel } from "./debug-logger";
 import { Platform } from "ionic-angular";
-import {Config} from "./config";
+import { Config } from "./config";
 /**
  * Created by Kyle Flynn on 1/25/2017.
  */
 
 /* Once cordova.js is invoked, this variable will actually mean something */
 declare var cordova: any;
+
+export class FileWriter {
+
+  public static writePermFile(location, file_name, data) {
+    if (!Config.IS_BROWSER) {
+      return File.writeFile(AppDirectory.getPermDir() + location + "/", file_name, data, { replace: true });
+    } else {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject({
+            code: "APP_CONFIG_BROWSER_MODE",
+            message: "Could not write file. The app had trouble loading native features. Browser mode is ON."
+          });
+        }, 100);
+      });
+    }
+  }
+
+}
+
+export class FileReader {
+
+  public static readPermFile(location, file_name) {
+
+  }
+
+  public static getFiles(location) {
+    if (!Config.IS_BROWSER) {
+      return File.listDir(AppDirectory.getPermDir(), location);
+    } else {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject({
+            code: "APP_CONFIG_BROWSER_MODE",
+            message: "Could not list directory contents. The app had trouble loading native features. Browser mode is ON."
+          });
+        }, 100);
+      });
+    }
+  }
+
+}
 
 export class AppDirectory {
 

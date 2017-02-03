@@ -4,10 +4,13 @@
 
 import { Component, ViewChild } from '@angular/core';
 
-import { Content, AlertController } from 'ionic-angular';
+import { Content, AlertController, ToastController, ModalController } from 'ionic-angular';
 import { ConnectionManager } from "../../util/connection-manager";
 import { Canvas } from "./canvas";
 import { Style } from "../../util/style";
+import { FileWriter } from "../../util/file-manager";
+import { LoggerLevel, DebugLogger } from "../../util/debug-logger";
+import {FieldFilesModal} from "../../modals/field-files-modal/field-files-modal";
 
 @Component({
   selector: 'page-field',
@@ -37,7 +40,7 @@ export class FieldPage {
   team_alliance: string;
   teams: any;
 
-  constructor(private alertCtrl: AlertController) {
+  constructor(private alertCtrl: AlertController, private toastCtrl: ToastController, private modalCtrl: ModalController) {
     this.connection = new ConnectionManager();
 
     this.color = "";
@@ -149,11 +152,50 @@ export class FieldPage {
   }
 
   saveCanvas() {
-
+    let alert = this.alertCtrl.create({
+      title: 'Save',
+      message: 'Enter the name of the file you wish to save:',
+      inputs: [
+        {
+          name: 'fileName',
+          placeholder: 'qual_1'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {}
+        },
+        {
+          text: 'Save',
+          handler: (data) => {
+            alert.dismiss().then(() => {
+              FileWriter.writePermFile("strategy-files", data.fileName + ".strat", this.canvas_manager.canvas.toDataURL("image/png")).then((file) => {
+                this.showToast("Saved strategy file " + file.name);
+                this.openViewPalette();
+                DebugLogger.log(LoggerLevel.INFO, "Saved strategy file " + file.name);
+              }, (err) => {
+                this.showToast(err.message);
+                this.openViewPalette();
+                DebugLogger.log(LoggerLevel.ERROR, data.fileName + ".strat: " + err.message + " Code " + err.code);
+              });
+            });
+            return false;
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   openFileModal() {
-
+    let fileModal = this.modalCtrl.create(FieldFilesModal);
+    fileModal.onDidDismiss(data => {
+      console.log(data);
+      this.openViewPalette();
+    });
+    fileModal.present();
   }
 
   clearCanvas() {
@@ -179,6 +221,16 @@ export class FieldPage {
 
   undoCanvas() {
 
+  }
+
+  showToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      showCloseButton: true,
+      duration: 1500,
+      position: 'bottom',
+    });
+    return toast.present();
   }
 
   setObject(e) {

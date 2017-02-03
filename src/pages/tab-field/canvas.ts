@@ -184,9 +184,7 @@ export class Canvas {
       } else {
         this.context.fillStyle = "#2e74eb";
       }
-
-      /* Get the width, in pixels, of the text */
-      let textWidth = this.context.measureText(this.current_team.team_number).width;
+      
       let width = 40;
       let height = 30;
 

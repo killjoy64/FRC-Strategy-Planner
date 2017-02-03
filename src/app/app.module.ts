@@ -11,6 +11,8 @@ import { SettingsPage } from '../pages/tab-settings/tab-settings';
 import { CloudPage } from '../pages/tab-my-cloud/tab-my-cloud';
 import { StartupPage } from '../pages/startup/startup';
 
+import { FieldFilesModal } from '../modals/field-files-modal/field-files-modal';
+
 const cloudSettings: CloudSettings = {
   'core': {
     'app_id': 'add5520f'
@@ -25,7 +27,8 @@ const cloudSettings: CloudSettings = {
     FieldPage,
     SettingsPage,
     CloudPage,
-    StartupPage
+    StartupPage,
+    FieldFilesModal
   ],
   imports: [
     IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'}),
@@ -39,7 +42,8 @@ const cloudSettings: CloudSettings = {
     FieldPage,
     SettingsPage,
     CloudPage,
-    StartupPage
+    StartupPage,
+    FieldFilesModal
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
