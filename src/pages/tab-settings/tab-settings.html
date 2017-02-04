@@ -6,6 +6,46 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-
+<ion-content>
+  <ion-list>
+    <ion-item-group>
+      <ion-item-divider color="light">Team Specific</ion-item-divider>
+      <ion-item>
+        <ion-label item-left>Team Number</ion-label>
+        <ion-input [(ngModel)]="team_number" type="number" placeholder="e.g. 5314" item-right class="team-number"></ion-input>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item-divider color="light">About</ion-item-divider>
+      <ion-item>
+        <span>Libraries Used</span>
+        <button item-right ion-button clear (click)="openLibraries()">
+          View
+        </button>
+      </ion-item>
+      <ion-item>
+        <span>Changelog</span>
+        <button item-right ion-button clear (click)="openChangeLog()">
+          View
+        </button>
+      </ion-item>
+      <ion-item>
+        <span>Debug Logger</span>
+        <button item-right ion-button clear (click)="openDebugLog()">
+          View
+        </button>
+      </ion-item>
+      <ion-item>
+        <span>Version</span>
+        <span item-right>v{{ version }}</span>
+      </ion-item>
+      <ion-item>
+      <span>
+        <button ion-button full block (click)="checkForUpdate()">
+        Check for Updates
+        </button>
+      </span>
+      </ion-item>
+    </ion-item-group>
+  </ion-list>
 </ion-content>

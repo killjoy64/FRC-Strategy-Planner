@@ -1,0 +1,49 @@
+page-teams-events {
+  .title-ios {
+    padding: 0 30px 1px;
+  }
+  .scroll-content {
+    padding: 0 !important;
+    overflow-y: hidden !important;
+  }
+  .option-container {
+    width: 100vw;
+    height: 50%;
+    z-index: 10;
+  }
+  .option-overlay {
+    position: absolute;
+    width: 100%;
+    height: inherit;
+    text-align: center;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .option-text {
+    font-family: "Consolas", "Menlo", "Monaco", "Courier New", monospace;
+    width: 100%;
+    font-size: 1.8em !important;
+    background-color: rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 5px;
+  }
+  .filtered-img {
+    width: 100%;
+    height: 100%;
+    filter: blur(1.75px) opacity(90%) contrast(125%);
+    z-index: 15;
+  }
+  .filtered-img img {
+    width: 100%;
+    height: 100%;
+  }
+
+  hidden {
+
+  }
+  visible {
+
+  }
+}

@@ -40,9 +40,8 @@ export class FieldPage {
   team_alliance: string;
   teams: any;
 
-  strategy_file: any;
-
   constructor(private alertCtrl: AlertController, private loadCtrl: LoadingController, private toastCtrl: ToastController, private modalCtrl: ModalController) {
+    this.canvas_manager = new Canvas();
     this.connection = new ConnectionManager();
     this.connection.setAlertController(alertCtrl);
     this.connection.setLoadController(loadCtrl);
@@ -58,18 +57,24 @@ export class FieldPage {
     this.team_alliance = null;
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
+    this.openViewPalette();
+
     this.content = document.getElementById("content");
     this.canvas_img = document.getElementById("canvas-img");
-    this.canvas_manager = new Canvas(this.page_content, this.content, this.canvas_img);
+    this.canvas_manager.init(this.page_content, this.content, this.canvas_img);
+    this.canvas_manager.checkCanCache();
 
     this.updateColor();
     this.updateSize();
     setTimeout(() => {
       this.canvas_manager.resize();
-      this.openViewPalette();
       Style.fadeIn("canvas-img");
     }, 100);
+  }
+
+  ionViewDidLeave() {
+    this.canvas_manager.saveState();
   }
 
   public openViewPalette() {
@@ -236,7 +241,7 @@ export class FieldPage {
   }
 
   undoCanvas() {
-
+    this.canvas_manager.undoState();
   }
 
   showToast(message) {

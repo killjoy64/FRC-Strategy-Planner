@@ -4,8 +4,10 @@
 
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
-import { ConnectionManager } from "../../util/connection-manager";
+import { Config } from "../../util/config";
+import { ModalController } from "ionic-angular";
+import { LibrariesModal } from "../../modals/settings-libraries-modal/settings-libraries-modal";
+import {LoggerModal} from "../../modals/settings-logger-modal/settings-logger-modal";
 
 @Component({
   selector: 'page-settings',
@@ -13,10 +15,30 @@ import { ConnectionManager } from "../../util/connection-manager";
 })
 export class SettingsPage {
 
-  connection: ConnectionManager;
+  team_number: number;
+  version: string;
 
-  constructor(public navCtrl: NavController) {
-    this.connection = new ConnectionManager();
+  constructor(public modalCtrl: ModalController) {
+    this.team_number = Config.TEAM_NUMBER;
+    this.version = Config.VERSION;
+  }
+
+  checkForUpdate() {
+
+  }
+
+  openLibraries() {
+    let libraryModal = this.modalCtrl.create(LibrariesModal);
+    libraryModal.present();
+  }
+
+  openChangeLog() {
+
+  }
+
+  openDebugLog() {
+    let debugModal = this.modalCtrl.create(LoggerModal);
+    debugModal.present();
   }
 
 }

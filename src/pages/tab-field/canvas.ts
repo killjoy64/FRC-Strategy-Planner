@@ -1,4 +1,5 @@
 import { Content } from "ionic-angular";
+import { LoggerLevel, DebugLogger } from "../../util/debug-logger";
 
 /**
  * Created by Kyle Flynn on 1/29/2017.
@@ -28,16 +29,12 @@ export class Canvas {
   blue: number;
   size: number;
 
+  saves: any;
+
   current_object: any;
   current_team: any;
 
-  constructor(contentRef, content, img) {
-    this.page_content = contentRef;
-    this.menu = document.getElementById("canvas-menu");
-    this.canvas = document.querySelector("canvas");
-    this.context = this.canvas.getContext("2d");
-    this.content = content;
-    this.canvas_img = img;
+  constructor() {
     this.mode = null;
     this.drawMode = null;
     this.can_edit = false;
@@ -50,6 +47,17 @@ export class Canvas {
     this.blue = 0;
     this.size = 3;
 
+    this.saves = [];
+  }
+
+  public init(contentRef, content, img) {
+    this.page_content = contentRef;
+    this.menu = document.getElementById("canvas-menu");
+    this.canvas = document.querySelector("canvas");
+    this.context = this.canvas.getContext("2d");
+    this.content = content;
+    this.canvas_img = img;
+
     this.bindListeners();
   }
 
@@ -58,6 +66,7 @@ export class Canvas {
       if (this.can_edit) {
         if (this.mode == "draw") {
           if (this.drawMode == "pencil" || this.drawMode == "eraser") {
+            this.saveState();
             this.startDrawing(e);
           } else if (this.drawMode == "line") {
             if (this.started_line) {
@@ -67,8 +76,10 @@ export class Canvas {
             }
           }
         } else if (this.mode == "field") {
+          this.saveState();
           this.drawObject(e);
         } else if (this.mode == "robot") {
+          this.saveState();
           this.drawTeam(e);
         }
       } else {
@@ -110,6 +121,7 @@ export class Canvas {
           } else if (this.drawMode == "line") {
             if (this.started_line && this.drawing_line) {
               this.endLine(e);
+              this.saveState();
             }
           }
         }
@@ -119,6 +131,35 @@ export class Canvas {
 
   public clearCanvas() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.saves = [];
+  }
+
+  public undoState() {
+    this.context.globalCompositeOperation = "source-over";
+    if (this.saves.length > 0) {
+      let undo = this.saves.pop();
+
+      /* Since context is defined within canvas, we replaced it's image with our saved one */
+      let img = document.createElement('img');
+      img.setAttribute("src", undo);
+      img.addEventListener("load", () => {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.context.drawImage(img, 0, 0);
+      });
+    } else {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+  }
+
+  public saveState() {
+    this.saves.push(this.canvas.toDataURL());
+  }
+
+  public checkCanCache() {
+    if (this.saves.length >= 1) {
+      this.undoState();
+      DebugLogger.log(LoggerLevel.INFO, "Reloaded cached canvas.");
+    }
   }
 
   public loadCanvas(base_image) {
@@ -129,8 +170,8 @@ export class Canvas {
         this.clearCanvas();
         setTimeout(() => {
           this.context.drawImage(img, 0, 0);
+          this.saveState();
           resolve();
-          // this.saveState();
         }, 150);
       });
     });
@@ -139,13 +180,17 @@ export class Canvas {
   public resize() {
     let totalHeight = this.canvas_img.clientHeight;
     let totalWidth = this.canvas_img.clientWidth;
-    this.canvas_img.style.height = totalHeight + "px";
-    this.canvas.setAttribute("height", totalHeight + "px");
-    this.canvas.setAttribute("width", totalWidth + "px");
-    this.canvas.style.left = this.canvas_img.offsetLeft + "px";
 
-    this.canvas.style.top = this.menu.clientHeight + "px";
-    this.canvas_img.style.marginTop = this.menu.clientHeight + "px";
+    if (this.canvas.clientHeight != this.canvas_img.clientHeight) {
+      this.canvas_img.style.height = totalHeight + "px";
+      this.canvas.setAttribute("height", totalHeight + "px");
+      this.canvas.setAttribute("width", totalWidth + "px");
+      this.canvas.style.left = this.canvas_img.offsetLeft + "px";
+
+      this.canvas.style.top = this.menu.clientHeight + "px";
+      this.canvas_img.style.marginTop = this.menu.clientHeight + "px";
+    }
+
   }
 
   public setEditable(editable) {

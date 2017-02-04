@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { ConnectionManager } from "../../util/connection-manager";
+import {Style} from "../../util/style";
 
 @Component({
   selector: 'page-teams-events',

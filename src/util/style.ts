@@ -41,9 +41,11 @@ export class Style {
       document.getElementById(id).classList.remove("hidden");
       document.getElementById(id).classList.add("visible");
       document.getElementById(id).addEventListener("transitionend", () => {
-        setTimeout(() => {
-          resolve();
-        }, 250);
+        if (document.getElementById(id).style.opacity == "1.0") {
+          setTimeout(() => {
+            resolve();
+          }, 250);
+        }
       });
     });
   }

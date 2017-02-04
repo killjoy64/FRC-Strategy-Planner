@@ -21,22 +21,22 @@ export class FRCSP {
 
   constructor(platform: Platform, fb: FirebaseService) {
 
-    this.cm = new ConnectionManager();
-
-    DebugLogger.init();
-    DebugLogger.log(LoggerLevel.INFO, "DebugLogger initialized.");
-
-    this.cm.getConnection().then((connected) => {
-      if (connected) {
-        fb.init();
-      } else {
-        DebugLogger.log(LoggerLevel.WARN, "Could not connect to Firebase.");
-      }
-    });
-
     platform.ready().then(() => {
       StatusBar.styleDefault();
       Splashscreen.hide();
+
+      this.cm = new ConnectionManager();
+
+      DebugLogger.init();
+      DebugLogger.log(LoggerLevel.INFO, "DebugLogger initialized.");
+
+      this.cm.getConnection().then((connected) => {
+        if (connected) {
+          fb.init();
+        } else {
+          DebugLogger.log(LoggerLevel.WARN, "Could not connect to Firebase.");
+        }
+      });
 
       AppDirectory.init(platform);
     });
