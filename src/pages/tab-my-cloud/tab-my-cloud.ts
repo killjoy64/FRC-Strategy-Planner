@@ -4,19 +4,50 @@
 
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 import { ConnectionManager } from "../../util/connection-manager";
+import { Config } from "../../util/config";
+import { AccountLoginModal } from "../../modals/account-login-modal/account-login-modal";
+import { AccountCreateModal } from "../../modals/account-create-modal/account-create-modal";
+import {FirebaseService} from "../../providers/firebase-provider";
 
 @Component({
   selector: 'page-my-cloud',
-  templateUrl: 'tab-my-cloud.html'
+  templateUrl: 'tab-my-cloud.html',
+  providers: [FirebaseService]
 })
 export class CloudPage {
 
   connection: ConnectionManager;
 
-  constructor(public navCtrl: NavController) {
+  user: any;
+
+  constructor(private modalCtrl: ModalController, private fb: FirebaseService) {
     this.connection = new ConnectionManager();
+    this.user = Config.FIREBASE_USER;
+    if (this.user) {
+      this.fb.isAuthorized(this.user.uid);
+    }
+  }
+
+  openLoginModal() {
+    let modal = this.modalCtrl.create(AccountLoginModal);
+    modal.onDidDismiss((data) => {
+      if (data && data.user) {
+        this.user = data.user;
+      }
+    });
+    modal.present();
+  }
+
+  openCreateModal() {
+    let modal = this.modalCtrl.create(AccountCreateModal);
+    modal.onDidDismiss((data) => {
+      if (data && data.user) {
+        this.user = data.user;
+      }
+    });
+    modal.present();
   }
 
 }

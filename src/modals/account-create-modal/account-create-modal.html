@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Create an Account</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="light" (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list inset>
+    <ion-item>
+      <ion-input type="text" placeholder="Name" [(ngModel)]="name"></ion-input>
+      <ion-input type="number" placeholder="Team #" [(ngModel)]="team"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="text" placeholder="Email" [(ngModel)]="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input type="password" placeholder="Password" [(ngModel)]="password"></ion-input>
+    </ion-item>
+    <div>
+      <span *ngIf="invalidMsg" class="danger">{{ invalidMsg }}</span>
+    </div>
+    <div class="buttons">
+      <button ion-button block (click)="validateInfo()">
+        Create Account
+      </button>
+    </div>
+  </ion-list>
+</ion-content>

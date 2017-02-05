@@ -5,12 +5,10 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import { DebugLogger, LoggerLevel } from '../util/debug-logger';
+import { Config } from "../util/config";
 
 @Injectable()
 export class FirebaseService {
-
-  public db: any;
-  public auth: any;
 
   constructor() {
     DebugLogger.log(LoggerLevel.INFO, 'Firebase Service Provider Initialized');
@@ -25,9 +23,6 @@ export class FirebaseService {
     };
 
     firebase.initializeApp(fbConf);
-
-    this.db = firebase.database();
-    this.auth = firebase.auth();
 
     DebugLogger.log(LoggerLevel.INFO, "Firebase successfully initialized");
   }
@@ -44,13 +39,20 @@ export class FirebaseService {
     });
   }
 
-  createUser(email, password) {
+  createUser(email, password, team) {
     return new Promise((resolve, reject) => {
       if (firebase.apps.length < 1) {
         this.init();
       }
       firebase.auth().createUserWithEmailAndPassword(email, password).then((user: firebase.User) => {
-        resolve(user);
+        Config.FIREBASE_USER = user;
+        firebase.database().ref('users/' + user.uid).set({
+          team: team
+        }).then(() => {
+          resolve(user);
+        }, (err) => {
+          reject(err);
+        });
       }).catch((error) => {
         reject(error);
       });
@@ -63,6 +65,7 @@ export class FirebaseService {
         this.init();
       }
       firebase.auth().signInWithEmailAndPassword(email, password).then((user: firebase.User) => {
+        Config.FIREBASE_USER = user;
         resolve(user);
       }).catch((error) => {
         reject(error);
@@ -80,6 +83,16 @@ export class FirebaseService {
       }, (error) => {
         reject(error);
       });
+    });
+  }
+
+  isAuthorized(uid) {
+    let ref = firebase.database().ref("users/" + uid);
+    ref.once("value").then((snapshot) => {
+        // var a = snapshot.exists();  // true
+      if (snapshot.exists()) {
+       console.log(snapshot.val());
+      }
     });
   }
 

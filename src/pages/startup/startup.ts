@@ -126,7 +126,7 @@ export class StartupPage {
     this.connection.showLoader("Connecting to database...", 5000);
 
     try {
-      this.fb.createUser(newEmail, newPass).then((user: firebase.User) => {
+      this.fb.createUser(newEmail, newPass, team).then((user: firebase.User) => {
         this.fb.createTeamAccount(name, newEmail, team, user.uid).then(() => {
           this.connection.hideLoader();
         }).catch((error) => {

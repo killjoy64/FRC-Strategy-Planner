@@ -7,5 +7,19 @@
 </ion-header>
 
 <ion-content padding>
-
+  <div id="logged-out" *ngIf="!user">
+    <div>
+      <ion-icon name="cloud"></ion-icon>
+    </div>
+    <div>
+      <span>You are not currently logged in :(</span>
+    </div>
+    <div>
+      <button ion-button (click)="openLoginModal()">Login to your Account</button>
+      <button ion-button (click)="openCreateModal()">Create an Account</button>
+    </div>
+  </div>
+  <div *ngIf="user">
+    Logged in!!!
+  </div>
 </ion-content>

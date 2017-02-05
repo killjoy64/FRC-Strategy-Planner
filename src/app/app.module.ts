@@ -14,6 +14,8 @@ import { StartupPage } from '../pages/startup/startup';
 import { FieldFilesModal } from '../modals/field-files-modal/field-files-modal';
 import { LibrariesModal } from '../modals/settings-libraries-modal/settings-libraries-modal';
 import { LoggerModal } from '../modals/settings-logger-modal/settings-logger-modal';
+import { AccountCreateModal } from '../modals/account-create-modal/account-create-modal';
+import { AccountLoginModal } from '../modals/account-login-modal/account-login-modal';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -34,7 +36,9 @@ enableProdMode();
     StartupPage,
     FieldFilesModal,
     LibrariesModal,
-    LoggerModal
+    LoggerModal,
+    AccountCreateModal,
+    AccountLoginModal
   ],
   imports: [
     IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'}),
@@ -51,7 +55,9 @@ enableProdMode();
     StartupPage,
     FieldFilesModal,
     LibrariesModal,
-    LoggerModal
+    LoggerModal,
+    AccountCreateModal,
+    AccountLoginModal
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
