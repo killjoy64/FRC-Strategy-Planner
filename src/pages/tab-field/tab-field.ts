@@ -70,7 +70,7 @@ export class FieldPage {
     setTimeout(() => {
       this.canvas_manager.resize();
       Style.fadeIn("canvas-img");
-    }, 100);
+    }, 175);
   }
 
   ionViewDidLeave() {
@@ -204,7 +204,7 @@ export class FieldPage {
       if (data.file) {
         DebugLogger.log(LoggerLevel.INFO, "Loading file " + data.file.name);
         this.connection.showLoader("Loading file...", 5000);
-        FileGetter.readPermFile("strategy-files", data.file.name).then((base_image) => {
+        FileGetter.read("strategy-files", data.file.name).then((base_image) => {
           this.canvas_manager.loadCanvas(base_image).then(() => {
             this.connection.hideLoader();
           });

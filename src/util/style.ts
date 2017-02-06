@@ -50,4 +50,30 @@ export class Style {
     });
   }
 
+  public static fadeInOp(id) {
+    return new Promise((resolve) => {
+      document.getElementById(id).classList.remove("hidden");
+      document.getElementById(id).classList.add("visible");
+      document.getElementById(id).addEventListener("transitionend", () => {
+        if (document.getElementById(id).style.opacity == "1.0") {
+          setTimeout(() => {
+            resolve();
+          }, 250);
+        }
+      });
+    });
+  }
+
+  public static fadeOutOp(id) {
+    return new Promise((resolve) => {
+      document.getElementById(id).classList.remove("visible");
+      document.getElementById(id).classList.add("hidden");
+      document.getElementById(id).addEventListener("transitionend", () => {
+        setTimeout(() => {
+          resolve();
+        }, 250);
+      });
+    });
+  }
+
 }

@@ -1,4 +1,13 @@
 page-teams-events {
+  #teams_search {
+    top: 55%;
+  }
+  #events_search {
+    top: 7.5%;
+  }
+  #events {
+    top: 50%;
+  }
   .title-ios {
     padding: 0 30px 1px;
   }
@@ -7,14 +16,20 @@ page-teams-events {
     overflow-y: hidden !important;
   }
   .option-container {
+    position: absolute;
     width: 100vw;
     height: 50%;
     z-index: 10;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
   }
   .option-overlay {
     position: absolute;
     width: 100%;
-    height: inherit;
+    height: 100%;
     text-align: center;
     z-index: 20;
     display: flex;
@@ -39,11 +54,41 @@ page-teams-events {
     width: 100%;
     height: 100%;
   }
-
-  hidden {
-
+  .search-palette {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 5;
   }
-  visible {
 
+  /* START MEDIA QUERIES */
+  @media only screen and (max-height: 1024px)  {
+    .cancel-btn {
+      width: 30%;
+    }
+  }
+
+  @media only screen and (max-height: 736px)  {
+    .cancel-btn {
+      width: 60%;
+    }
+  }
+
+  @media only screen and (max-height: 667px)  {
+    .cancel-btn {
+      width: 80%;
+    }
+  }
+
+  @media only screen and (max-height: 640px)  {
+    .cancel-btn {
+      width: 80%;
+    }
+  }
+
+  @media only screen and (max-height: 568px)  {
+    .cancel-btn {
+      width: 80%;
+    }
   }
 }

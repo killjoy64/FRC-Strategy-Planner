@@ -10,6 +10,8 @@ import { FieldPage } from '../pages/tab-field/tab-field';
 import { SettingsPage } from '../pages/tab-settings/tab-settings';
 import { CloudPage } from '../pages/tab-my-cloud/tab-my-cloud';
 import { StartupPage } from '../pages/startup/startup';
+import { TeamPage } from '../pages/team/team';
+import { EventPage } from '../pages/event/event';
 
 import { FieldFilesModal } from '../modals/field-files-modal/field-files-modal';
 import { LibrariesModal } from '../modals/settings-libraries-modal/settings-libraries-modal';
@@ -34,6 +36,8 @@ enableProdMode();
     SettingsPage,
     CloudPage,
     StartupPage,
+    TeamPage,
+    EventPage,
     FieldFilesModal,
     LibrariesModal,
     LoggerModal,
@@ -53,6 +57,8 @@ enableProdMode();
     SettingsPage,
     CloudPage,
     StartupPage,
+    TeamPage,
+    EventPage,
     FieldFilesModal,
     LibrariesModal,
     LoggerModal,

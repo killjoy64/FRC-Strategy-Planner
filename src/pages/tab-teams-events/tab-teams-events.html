@@ -7,16 +7,65 @@
 </ion-header>
 
 <ion-content padding>
-  <div class="option-container">
+
+  <div id="teams" class="option-container">
     <div class="option-overlay">
-      <button ion-button clear color="light" class="option-text">Teams</button>
+      <button ion-button clear color="light" class="option-text" (click)="showTeams()">Teams</button>
     </div>
     <ion-img id="team-img"  class="filtered-img" src="assets/teams_picture.jpg"></ion-img>
   </div>
-  <div class="option-container">
+
+  <div id="events"  class="option-container">
     <div class="option-overlay light">
-      <button ion-button clear color="light" class="option-text">Events</button>
+      <button ion-button clear color="light" class="option-text" (click)="showEvents()">Events</button>
     </div>
     <ion-img id="event-img" class="filtered-img" src="assets/events_picture.jpg"></ion-img>
   </div>
+
+  <div id="teams_search" class="search-palette hidden">
+    <ion-card>
+      <ion-card-header class="primary-bg light">Search For FRC Team By Number</ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-input type="number" placeholder="e.g. 4003"></ion-input>
+            </ion-col>
+            <ion-col class="flex-right">
+              <button ion-button>Search</button>
+            </ion-col>
+          </ion-row>
+          <ion-row center>
+            <ion-col class="flex-center">
+              <button ion-button block (click)="resetEventView()" color="danger" class="cancel-btn">Cancel</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+  <div id="events_search" class="search-palette hidden">
+    <ion-card>
+      <ion-card-header class="primary-bg light">Search For FRC Events</ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-input type="number" placeholder="e.g. 4003"></ion-input>
+            </ion-col>
+            <ion-col class="flex-right">
+              <button ion-button>Search</button>
+            </ion-col>
+          </ion-row>
+          <ion-row center>
+            <ion-col class="flex-center">
+              <button ion-button block (click)="resetTeamView()" color="danger" class="cancel-btn">Cancel</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
 </ion-content>

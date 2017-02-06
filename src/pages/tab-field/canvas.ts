@@ -182,7 +182,6 @@ export class Canvas {
     let totalWidth = this.canvas_img.clientWidth;
 
     if (this.canvas.clientHeight != this.canvas_img.clientHeight) {
-      this.canvas_img.style.height = totalHeight + "px";
       this.canvas.setAttribute("height", totalHeight + "px");
       this.canvas.setAttribute("width", totalWidth + "px");
       this.canvas.style.left = this.canvas_img.offsetLeft + "px";

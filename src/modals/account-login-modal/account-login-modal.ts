@@ -5,7 +5,6 @@
 import { Component } from '@angular/core';
 
 import { ViewController, LoadingController, AlertController } from 'ionic-angular';
-import { Config } from "../../util/config";
 import { ConnectionManager } from "../../util/connection-manager";
 import { FirebaseService } from "../../providers/firebase-provider";
 import {DebugLogger, LoggerLevel} from "../../util/debug-logger";

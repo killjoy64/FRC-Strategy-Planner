@@ -1,5 +1,5 @@
 .primary {
-  color: #387ef5;
+  color: #387ef5 !important;
 }
 
 .primary-bg {
@@ -7,7 +7,7 @@
 }
 
 .secondary {
-  color: #32db64;
+  color: #32db64 !important;
 }
 
 .secondary-bg {
@@ -15,7 +15,7 @@
 }
 
 .danger {
-  color: #f53d3d;
+  color: #f53d3d !important;
 }
 
 .danger-bg {
@@ -23,7 +23,7 @@
 }
 
 .light {
-  color: #f4f4f4;
+  color: #f4f4f4 !important;
 }
 
 .light-bg {
@@ -31,7 +31,7 @@
 }
 
 .dark {
-  color: #222;
+  color: #222 !important;
 }
 
 .dark-bg {
@@ -21316,13 +21316,6 @@ sub {
   }
 }
 
-#scroll {
-  color: #ffffff;
-  position: fixed;
-  bottom: 12.5%;
-  right: 5%;
-}
-
 .scroll {
   color: #ffffff;
   position: fixed;
@@ -21340,12 +21333,31 @@ sub {
   transition: all 0.5s ease-in-out;
 }
 
-.display-none {
-  display: none;
+.flex-left {
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-justify-content: flex-start !important;
+  -ms-flex-pack: start !important;
+  justify-content: flex-start !important;
 }
 
-display-block {
-  display: block;
+.flex-right {
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-justify-content: flex-end !important;
+  -ms-flex-pack: end !important;
+  justify-content: flex-end !important;
+}
+
+.flex-center {
+  display: -webkit-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-justify-content: center !important;
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
 }
 
 body.keyboard-is-open .tabbar {
@@ -21782,7 +21794,7 @@ page-field .field-item {
   width: 75px;
   height: 75px;
   padding: 3px;
-  border: 2px solid #FFFFFF;
+  border: 2px solid #f9f9f9;
 }
 
 page-field .field-item > img {
@@ -21809,7 +21821,7 @@ page-field .robot-row {
   -ms-flex-align: center;
   align-items: center;
   padding: 3px;
-  border: 2px solid #FFFFFF;
+  border: 2px solid #f9f9f9;
 }
 
 page-field .robot {
@@ -22010,6 +22022,22 @@ page-settings .text-input {
   text-align: right;
 }
 
+page-teams-events {
+  /* START MEDIA QUERIES */
+}
+
+page-teams-events #teams_search {
+  top: 55%;
+}
+
+page-teams-events #events_search {
+  top: 7.5%;
+}
+
+page-teams-events #events {
+  top: 50%;
+}
+
 page-teams-events .title-ios {
   padding: 0 30px 1px;
 }
@@ -22020,15 +22048,17 @@ page-teams-events .scroll-content {
 }
 
 page-teams-events .option-container {
+  position: absolute;
   width: 100vw;
   height: 50%;
   z-index: 10;
+  transition: all 0.5s ease-in-out;
 }
 
 page-teams-events .option-overlay {
   position: absolute;
   width: 100%;
-  height: inherit;
+  height: 100%;
   text-align: center;
   z-index: 20;
   display: -webkit-flex;
@@ -22062,4 +22092,41 @@ page-teams-events .filtered-img {
 page-teams-events .filtered-img img {
   width: 100%;
   height: 100%;
+}
+
+page-teams-events .search-palette {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 5;
+}
+
+@media only screen and (max-height: 1024px) {
+  page-teams-events .cancel-btn {
+    width: 30%;
+  }
+}
+
+@media only screen and (max-height: 736px) {
+  page-teams-events .cancel-btn {
+    width: 60%;
+  }
+}
+
+@media only screen and (max-height: 667px) {
+  page-teams-events .cancel-btn {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-height: 640px) {
+  page-teams-events .cancel-btn {
+    width: 80%;
+  }
+}
+
+@media only screen and (max-height: 568px) {
+  page-teams-events .cancel-btn {
+    width: 80%;
+  }
 }

@@ -15,13 +15,6 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
-#scroll {
-  color: #ffffff;
-  position: fixed;
-  bottom: 12.5%;
-  right: 5%;
-}
-
 .scroll {
   color: #ffffff;
   position: fixed;
@@ -47,12 +40,19 @@
   transition: all 0.5s ease-in-out;
 }
 
-.display-none {
-  display: none;
+.flex-left {
+  display: flex !important;
+  justify-content: flex-start !important;
 }
 
-display-block {
-  display: block;
+.flex-right {
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+
+.flex-center {
+  display: flex !important;
+  justify-content: center !important;
 }
 
 body.keyboard-is-open .tabbar {

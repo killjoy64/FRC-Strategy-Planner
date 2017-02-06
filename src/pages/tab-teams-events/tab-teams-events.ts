@@ -5,8 +5,7 @@
 import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
-import { ConnectionManager } from "../../util/connection-manager";
-import {Style} from "../../util/style";
+import { Style } from "../../util/style";
 
 @Component({
   selector: 'page-teams-events',
@@ -14,10 +13,40 @@ import {Style} from "../../util/style";
 })
 export class TeamsAndEventsPage {
 
-  connection: ConnectionManager;
+  show_teams: boolean;
+  show_events: boolean;
 
   constructor(public navCtrl: NavController) {
-    this.connection = new ConnectionManager();
+    this.show_teams = false;
+    this.show_events = false;
+  }
+
+  showTeams() {
+    document.getElementById("teams_search").style.display = "block";
+    Style.translateY("events", 100).then(() => {
+      Style.fadeInOp("teams_search");
+    });
+  }
+
+  showEvents() {
+    document.getElementById("events_search").style.display = "block";
+    Style.translateY("teams", -100).then(() => {
+      Style.fadeInOp("events_search");
+    });
+  }
+
+  resetTeamView() {
+    Style.fadeOutOp("events_search").then(() => {
+      document.getElementById("events_search").style.display = "none";
+    });
+    Style.translateY("teams", 0);
+  }
+
+  resetEventView() {
+    Style.fadeOutOp("teams_search").then(() => {
+      document.getElementById("teams_search").style.display = "none";
+    });
+    Style.translateY("events", 0);
   }
 
 }
