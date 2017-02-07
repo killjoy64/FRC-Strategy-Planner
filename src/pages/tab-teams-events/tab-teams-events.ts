@@ -6,19 +6,40 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { Style } from "../../util/style";
+import { TBAService } from "../../../.tmp/providers/tba-service";
+import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 
 @Component({
   selector: 'page-teams-events',
-  templateUrl: 'tab-teams-events.html'
+  templateUrl: 'tab-teams-events.html',
+  providers: [TBAService]
 })
 export class TeamsAndEventsPage {
 
-  show_teams: boolean;
-  show_events: boolean;
+  event_year: any;
+  event_district: any;
+  event_key: any;
 
-  constructor(public navCtrl: NavController) {
-    this.show_teams = false;
-    this.show_events = false;
+  districts: any;
+  events: any;
+
+  loading_districts: boolean;
+  loading_events: boolean;
+
+  constructor(private navCtrl: NavController, private tba: TBAService) {
+    this.event_year = null;
+    this.event_district = null;
+    this.event_key = null;
+
+    this.districts = null;
+    this.events = null;
+
+    this.loading_districts = false;
+    this.loading_events = false;
+  }
+
+  testMe() {
+    console.log("testing");
   }
 
   showTeams() {
@@ -47,6 +68,42 @@ export class TeamsAndEventsPage {
       document.getElementById("teams_search").style.display = "none";
     });
     Style.translateY("events", 0);
+  }
+
+  getDistricts() {
+    if (this.event_year) {
+      this.loading_districts = true;
+      this.tba.requestDistricts(this.event_year).subscribe( (data) => {
+        this.districts = data;
+        this.loading_districts = false;
+      }, (err) => {
+        DebugLogger.log(LoggerLevel.ERROR, "Did not find any districts in that year.");
+      });
+    }
+  }
+
+  getDistrictEvents() {
+    if (this.event_year && this.event_district) {
+      this.loading_events = true;
+      this.tba.requestDistrictEvents(this.event_year, this.event_district).subscribe( (data) => {
+        this.events = data;
+        this.loading_events = false;
+      }, (err) => {
+        DebugLogger.log(LoggerLevel.ERROR, "Did not find any events for that year, or district.");
+      });
+    }
+  }
+
+  openEventPage() {
+    if (this.event_year) {
+      DebugLogger.log(LoggerLevel.INFO, "Getting events for year " + this.event_year);
+    }
+    if (this.event_year && this.event_district) {
+      DebugLogger.log(LoggerLevel.INFO, "Getting events for year " + this.event_year + " and district " + this.event_district);
+    }
+    if (this.event_year && this.event_district && this.event_key) {
+      DebugLogger.log(LoggerLevel.INFO, "Getting event " + this.event_key);
+    }
   }
 
 }

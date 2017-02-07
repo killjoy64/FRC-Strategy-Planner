@@ -51,14 +51,52 @@
       <ion-card-content>
         <ion-grid>
           <ion-row>
-            <ion-col>
-              <ion-input type="number" placeholder="e.g. 4003"></ion-input>
+            <ion-col width-20>
+              <ion-label>Year</ion-label>
             </ion-col>
-            <ion-col class="flex-right">
-              <button ion-button>Search</button>
+            <ion-col width-30>
+              <ion-select [(ngModel)]="event_year" (ionChange)="getDistricts()">
+                <ion-option value="2017">2017</ion-option>
+                <ion-option value="2016">2016</ion-option>
+                <ion-option value="2015">2015</ion-option>
+                <ion-option value="2014">2014</ion-option>
+                <ion-option value="2013">2013</ion-option>
+                <ion-option value="2012">2012</ion-option>
+                <ion-option value="2011">2011</ion-option>
+                <ion-option value="2010">2010</ion-option>
+              </ion-select>
+            </ion-col>
+            <ion-col width-20>
+              <ion-label>District</ion-label>
+            </ion-col>
+            <ion-col width-30>
+              <div *ngIf="loading_districts">
+                <ion-spinner></ion-spinner>
+                <!--<p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>-->
+              </div>
+              <ion-select *ngIf="districts" [(ngModel)]="event_district" (ionChange)="getDistrictEvents()">
+                <ion-option *ngFor="let district of districts" value="{{ district.key }}">{{ district.name }}</ion-option>
+              </ion-select>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col width-30>
+              <ion-label>Event</ion-label>
+            </ion-col>
+            <ion-col width-70 class="flex-right">
+              <div *ngIf="loading_events">
+                <ion-spinner></ion-spinner>
+                <!--<p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>-->
+              </div>
+              <ion-select *ngIf="events" [(ngModel)]="event_key" (ionChange)="getDistrictEvents()">
+                <ion-option *ngFor="let event of events" value="{{ event.key }}">{{ event.short_name }}</ion-option>
+              </ion-select>
             </ion-col>
           </ion-row>
           <ion-row center>
+            <ion-col class="flex-center">
+              <button ion-button block (click)="openEventPage()" color="primary" class="cancel-btn">Search</button>
+            </ion-col>
             <ion-col class="flex-center">
               <button ion-button block (click)="resetTeamView()" color="danger" class="cancel-btn">Cancel</button>
             </ion-col>

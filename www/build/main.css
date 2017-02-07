@@ -21333,6 +21333,56 @@ sub {
   transition: all 0.5s ease-in-out;
 }
 
+@-webkit-keyframes blink {
+  0% {
+    opacity: .2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .2;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: .2;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: .2;
+  }
+}
+
+.loading {
+  width: 100%;
+  text-align: center;
+}
+
+.loading-text span {
+  -webkit-animation-name: blink;
+  animation-name: blink;
+  -webkit-animation-duration: 1.4s;
+  animation-duration: 1.4s;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.loading-text span:nth-child(2) {
+  -webkit-animation-delay: .2s;
+  animation-delay: .2s;
+}
+
+.loading-text span:nth-child(3) {
+  -webkit-animation-delay: .4s;
+  animation-delay: .4s;
+}
+
 .flex-left {
   display: -webkit-flex !important;
   display: -ms-flexbox !important;
@@ -22026,12 +22076,23 @@ page-teams-events {
   /* START MEDIA QUERIES */
 }
 
+page-teams-events ion-select {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  max-width: 100%;
+}
+
+page-teams-events .item-cover {
+  width: auto !important;
+  position: relative;
+}
+
 page-teams-events #teams_search {
   top: 55%;
 }
 
 page-teams-events #events_search {
-  top: 7.5%;
+  top: 1.0%;
 }
 
 page-teams-events #events {

@@ -1,9 +1,18 @@
 page-teams-events {
+  ion-select {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-width: 100%;
+  }
+  .item-cover {
+    width: auto !important;
+    position: relative;
+  }
   #teams_search {
     top: 55%;
   }
   #events_search {
-    top: 7.5%;
+    top: 1.0%;
   }
   #events {
     top: 50%;
