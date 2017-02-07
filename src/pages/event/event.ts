@@ -3,7 +3,7 @@
  */
 
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
   selector: 'page-event',
@@ -11,7 +11,19 @@ import { NavController } from 'ionic-angular';
 })
 export class EventPage {
 
-  constructor(public navCtrl: NavController) {
+  year: any;
+  district: any;
+  key: any;
+
+  events: any;
+
+  constructor(private navCtrl: NavController, private navParams: NavParams) {
+    this.year = navParams.get("year");
+    this.district = navParams.get("district");
+    this.key = navParams.get("key");
+    this.events = navParams.get("events");
+
+    console.log(this.events);
   }
 
 }
