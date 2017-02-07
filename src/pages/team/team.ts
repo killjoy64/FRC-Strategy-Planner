@@ -3,7 +3,7 @@
  */
 
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 
 @Component({
   selector: 'page-team',
@@ -11,7 +11,15 @@ import { NavController } from 'ionic-angular';
 })
 export class TeamPage {
 
-  constructor(public navCtrl: NavController) {
+  team: any;
+
+  constructor(private navCtrl: NavController, private navParams: NavParams) {
+    if (this.navParams.get("team")) {
+      this.team = this.navParams.get("team");
+    } else {
+      this.team = null;
+    }
+    console.log(this.team);
   }
 
 }

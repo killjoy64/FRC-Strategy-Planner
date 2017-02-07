@@ -29,10 +29,10 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-input type="number" placeholder="e.g. 4003"></ion-input>
+              <ion-input type="number" placeholder="e.g. 4003" [(ngModel)]="team_number"></ion-input>
             </ion-col>
             <ion-col class="flex-right">
-              <button ion-button>Search</button>
+              <button ion-button (click)="openTeamPage()">Search</button>
             </ion-col>
           </ion-row>
           <ion-row center>
@@ -88,7 +88,7 @@
                 <ion-spinner></ion-spinner>
                 <!--<p class="loading-text">Loading<span>.</span><span>.</span><span>.</span></p>-->
               </div>
-              <ion-select *ngIf="events" [(ngModel)]="event_key" (ionChange)="getDistrictEvents()">
+              <ion-select *ngIf="events" [(ngModel)]="event_key">
                 <ion-option *ngFor="let event of events" value="{{ event.key }}">{{ event.short_name }}</ion-option>
               </ion-select>
             </ion-col>
