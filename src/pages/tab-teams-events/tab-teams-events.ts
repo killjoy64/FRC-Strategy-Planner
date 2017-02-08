@@ -11,6 +11,7 @@ import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { ConnectionManager } from "../../util/connection-manager";
 import { TeamPage } from "../team/team";
 import { EventPage } from "../event/event";
+import { Config } from "../../util/config";
 
 @Component({
   selector: 'page-teams-events',
@@ -49,6 +50,16 @@ export class TeamsAndEventsPage {
 
     this.loading_districts = false;
     this.loading_events = false;
+
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
+      });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
   }
 
   testMe() {

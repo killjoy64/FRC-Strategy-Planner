@@ -9,7 +9,7 @@ import { ConnectionManager } from "../../util/connection-manager";
 import { Config } from "../../util/config";
 import { AccountLoginModal } from "../../modals/account-login-modal/account-login-modal";
 import { AccountCreateModal } from "../../modals/account-create-modal/account-create-modal";
-import {FirebaseService} from "../../providers/firebase-provider";
+import { FirebaseService } from "../../providers/firebase-provider";
 
 @Component({
   selector: 'page-my-cloud',
@@ -25,6 +25,20 @@ export class CloudPage {
   constructor(private modalCtrl: ModalController, private fb: FirebaseService) {
     this.connection = new ConnectionManager();
     this.user = Config.FIREBASE_USER;
+
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
+      });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
+  }
+
+  // TODO - Check if this fires after a modal is dismissed
+  ionViewWillEnter() {
     if (this.user) {
       this.fb.isAuthorized(this.user.uid);
     }

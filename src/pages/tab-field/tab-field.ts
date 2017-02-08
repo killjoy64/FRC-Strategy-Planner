@@ -8,9 +8,10 @@ import {Content, AlertController, ToastController, ModalController, LoadingContr
 import { ConnectionManager } from "../../util/connection-manager";
 import { Canvas } from "./canvas";
 import { Style } from "../../util/style";
-import {FileWriter, FileGetter} from "../../util/file-manager";
+import { FileWriter, FileGetter } from "../../util/file-manager";
 import { LoggerLevel, DebugLogger } from "../../util/debug-logger";
-import {FieldFilesModal} from "../../modals/field-files-modal/field-files-modal";
+import { FieldFilesModal } from "../../modals/field-files-modal/field-files-modal";
+import { Config } from "../../util/config";
 
 @Component({
   selector: 'page-field',
@@ -55,6 +56,16 @@ export class FieldPage {
     this.teams = [];
     this.team_number = null;
     this.team_alliance = null;
+
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
+      });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
   }
 
   ionViewWillEnter() {

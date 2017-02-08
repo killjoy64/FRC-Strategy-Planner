@@ -21,6 +21,16 @@ export class SettingsPage {
   constructor(public modalCtrl: ModalController) {
     this.team_number = Config.TEAM_NUMBER;
     this.version = Config.VERSION;
+
+    if (!Config.IS_BROWSER) {
+      window.addEventListener('native.keyboardshow', () => {
+        document.body.classList.add("keyboard-is-open");
+      });
+
+      window.addEventListener('native.keyboardhide', () => {
+        document.body.classList.remove("keyboard-is-open");
+      });
+    }
   }
 
   checkForUpdate() {
