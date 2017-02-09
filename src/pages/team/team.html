@@ -26,7 +26,7 @@
     <ion-grid class="team-profile-buttons">
       <ion-row>
         <ion-col class="flex-center" width-25>
-          <button ion-button full color="secondary" class="profile-button">
+          <button ion-button full color="secondary" class="profile-button" (click)="showAbout()" id="about-btn">
             <div class="profile-button-content">
               <span class="fa fa-2x fa-question-circle"></span>
               <span>About</span>
@@ -34,7 +34,7 @@
           </button>
         </ion-col>
         <ion-col class="flex-center" width-25>
-          <button ion-button full color="danger" class="profile-button">
+          <button ion-button full color="danger" class="profile-button" (click)="showPitInfo()" id="pit-btn">
             <div class="profile-button-content">
               <span class="fa fa-2x fa-cloud"></span>
               <span>Pit Info</span>
@@ -42,7 +42,7 @@
           </button>
         </ion-col>
         <ion-col class="flex-center" width-25>
-          <button ion-button full color="orange" class="profile-button">
+          <button ion-button full color="orange" class="profile-button" (click)="showAwards()" id="awards-btn">
             <div class="profile-button-content">
               <span class="fa fa-2x fa-trophy"></span>
               <span>Awards</span>
@@ -50,7 +50,7 @@
           </button>
         </ion-col>
         <ion-col class="flex-center" width-25>
-          <button ion-button full color="primary" class="profile-button">
+          <button ion-button full color="primary" class="profile-button" (click)="showEvents()" id="events-btn">
             <div class="profile-button-content">
               <span class="fa fa-2x fa-calendar"></span>
               <span>Events</span>
@@ -61,30 +61,42 @@
     </ion-grid>
   <!--</ion-card>-->
 
-  <div class="team-profile-content">
+  <div id="about-content" class="team-profile-content hidden" style="display: none">
 
     <ion-card>
-      <ion-card-header>
-        <b>{{ team.nickname }}</b>
+      <ion-card-header class="team-content-header">
+        <span class="team-content-header-title">{{ team.nickname }}</span>
+        <span class="team-content-header-subtitle" *ngIf="team.motto">"{{ team.motto }}"</span>
       </ion-card-header>
       <ion-card-content>
-        <h3><b>{{ team.motto }}</b></h3>
         <ion-list>
           <ion-item>
             <b>Region:</b> {{ team.region }} ({{ team.locality }})
           </ion-item>
-          <ion-item text-wrap>
-            <b>Sponsors:</b> {{ team.name }}
+          <ion-item>
+            <b>Years in FRC:</b> {{ team.years }}
           </ion-item>
           <ion-item>
             <b>Rookie Year:</b> {{ team.rookie_year }}
           </ion-item>
-          <ion-item>
-            <b>Years in FRC:</b> {{ team.years }}
+          <ion-item text-wrap>
+            <b>Sponsors:</b> {{ team.name }}
           </ion-item>
         </ion-list>
       </ion-card-content>
     </ion-card>
+
+  </div>
+
+  <div>
+
+    <div id="events-content" class="team-profile-content hidden" style="display: none">
+      <ion-card>
+        <ion-card-content>
+          Testing!
+        </ion-card-content>
+      </ion-card>
+    </div>
 
   </div>
 

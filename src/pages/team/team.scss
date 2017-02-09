@@ -9,6 +9,17 @@ page-team {
     margin-left: auto !important;
     margin-right: auto !important;
   }
+  ion-card-header {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  [text-wrap] ion-label {
+    font-size: 1.6rem !important;
+  }
+  ion-label {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
   .team-profile-header {
     position: absolute;
     top: 0;
@@ -59,10 +70,16 @@ page-team {
   }
   .team-profile-buttons {
     margin-top: 30vh !important;
+    height: 6.5rem;
   }
   .profile-button {
     margin: 0 !important;
     height: 5.5rem;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
   }
   .profile-button-content {
     display: flex;
@@ -75,6 +92,25 @@ page-team {
   }
   .team-profile-content {
     padding: 10px;
+  }
+  .team-content-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+  }
+  .team-content-header span {
+    width: 100%;
+  }
+  .team-content-header-title {
+    font-weight: bold;
+    font-size: 2.2rem;
+  }
+  .team-content-header-subtitle {
+    font-size: 1.4rem;
+  }
+  .active-button {
+    height: 6.3rem;
   }
   .flex-content {
     display: flex;
