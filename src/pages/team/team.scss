@@ -1,4 +1,14 @@
 page-team {
+  ion-grid {
+    padding: 0 !important;
+  }
+  ion-col {
+    padding: 0 !important;
+  }
+  ion-card {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
   .team-profile-header {
     position: absolute;
     top: 0;
@@ -46,6 +56,25 @@ page-team {
   }
   .team-location {
     font-size: 1.6rem;
+  }
+  .team-profile-buttons {
+    margin-top: 30vh !important;
+  }
+  .profile-button {
+    margin: 0 !important;
+    height: 5.5rem;
+  }
+  .profile-button-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ffffff !important;
+    line-height: 135%;
+    padding: 7px;
+  }
+  .team-profile-content {
+    padding: 10px;
   }
   .flex-content {
     display: flex;

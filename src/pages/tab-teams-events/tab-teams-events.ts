@@ -123,7 +123,7 @@ export class TeamsAndEventsPage {
   openEventPage() {
     if (this.event_year && this.event_district && this.event_key) {
       DebugLogger.log(LoggerLevel.INFO, "Getting event " + this.event_key);
-      this.connection.showLoader("Searching...", 7000);
+      this.connection.showLoader("Searching...", 10000);
       this.tba.requestCompleteEventInfo(this.event_key).subscribe((data) => {
         this.connection.hideLoader();
 
@@ -151,7 +151,7 @@ export class TeamsAndEventsPage {
     }
     if (this.event_year && this.event_district) {
       DebugLogger.log(LoggerLevel.INFO, "Getting events for year " + this.event_year + " and district " + this.event_district);
-      this.connection.showLoader("Searching...", 7000);
+      this.connection.showLoader("Searching...", 10000);
       this.tba.requestDistrictEvents(this.event_year, this.event_district).subscribe((data) => {
         this.connection.hideLoader();
 
@@ -171,7 +171,7 @@ export class TeamsAndEventsPage {
     }
     if (this.event_year) {
       DebugLogger.log(LoggerLevel.INFO, "Getting events for year " + this.event_year);
-      this.connection.showLoader("Searching...", 7000);
+      this.connection.showLoader("Searching...", 10000);
       this.tba.requestEventList(this.event_year).subscribe((data) => {
         this.connection.hideLoader();
 
@@ -193,7 +193,7 @@ export class TeamsAndEventsPage {
 
   openTeamPage() {
     if (this.team_number) {
-      this.connection.showLoader("Searching...", 6000);
+      this.connection.showLoader("Searching...", 10000);
       this.tba.requestCompleteTeamInfo(this.team_number).subscribe((data) => {
         this.connection.hideLoader();
 

@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
   <div class="team-profile-header">
     <img class="team-photo-bg" src="assets/teams_picture.jpg"/>
@@ -20,6 +20,72 @@
         <span><a href="{{ team.website }}">{{ team.website }}</a></span>
       </div>
     </div>
+  </div>
+
+  <!--<ion-card>-->
+    <ion-grid class="team-profile-buttons">
+      <ion-row>
+        <ion-col class="flex-center" width-25>
+          <button ion-button full color="secondary" class="profile-button">
+            <div class="profile-button-content">
+              <span class="fa fa-2x fa-question-circle"></span>
+              <span>About</span>
+            </div>
+          </button>
+        </ion-col>
+        <ion-col class="flex-center" width-25>
+          <button ion-button full color="danger" class="profile-button">
+            <div class="profile-button-content">
+              <span class="fa fa-2x fa-cloud"></span>
+              <span>Pit Info</span>
+            </div>
+          </button>
+        </ion-col>
+        <ion-col class="flex-center" width-25>
+          <button ion-button full color="orange" class="profile-button">
+            <div class="profile-button-content">
+              <span class="fa fa-2x fa-trophy"></span>
+              <span>Awards</span>
+            </div>
+          </button>
+        </ion-col>
+        <ion-col class="flex-center" width-25>
+          <button ion-button full color="primary" class="profile-button">
+            <div class="profile-button-content">
+              <span class="fa fa-2x fa-calendar"></span>
+              <span>Events</span>
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  <!--</ion-card>-->
+
+  <div class="team-profile-content">
+
+    <ion-card>
+      <ion-card-header>
+        <b>{{ team.nickname }}</b>
+      </ion-card-header>
+      <ion-card-content>
+        <h3><b>{{ team.motto }}</b></h3>
+        <ion-list>
+          <ion-item>
+            <b>Region:</b> {{ team.region }} ({{ team.locality }})
+          </ion-item>
+          <ion-item text-wrap>
+            <b>Sponsors:</b> {{ team.name }}
+          </ion-item>
+          <ion-item>
+            <b>Rookie Year:</b> {{ team.rookie_year }}
+          </ion-item>
+          <ion-item>
+            <b>Years in FRC:</b> {{ team.years }}
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
   </div>
 
 </ion-content>
