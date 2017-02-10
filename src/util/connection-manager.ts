@@ -51,6 +51,7 @@ export class ConnectionManager {
   }
 
   showLoader(msg, duration) {
+    // TODO - Check if current connection is available....
     if (this.loadCtrl) {
       this.curLoad = this.loadCtrl.create({
         content: msg,

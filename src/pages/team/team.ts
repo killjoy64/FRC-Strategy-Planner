@@ -14,10 +14,10 @@ export class TeamPage {
 
   team: any;
 
-  last_view: string;
+  view: string;
 
   constructor(private navCtrl: NavController, private navParams: NavParams) {
-    this.last_view = null;
+    this.view = null;
 
     if (this.navParams.get("team")) {
       this.team = this.navParams.get("team");
@@ -28,46 +28,48 @@ export class TeamPage {
 
   ionViewWillEnter() {
     this.showAbout();
+
+    this.assignAwardEvents();
   }
 
   showAbout() {
-    if (this.canToggleView("about-btn")) {
-      this.toggleView("about-content");
-    }
+    this.toggleButton("about-btn");
+    this.view = 'about';
   }
 
   showPitInfo() {
-    if (this.canToggleView("pit-btn")) {
-
-    }
+    this.toggleButton("pit-btn");
+    this.view = 'pit';
   }
 
   showAwards() {
-    if (this.canToggleView("awards-btn")) {
-
-    }
+    this.toggleButton("awards-btn");
+    this.view = 'awards';
   }
 
   showEvents() {
-    if (this.canToggleView("events-btn")) {
-      this.toggleView("events-content");
-    }
+    this.toggleButton("events-btn");
+    this.view = 'events';
   }
 
-  private toggleView(id) {
-    console.log(this.last_view);
-    if (this.last_view) {
-      Style.fadeOutOp(this.last_view).then(() => {
-        document.getElementById(this.last_view).style.display = "none";
-        this.showView(id);
-      });
-    }
-  }
+  private assignAwardEvents() {
+    return new Promise((resolve) => {
+      for (let i = 0; i < this.team.awards.length; i++) {
 
-  private showView(id) {
-    document.getElementById(id).style.display = "block";
-    this.last_view = id;
-    Style.fadeInOp(id);
+        let award_event_key = this.team.awards[i].event_key;
+
+        for (let j = 0; j < this.team.events.length; j++) {
+          let event_key = this.team.events[j].key;
+          if (award_event_key == event_key) {
+            this.team.awards[i].event_name = this.team.events[j].name;
+            this.team.awards[i].event_week = this.team.events[j].week;
+            this.team.awards[i].event_start_date = this.team.events[j].start_date;
+            break;
+          }
+        }
+      }
+      resolve();
+    });
   }
 
   private clearActiveButtons() {
@@ -78,7 +80,7 @@ export class TeamPage {
     }
   }
 
-  private canToggleView(id) {
+  private toggleButton(id) {
     let btn = document.getElementById(id);
     if (btn.classList.contains("active-button")) {
       this.clearActiveButtons();

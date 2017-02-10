@@ -61,7 +61,7 @@
     </ion-grid>
   <!--</ion-card>-->
 
-  <div id="about-content" class="team-profile-content hidden" style="display: none">
+  <div id="about-content" class="team-profile-content" *ngIf="view=='about'">
 
     <ion-card>
       <ion-card-header class="team-content-header">
@@ -88,16 +88,28 @@
 
   </div>
 
-  <div>
+  <div id="events-content" class="team-profile-content" *ngIf="view=='events'">
+    <ion-card>
+      <ion-card-content>
+        Testing!
+      </ion-card-content>
+    </ion-card>
+  </div>
 
-    <div id="events-content" class="team-profile-content hidden" style="display: none">
-      <ion-card>
-        <ion-card-content>
-          Testing!
-        </ion-card-content>
-      </ion-card>
-    </div>
-
+  <div id="awards-content" class="team-profile-content" *ngIf="view=='awards'">
+    <ion-card *ngFor="let award of team.awards">
+      <ion-card-header>
+        {{ award.year }} - {{ award.name }}
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngIf="award.event_name">
+          {{ award.event_name }}
+        </div>
+        <div>
+          Recipients: <span *ngFor="let recipient of award.recipient_list">{{ recipient.team_number }} </span>
+        </div>
+      </ion-card-content>
+    </ion-card>
   </div>
 
 </ion-content>
