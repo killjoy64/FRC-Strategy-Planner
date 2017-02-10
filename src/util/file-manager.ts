@@ -9,6 +9,25 @@ import { Config } from "./config";
 /* Once cordova.js is invoked, this variable will actually mean something */
 declare var cordova: any;
 
+export class FileMover {
+
+  public static move(old_dir, new_dir, old_file_name, new_file_name) {
+    if (!Config.IS_BROWSER) {
+      return File.moveFile(old_dir, old_file_name, new_dir, new_file_name);
+    } else {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject({
+            code: "APP_CONFIG_BROWSER_MODE",
+            message: "Could not move file. The app had trouble loading native features. Browser mode is ON."
+          });
+        }, 100);
+      });
+    }
+  }
+
+}
+
 export class FileWriter {
 
   public static writePermFile(location, file_name, data) {

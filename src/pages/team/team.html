@@ -6,13 +6,14 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content (ionScroll)="checkScroll($event)">
 
   <div class="team-profile-header">
     <img class="team-photo-bg" src="assets/teams_picture.jpg"/>
     <div class="flex-content">
-      <div class="team-photo-container">
-        <img class="team-photo" src="http://placehold.it/521x308"/>
+      <div class="team-photo-container" tappable (click)="openPictureSheet()">
+        <img class="team-photo" src="assets/option-robots.png" *ngIf="!base64_string"/>
+        <img class="team-photo" src="{{ base64_string }}" *ngIf="base64_string"/>
       </div>
       <div class="team-header-info">
         <span class="team-nickname">{{ team.nickname }}</span>
@@ -22,44 +23,42 @@
     </div>
   </div>
 
-  <!--<ion-card>-->
-    <ion-grid class="team-profile-buttons">
-      <ion-row>
-        <ion-col class="flex-center" width-25>
-          <button ion-button full color="secondary" class="profile-button" (click)="showAbout()" id="about-btn">
-            <div class="profile-button-content">
-              <span class="fa fa-2x fa-question-circle"></span>
-              <span>About</span>
-            </div>
-          </button>
-        </ion-col>
-        <ion-col class="flex-center" width-25>
-          <button ion-button full color="danger" class="profile-button" (click)="showPitInfo()" id="pit-btn">
-            <div class="profile-button-content">
-              <span class="fa fa-2x fa-cloud"></span>
-              <span>Pit Info</span>
-            </div>
-          </button>
-        </ion-col>
-        <ion-col class="flex-center" width-25>
-          <button ion-button full color="orange" class="profile-button" (click)="showAwards()" id="awards-btn">
-            <div class="profile-button-content">
-              <span class="fa fa-2x fa-trophy"></span>
-              <span>Awards</span>
-            </div>
-          </button>
-        </ion-col>
-        <ion-col class="flex-center" width-25>
-          <button ion-button full color="primary" class="profile-button" (click)="showEvents()" id="events-btn">
-            <div class="profile-button-content">
-              <span class="fa fa-2x fa-calendar"></span>
-              <span>Events</span>
-            </div>
-          </button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  <!--</ion-card>-->
+  <ion-grid class="team-profile-buttons">
+    <ion-row>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="secondary" class="profile-button" (click)="showAbout()" id="about-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-question-circle"></span>
+            <span>About</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="danger" class="profile-button" (click)="showPitInfo()" id="pit-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-cloud"></span>
+            <span>Pit Info</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="orange" class="profile-button" (click)="showAwards()" id="awards-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-trophy"></span>
+            <span>Awards</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="primary" class="profile-button" (click)="showEvents()" id="events-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-calendar"></span>
+            <span>Events</span>
+          </div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div id="about-content" class="team-profile-content" *ngIf="view=='about'">
 
@@ -88,28 +87,46 @@
 
   </div>
 
-  <div id="events-content" class="team-profile-content" *ngIf="view=='events'">
-    <ion-card>
-      <ion-card-content>
-        Testing!
-      </ion-card-content>
-    </ion-card>
-  </div>
-
   <div id="awards-content" class="team-profile-content" *ngIf="view=='awards'">
+
     <ion-card *ngFor="let award of team.awards">
-      <ion-card-header>
-        {{ award.year }} - {{ award.name }}
+      <ion-card-header class="team-content-header">
+        <span class="team-content-header-title">{{ convert(award.name) }}</span>
+        <span class="team-content-header-subtitle">{{ award.year }} - {{ award.event_name }}</span>
       </ion-card-header>
       <ion-card-content>
-        <div *ngIf="award.event_name">
-          {{ award.event_name }}
-        </div>
         <div>
           Recipients: <span *ngFor="let recipient of award.recipient_list">{{ recipient.team_number }} </span>
         </div>
       </ion-card-content>
     </ion-card>
+
   </div>
+
+  <div id="events-content" class="team-profile-content" *ngIf="view=='events'">
+
+    <ion-card *ngFor="let event of team.events">
+      <ion-card-header class="team-content-header">
+        <span class="team-content-header-title">{{ event.short_name }} {{ event.event_type_string }} Event</span>
+        <span class="team-content-header-subtitle" *ngIf="event.week">{{ event.year }} - Week {{ event.week }}</span>
+        <span class="team-content-header-subtitle" *ngIf="!event.week">{{ event.year }}</span>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <div>Location: {{ event.location }}</div>
+            <div>Website: <a href="{{ event.website }}">{{ event.website }}</a></div>
+            <div>Date: {{ event.start_date }} - {{ event.end_date }}</div>
+            <button ion-button clear item-right>View</button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+
+  <button ion-button icon-only id="scroll" (click)="scrollToTop()" class="hidden" color="primary">
+    <ion-icon name="arrow-up"></ion-icon>
+  </button>
 
 </ion-content>

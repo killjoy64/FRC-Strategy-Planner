@@ -12,6 +12,7 @@ import { ConnectionManager } from "../../util/connection-manager";
 import { TeamPage } from "../team/team";
 import { EventPage } from "../event/event";
 import { Config } from "../../util/config";
+import {FileGetter, AppDirectory} from "../../util/file-manager";
 
 @Component({
   selector: 'page-teams-events',
@@ -202,6 +203,13 @@ export class TeamsAndEventsPage {
         teamInfo.robots = data[2];
         teamInfo.events = data[3];
         teamInfo.awards = data[4];
+
+        FileGetter.read("robots", teamInfo.team_number + ".jpg").then((data) => {
+          teamInfo.photo_url = AppDirectory.getPermDir() + "robots/" + teamInfo.team_number + ".jpg";
+          DebugLogger.log(LoggerLevel.INFO, "Found robot photo for team " + teamInfo.team_number);
+        }, (err) => {
+          DebugLogger.log(LoggerLevel.ERROR, err.message + " " + err.code);
+        });
 
         this.navCtrl.push(TeamPage, {
           team: teamInfo
