@@ -1,0 +1,75 @@
+page-event {
+  ion-grid {
+    padding: 0 !important;
+  }
+  ion-col {
+    padding: 0 !important;
+  }
+  ion-card {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  ion-card-header {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  [text-wrap] ion-label {
+    font-size: 1.6rem !important;
+  }
+  ion-label {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  ion-item {
+    min-height: 3.0rem !important;
+    font-size: 1.4rem !important;
+    line-height: 2.8rem !important;
+    padding: 5px 0 5px 0 !important;
+  }
+  .event-profile-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 30vh;
+  }
+  .event-photo-bg {
+    position: absolute;
+    width: 100vw;
+    height: 30vh;
+    filter: blur(2px) brightness(75%);
+  }
+  .event-profile-buttons {
+    margin-top: 30vh !important;
+    height: 6.5rem;
+  }
+  .profile-button {
+    margin: 0 !important;
+    height: 5.5rem;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+  .profile-button-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ffffff !important;
+    line-height: 135%;
+    padding: 7px;
+  }
+  .active-button {
+    height: 6.3rem;
+  }
+  .flex-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+  }
+}

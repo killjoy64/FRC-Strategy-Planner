@@ -11,19 +11,60 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class EventPage {
 
-  year: any;
-  district: any;
-  key: any;
+  event: any;
 
-  events: any;
+  view: any;
 
   constructor(private navCtrl: NavController, private navParams: NavParams) {
-    this.year = navParams.get("year");
-    this.district = navParams.get("district");
-    this.key = navParams.get("key");
-    this.events = navParams.get("events");
 
-    console.log(this.events);
+    this.view = null;
+
+    if (this.navParams.get("event")) {
+      this.event = this.navParams.get("event");
+    } else {
+      this.event = null;
+    }
+
+  }
+
+  showAbout() {
+    this.toggleButton("ranks-btn");
+    this.view = 'about';
+  }
+
+  showPitInfo() {
+    this.toggleButton("teams-btn");
+    this.view = 'pit';
+  }
+
+  showAwards() {
+    this.toggleButton("award-btn");
+    this.view = 'awards';
+  }
+
+  showEvents() {
+    this.toggleButton("matches-btn");
+    this.view = 'events';
+  }
+
+  private clearActiveButtons() {
+    let buttons = document.getElementsByClassName("profile-button");
+
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove("active-button");
+    }
+  }
+
+  private toggleButton(id) {
+    let btn = document.getElementById(id);
+    if (btn.classList.contains("active-button")) {
+      this.clearActiveButtons();
+      return false;
+    } else {
+      this.clearActiveButtons();
+      btn.classList.add("active-button");
+      return true;
+    }
   }
 
 }

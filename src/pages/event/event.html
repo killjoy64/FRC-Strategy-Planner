@@ -1,10 +1,56 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Event -
+      <span>{{ event.short_name }} Event</span>
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+
+  <!-- TODO - ADD PULL TO REFRESH -->
+
+  <div class="event-profile-header">
+    <img class="event-photo-bg" src="assets/events_picture.jpg"/>
+    <div class="flex-content">
+    </div>
+  </div>
+
+  <ion-grid class="event-profile-buttons">
+    <ion-row>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="secondary" class="profile-button" (click)="showAbout()" id="ranks-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-list-ol"></span>
+            <span>Rankings</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="danger" class="profile-button" (click)="showPitInfo()" id="teams-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-android"></span>
+            <span>Teams</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="orange" class="profile-button" (click)="showAwards()" id="award-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-trophy"></span>
+            <span>Awards</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="primary" class="profile-button" (click)="showEvents()" id="matches-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-calendar"></span>
+            <span>Matches</span>
+          </div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>

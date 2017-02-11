@@ -11,8 +11,9 @@ import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { ConnectionManager } from "../../util/connection-manager";
 import { TeamPage } from "../team/team";
 import { EventPage } from "../event/event";
+import { EventsPage } from "../events/events";
 import { Config } from "../../util/config";
-import {FileGetter, AppDirectory} from "../../util/file-manager";
+import { FileGetter, AppDirectory } from "../../util/file-manager";
 
 @Component({
   selector: 'page-teams-events',
@@ -63,10 +64,6 @@ export class TeamsAndEventsPage {
     }
   }
 
-  testMe() {
-    console.log("testing");
-  }
-
   showTeams() {
     document.getElementById("teams_search").style.display = "block";
     Style.translateY("events", 100).then(() => {
@@ -98,6 +95,13 @@ export class TeamsAndEventsPage {
   getDistricts() {
     if (this.event_year) {
       this.loading_districts = true;
+      this.loading_events = true;
+      this.tba.requestEventList(this.event_year).subscribe( (data) => {
+        this.events = data;
+        this.loading_events = false;
+      }, (err) => {
+        DebugLogger.log(LoggerLevel.ERROR, "Did not find any events in that year.");
+      });
       this.tba.requestDistricts(this.event_year).subscribe( (data) => {
         this.districts = data;
         this.event_district = null;
@@ -122,7 +126,7 @@ export class TeamsAndEventsPage {
   }
 
   openEventPage() {
-    if (this.event_year && this.event_district && this.event_key) {
+    if (this.event_year && this.event_key) {
       DebugLogger.log(LoggerLevel.INFO, "Getting event " + this.event_key);
       this.connection.showLoader("Searching...", 10000);
       this.tba.requestCompleteEventInfo(this.event_key).subscribe((data) => {
@@ -137,10 +141,7 @@ export class TeamsAndEventsPage {
         eventInfo.points = data[6];
 
         this.navCtrl.push(EventPage, {
-          year: this.event_year,
-          district: this.event_district,
-          key: this.event_key,
-          events: eventInfo
+          event: eventInfo
         });
       }, (err) => {
         this.connection.hideLoader().then(() => {
@@ -156,10 +157,9 @@ export class TeamsAndEventsPage {
       this.tba.requestDistrictEvents(this.event_year, this.event_district).subscribe((data) => {
         this.connection.hideLoader();
 
-        this.navCtrl.push(EventPage, {
+        this.navCtrl.push(EventsPage, {
           year: this.event_year,
           district: this.event_district,
-          key: this.event_key,
           events: data
         });
       }, (err) => {
@@ -176,10 +176,9 @@ export class TeamsAndEventsPage {
       this.tba.requestEventList(this.event_year).subscribe((data) => {
         this.connection.hideLoader();
 
-        this.navCtrl.push(EventPage, {
+        this.navCtrl.push(EventsPage, {
           year: this.event_year,
           district: this.event_district,
-          key: this.event_key,
           events: data
         });
       }, (err) => {

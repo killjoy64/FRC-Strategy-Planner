@@ -3,20 +3,29 @@
  */
 
 import { Component, ViewChild, NgZone } from '@angular/core';
-import { NavController, NavParams, Content, ActionSheetController } from 'ionic-angular';
+import {
+  NavController, NavParams, Content, ActionSheetController, LoadingController,
+  AlertController
+} from 'ionic-angular';
 import { AwardSorter, EventSorter } from "../../util/object-sorter";
 import { DomSanitizer } from '@angular/platform-browser';
 import { PhotoViewer, Camera, Entry } from "ionic-native";
 import { AppDirectory, FileMover } from "../../util/file-manager";
 import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
+import { TBAService } from "../../providers/tba-provider";
+import { ConnectionManager } from "../../util/connection-manager";
+import { EventPage } from "../event/event";
 
 @Component({
   selector: 'page-team',
-  templateUrl: 'team.html'
+  templateUrl: 'team.html',
+  providers: [TBAService]
 })
 export class TeamPage {
 
   @ViewChild(Content) content: Content;
+
+  connection: ConnectionManager;
 
   awardSorter: AwardSorter;
   eventSorter: EventSorter;
@@ -27,7 +36,11 @@ export class TeamPage {
 
   base64_string: any;
 
-  constructor(public sanitizer: DomSanitizer, private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone) {
+  constructor(public sanitizer: DomSanitizer, private alertCtrl: AlertController, private loadCtrl: LoadingController, private tba: TBAService, private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone) {
+    this.connection = new ConnectionManager();
+    this.connection.setLoadController(this.loadCtrl);
+    this.connection.setAlertController(this.alertCtrl);
+
     this.awardSorter = new AwardSorter();
     this.eventSorter = new EventSorter();
 
@@ -136,6 +149,29 @@ export class TeamPage {
 
   scrollToTop() {
     this.content.scrollToTop(1200);
+  }
+
+  openEventPage(e_key) {
+    this.connection.showLoader("Reaching Database...", 10000);
+    this.tba.requestCompleteEventInfo(e_key).subscribe((data) => {
+      let eventInfo = data[0];
+      eventInfo.teams = data[1];
+      eventInfo.matches = data[2];
+      eventInfo.stats = data[3];
+      eventInfo.ranks = data[4];
+      eventInfo.awards = data[5];
+      eventInfo.points = data[6];
+
+      this.connection.hideLoader();
+
+      this.navCtrl.push(EventPage, {
+        event: eventInfo
+      });
+    }, (err) => {
+      this.connection.hideLoader().then(() => {
+        this.connection.showAlert("Error", "Could not complete request. " + err);
+      });
+    });
   }
 
   private assignAwardEvents() {

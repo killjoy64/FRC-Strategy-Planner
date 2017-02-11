@@ -1,0 +1,42 @@
+page-events {
+  .scroll-content {
+    padding: 8px !important;
+  }
+  ion-card {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  ion-card-header {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  [text-wrap] ion-label {
+    font-size: 1.6rem !important;
+  }
+  ion-label {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  ion-item {
+    min-height: 3.0rem !important;
+    font-size: 1.4rem !important;
+    line-height: 2.8rem !important;
+    padding: 5px 0 5px 0 !important;
+  }
+  .event-content-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+  }
+  .event-content-header span {
+    width: 100%;
+  }
+  .event-content-header-title {
+    font-weight: bold;
+    font-size: 2.0rem;
+  }
+  .event-content-header-subtitle {
+    font-size: 1.4rem;
+  }
+}

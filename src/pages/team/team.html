@@ -117,7 +117,7 @@
             <div>Location: {{ event.location }}</div>
             <div>Website: <a href="{{ event.website }}">{{ event.website }}</a></div>
             <div>Date: {{ event.start_date }} - {{ event.end_date }}</div>
-            <button ion-button clear item-right>View</button>
+            <button ion-button clear item-right (click)="openEventPage(event.key)">View</button>
           </ion-item>
         </ion-list>
       </ion-card-content>
