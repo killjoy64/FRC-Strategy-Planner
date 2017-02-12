@@ -26,12 +26,62 @@ page-event {
     line-height: 2.8rem !important;
     padding: 5px 0 5px 0 !important;
   }
+  ion-img {
+    background: #FFFFFF !important;
+  }
   .event-profile-header {
     position: absolute;
     top: 0;
     left: 0;
     width: 100vw;
     height: 30vh;
+  }
+  .event-header-info {
+    position: absolute;
+    top: 1vh;
+    height: 20vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ffffff;
+    line-height: 3.0rem;
+  }
+  .event-title {
+    text-align: center;
+    font-size: 3.6rem;
+  }
+  .event-subtitle {
+    font-size: 2.2rem;
+  }
+  .event-location {
+    font-size: 1.6rem;
+  }
+  .event-info {
+    position: absolute;
+    top: 20vh;
+    width: 100vw;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    padding: 10px;
+  }
+  .event-info-left {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    line-height: 2.0rem;
+  }
+  .event-info-right {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-direction: column;
+    line-height: 2.0rem;
   }
   .event-photo-bg {
     position: absolute;
@@ -61,6 +111,25 @@ page-event {
     line-height: 135%;
     padding: 7px;
   }
+  .event-profile-content {
+    padding: 10px;
+  }
+  .event-content-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+  }
+  .event-content-header span {
+    width: 100%;
+  }
+  .event-content-header-title {
+    font-weight: bold;
+    font-size: 2.0rem;
+  }
+  .event-content-header-subtitle {
+    font-size: 1.4rem;
+  }
   .active-button {
     height: 6.3rem;
   }
@@ -72,4 +141,21 @@ page-event {
     width: 100%;
     height: 100%;
   }
+
+  .rank-team {
+    font-size: 1.2em;
+  }
+  .rank-info {
+    font-size: 0.8em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .rank-info span {
+    width: 100%;
+  }
+  .rank-view {
+    font-size: 1.0em !important;
+  }
+
 }

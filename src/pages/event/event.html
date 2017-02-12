@@ -13,13 +13,28 @@
   <div class="event-profile-header">
     <img class="event-photo-bg" src="assets/events_picture.jpg"/>
     <div class="flex-content">
+      <div class="event-header-info">
+        <span class="event-title">{{ event.short_name }}</span>
+        <span class="event-subtitle">{{ event.event_type_string }} Event</span>
+        <span class="event-location">{{ event.location }}</span>
+        <div class="event-info">
+          <div class="event-info-left">
+            <span>Start: {{ event.start_date }}</span>
+            <span>End: {{ event.end_date }}</span>
+          </div>
+          <div class="event-info-right">
+            <span>Week {{ event.week }}</span>
+            <span>{{ event.teams.length }} teams</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <ion-grid class="event-profile-buttons">
     <ion-row>
       <ion-col class="flex-center" width-25>
-        <button ion-button full color="secondary" class="profile-button" (click)="showAbout()" id="ranks-btn">
+        <button ion-button full color="secondary" class="profile-button" (click)="showRanks()" id="ranks-btn">
           <div class="profile-button-content">
             <span class="fa fa-2x fa-list-ol"></span>
             <span>Rankings</span>
@@ -27,7 +42,7 @@
         </button>
       </ion-col>
       <ion-col class="flex-center" width-25>
-        <button ion-button full color="danger" class="profile-button" (click)="showPitInfo()" id="teams-btn">
+        <button ion-button full color="danger" class="profile-button" (click)="showTeams()" id="teams-btn">
           <div class="profile-button-content">
             <span class="fa fa-2x fa-android"></span>
             <span>Teams</span>
@@ -43,7 +58,7 @@
         </button>
       </ion-col>
       <ion-col class="flex-center" width-25>
-        <button ion-button full color="primary" class="profile-button" (click)="showEvents()" id="matches-btn">
+        <button ion-button full color="primary" class="profile-button" (click)="showMatches()" id="matches-btn">
           <div class="profile-button-content">
             <span class="fa fa-2x fa-calendar"></span>
             <span>Matches</span>
@@ -52,5 +67,45 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div class="event-profile-content" *ngIf="view=='ranks'">
+
+    <ion-list>
+      <ion-item *ngFor="let ranking of rankings" text-wrap>
+        <div class="rank-team">{{ ranking.rank }}. {{ ranking.team }} ({{ ranking.ranking_score }} {{ rankings_labels.ranking_score_label }})</div>
+        <div class="rank-info">
+          <span>{{ rankings_labels.played_label }}: {{ ranking.played }}</span>
+          <span>{{ rankings_labels.record_label }}: {{ ranking.record }}</span>
+        </div>
+        <div class="rank-info">
+          <span>{{ rankings_labels.auto_label }}: {{ ranking.auto }}</span>
+          <span>{{ rankings_labels.scale_challenge_label }}: {{ ranking.scale_challenge }}</span>
+        </div>
+        <div class="rank-info">
+          <span>{{ rankings_labels.defense_label }}: {{ ranking.defense }}</span>
+          <span>{{ rankings_labels.goals_label }}: {{ ranking.goals }}</span>
+        </div>
+        <button ion-button clear item-right class="rank-view">View</button>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  <div class="event-profile-content" *ngIf="view=='teams'">
+
+    <ion-list>
+      <ion-item *ngFor="let team of event.teams">
+        <ion-thumbnail item-left>
+          <ion-img src="assets/option-robots.png" *ngIf="!team.photo_url" cache="true"></ion-img>
+          <ion-img [src]="team.avatar_url" *ngIf="team.photo_url" cache="true"></ion-img>
+        </ion-thumbnail>
+        <h2>FRC Team {{ team.team_number }}</h2>
+        <h3>{{ team.nickname }}</h3>
+        <p>{{ team.motto }}</p>
+        <button ion-button clear item-right>View</button>
+      </ion-item>
+    </ion-list>
+
+  </div>
 
 </ion-content>

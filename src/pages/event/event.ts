@@ -4,6 +4,7 @@
 
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import {TeamSorter} from "../../util/object-sorter";
 
 @Component({
   selector: 'page-event',
@@ -11,11 +12,19 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class EventPage {
 
+  team_sorter: TeamSorter;
+
   event: any;
+  rankings: any;
+  rankings_labels: any;
 
   view: any;
 
   constructor(private navCtrl: NavController, private navParams: NavParams) {
+    this.team_sorter = new TeamSorter();
+
+    this.rankings = [];
+    this.rankings_labels = null;
 
     this.view = null;
 
@@ -25,16 +34,23 @@ export class EventPage {
       this.event = null;
     }
 
+    this.repopulateRankings();
   }
 
-  showAbout() {
+  ionViewWillEnter() {
+    this.showRanks();
+
+    this.team_sorter.sort(this.event.teams, 0, this.event.teams.length - 1);
+  }
+
+  showRanks() {
     this.toggleButton("ranks-btn");
-    this.view = 'about';
+    this.view = 'ranks';
   }
 
-  showPitInfo() {
+  showTeams() {
     this.toggleButton("teams-btn");
-    this.view = 'pit';
+    this.view = 'teams';
   }
 
   showAwards() {
@@ -42,9 +58,41 @@ export class EventPage {
     this.view = 'awards';
   }
 
-  showEvents() {
+  showMatches() {
     this.toggleButton("matches-btn");
-    this.view = 'events';
+    this.view = 'matches';
+  }
+
+  private repopulateRankings() {
+
+    let label = this.event.ranks[0];
+    this.rankings_labels = {
+      rank_label: label[0],
+      team_label: label[1],
+      ranking_score_label: label[2],
+      auto_label: label[3],
+      scale_challenge_label: label[4],
+      goals_label: label[5],
+      defense_label: label[6],
+      record_label: label[7],
+      played_label: label[8]
+    };
+
+    for (let i = 1; i < this.event.ranks.length; i++) {
+      let ranking = this.event.ranks[i];
+
+      this.rankings.push({
+        rank: ranking[0],
+        team: ranking[1],
+        ranking_score: ranking[2],
+        auto: ranking[3],
+        scale_challenge: ranking[4],
+        goals: ranking[5],
+        defense: ranking[6],
+        record: ranking[7],
+        played: ranking[8]
+      });
+    }
   }
 
   private clearActiveButtons() {
