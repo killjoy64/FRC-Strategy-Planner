@@ -34,10 +34,10 @@
   <ion-grid class="event-profile-buttons">
     <ion-row>
       <ion-col class="flex-center" width-25>
-        <button ion-button full color="secondary" class="profile-button" (click)="showRanks()" id="ranks-btn">
+        <button ion-button full color="secondary" class="profile-button" (click)="showStats()" id="stats-btn">
           <div class="profile-button-content">
-            <span class="fa fa-2x fa-list-ol"></span>
-            <span>Rankings</span>
+            <span class="fa fa-2x fa-line-chart"></span>
+            <span>Stats</span>
           </div>
         </button>
       </ion-col>
@@ -68,9 +68,22 @@
     </ion-row>
   </ion-grid>
 
-  <div class="event-profile-content" *ngIf="view=='ranks'">
+  <div class="event-profile-content" *ngIf="view=='stats' && event.stats">
+
+
+
+  </div>
+
+  <div class="event-profile-content" *ngIf="view=='teams'">
 
     <ion-list>
+      <ion-item>
+        <ion-label>Show Rankings</ion-label>
+        <ion-toggle [(ngModel)]="show_rankings"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="show_rankings">
       <ion-item *ngFor="let ranking of rankings" text-wrap>
         <div class="rank-team">{{ ranking.rank }}. {{ ranking.team }} ({{ ranking.ranking_score }} {{ rankings_labels.ranking_score_label }})</div>
         <div class="rank-info">
@@ -89,11 +102,7 @@
       </ion-item>
     </ion-list>
 
-  </div>
-
-  <div class="event-profile-content" *ngIf="view=='teams'">
-
-    <ion-list>
+    <ion-list *ngIf="!show_rankings">
       <ion-item *ngFor="let team of event.teams">
         <ion-thumbnail item-left>
           <ion-img src="assets/option-robots.png" *ngIf="!team.photo_url" cache="true"></ion-img>
@@ -102,7 +111,7 @@
         <h2>FRC Team {{ team.team_number }}</h2>
         <h3>{{ team.nickname }}</h3>
         <p>{{ team.motto }}</p>
-        <button ion-button clear item-right>View</button>
+        <button ion-button clear item-right class="rank-view">View</button>
       </ion-item>
     </ion-list>
 

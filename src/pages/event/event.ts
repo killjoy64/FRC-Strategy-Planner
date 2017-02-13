@@ -18,6 +18,8 @@ export class EventPage {
   rankings: any;
   rankings_labels: any;
 
+  show_rankings: boolean;
+
   view: any;
 
   constructor(private navCtrl: NavController, private navParams: NavParams) {
@@ -27,6 +29,8 @@ export class EventPage {
     this.rankings_labels = null;
 
     this.view = null;
+
+    this.show_rankings = false;
 
     if (this.navParams.get("event")) {
       this.event = this.navParams.get("event");
@@ -38,14 +42,14 @@ export class EventPage {
   }
 
   ionViewWillEnter() {
-    this.showRanks();
+    this.showStats();
 
     this.team_sorter.sort(this.event.teams, 0, this.event.teams.length - 1);
   }
 
-  showRanks() {
-    this.toggleButton("ranks-btn");
-    this.view = 'ranks';
+  showStats() {
+    this.toggleButton("stats-btn");
+    this.view = 'stats';
   }
 
   showTeams() {
@@ -65,34 +69,37 @@ export class EventPage {
 
   private repopulateRankings() {
 
-    let label = this.event.ranks[0];
-    this.rankings_labels = {
-      rank_label: label[0],
-      team_label: label[1],
-      ranking_score_label: label[2],
-      auto_label: label[3],
-      scale_challenge_label: label[4],
-      goals_label: label[5],
-      defense_label: label[6],
-      record_label: label[7],
-      played_label: label[8]
-    };
+    if (this.event.ranks.length > 0) {
+      let label = this.event.ranks[0];
+      this.rankings_labels = {
+        rank_label: label[0],
+        team_label: label[1],
+        ranking_score_label: label[2],
+        auto_label: label[3],
+        scale_challenge_label: label[4],
+        goals_label: label[5],
+        defense_label: label[6],
+        record_label: label[7],
+        played_label: label[8]
+      };
 
-    for (let i = 1; i < this.event.ranks.length; i++) {
-      let ranking = this.event.ranks[i];
+      for (let i = 1; i < this.event.ranks.length; i++) {
+        let ranking = this.event.ranks[i];
 
-      this.rankings.push({
-        rank: ranking[0],
-        team: ranking[1],
-        ranking_score: ranking[2],
-        auto: ranking[3],
-        scale_challenge: ranking[4],
-        goals: ranking[5],
-        defense: ranking[6],
-        record: ranking[7],
-        played: ranking[8]
-      });
+        this.rankings.push({
+          rank: ranking[0],
+          team: ranking[1],
+          ranking_score: ranking[2],
+          auto: ranking[3],
+          scale_challenge: ranking[4],
+          goals: ranking[5],
+          defense: ranking[6],
+          record: ranking[7],
+          played: ranking[8]
+        });
+      }
     }
+
   }
 
   private clearActiveButtons() {
