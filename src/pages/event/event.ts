@@ -5,6 +5,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {TeamSorter} from "../../util/object-sorter";
+import {EventTeamPage} from "../event-team/event-team";
+import {TeamSearcher} from "../../util/object-searcher";
 
 @Component({
   selector: 'page-event',
@@ -13,6 +15,7 @@ import {TeamSorter} from "../../util/object-sorter";
 export class EventPage {
 
   team_sorter: TeamSorter;
+  team_searcher: TeamSearcher;
 
   event: any;
   rankings: any;
@@ -24,6 +27,7 @@ export class EventPage {
 
   constructor(private navCtrl: NavController, private navParams: NavParams) {
     this.team_sorter = new TeamSorter();
+    this.team_searcher = new TeamSearcher();
 
     this.rankings = [];
     this.rankings_labels = null;
@@ -45,6 +49,17 @@ export class EventPage {
     this.showStats();
 
     this.team_sorter.sort(this.event.teams, 0, this.event.teams.length - 1);
+  }
+
+  openEventTeamPage(team) {
+    this.navCtrl.push(EventTeamPage, {
+      event: this.event.short_name,
+      team: team
+    });
+  }
+
+  getTeamAndOpen(team_number) {
+    console.log(this.team_searcher.search(this.event.teams, team_number, this.event.teams.length / 2));
   }
 
   showStats() {

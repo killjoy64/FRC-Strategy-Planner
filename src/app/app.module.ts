@@ -12,6 +12,7 @@ import { CloudPage } from '../pages/tab-my-cloud/tab-my-cloud';
 import { StartupPage } from '../pages/startup/startup';
 import { TeamPage } from '../pages/team/team';
 import { EventPage } from '../pages/event/event';
+import { EventTeamPage } from '../pages/event-team/event-team';
 import { EventsPage } from '../pages/events/events';
 
 import { FieldFilesModal } from '../modals/field-files-modal/field-files-modal';
@@ -39,6 +40,7 @@ enableProdMode();
     StartupPage,
     TeamPage,
     EventPage,
+    EventTeamPage,
     EventsPage,
     FieldFilesModal,
     LibrariesModal,
@@ -61,6 +63,7 @@ enableProdMode();
     StartupPage,
     TeamPage,
     EventPage,
+    EventTeamPage,
     EventsPage,
     FieldFilesModal,
     LibrariesModal,
