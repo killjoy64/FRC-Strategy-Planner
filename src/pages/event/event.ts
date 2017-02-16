@@ -59,7 +59,8 @@ export class EventPage {
   }
 
   getTeamAndOpen(team_number) {
-    console.log(this.team_searcher.search(this.event.teams, team_number, this.event.teams.length / 2));
+    let team = this.team_searcher.search(this.event.teams, team_number, 0, this.event.teams.length - 1);
+    console.log(team);
   }
 
   showStats() {
