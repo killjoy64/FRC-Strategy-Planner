@@ -8,4 +8,19 @@
 
 <ion-content>
 
+  <div class="team-profile-header">
+    <img class="team-photo-bg" src="assets/teams_picture.jpg"/>
+    <div class="flex-content">
+      <div class="event-team-photo-container" tappable (click)="openPictureSheet()">
+        <img class="team-photo" src="assets/option-robots.png" *ngIf="!base64_string"/>
+        <img class="team-photo" src="{{ base64_string }}" *ngIf="base64_string"/>
+      </div>
+      <div class="team-header-info">
+        <span class="team-nickname">{{ team.nickname }}</span>
+        <span class="team-location">{{ team.locality }}, {{ team.region }}</span>
+        <span><a href="{{ team.website }}">{{ team.website }}</a></span>
+      </div>
+    </div>
+  </div>
+
 </ion-content>

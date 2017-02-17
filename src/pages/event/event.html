@@ -105,13 +105,58 @@
     <ion-list *ngIf="!show_rankings">
       <ion-item *ngFor="let team of event.teams">
         <ion-thumbnail item-left>
-          <ion-img src="assets/option-robots.png" *ngIf="!team.photo_url" cache="true"></ion-img>
-          <ion-img [src]="team.avatar_url" *ngIf="team.photo_url" cache="true"></ion-img>
+          <img src="assets/option-robots.png" *ngIf="!team.photo_url" />
+          <img src="{{ team.avatar_url }}" *ngIf="team.photo_url" />
         </ion-thumbnail>
         <h2>FRC Team {{ team.team_number }}</h2>
         <h3>{{ team.nickname }}</h3>
         <p>{{ team.motto }}</p>
         <button ion-button clear item-right class="rank-view" (click)="openEventTeamPage(team)">View</button>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  <div class="event-profile-content" *ngIf="view=='awards' && event.awards">
+
+    <ion-list>
+      <ion-item *ngFor="let award of event.awards">
+        <div class="rank-team">{{ award.name }}</div>
+        <ion-thumbnail item-left class="award-icon">
+          <span class="fa fa-4x fa-trophy orange"></span>
+        </ion-thumbnail>
+        <h2>Recipients:</h2>
+        <p><span *ngFor="let recipient of award.recipient_list">{{ recipient.team_number }} </span></p>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  <div class="event-profile-content" *ngIf="view=='matches' && event.matches">
+
+    <ion-list>
+      <ion-item *ngFor="let match of event.matches">
+        <div class="rank-team">{{ match_converter.convert(match) }}</div>
+        <ion-grid>
+          <ion-row>
+            <ion-col item-left>
+              <span *ngFor="let team of match.alliances.red.teams">{{ team.substring(3, team.length) }} </span>
+            </ion-col>
+            <ion-col item-right>
+              <span *ngFor="let team of match.alliances.blue.teams">{{ team.substring(3, team.length) }} </span>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col item-left>
+              <span class="danger" *ngIf="match.score_breakdown">{{ match.score_breakdown.red.totalPoints }}</span>
+              <span class="danger" *ngIf="!match.score_breakdown">{{ match.alliances.red.score }}</span>
+            </ion-col>
+            <ion-col item-right>
+              <span class="primary" *ngIf="match.score_breakdown">{{ match.score_breakdown.blue.totalPoints }}</span>
+              <span class="primary" *ngIf="!match.score_breakdown">{{ match.alliances.blue.score }}</span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-item>
     </ion-list>
 

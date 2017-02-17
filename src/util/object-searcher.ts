@@ -8,7 +8,7 @@ export class TeamSearcher {
 
   /* Function that performs a recursive binary search. */
   public search(teams, goal, low, high) {
-    let mid = Math.round((high - low) / 2);
+    let mid = Math.round((high - low) / 2) + low;
 
     this.count++;
 
@@ -16,8 +16,6 @@ export class TeamSearcher {
     let high_number = parseInt(teams[high].team_number);
     let low_number = parseInt(teams[low].team_number);
     let mid_number = parseInt(teams[mid].team_number);
-
-    console.log(low + ":" + low_number + " | " + mid + ":" + mid_number +  " | " + high + ":" + high_number + " | " + "goal:" + goal_number);
 
     if (high_number === goal_number) {
       console.log(this.count + " iterations");

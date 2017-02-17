@@ -4,15 +4,19 @@
 
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {TeamSorter} from "../../util/object-sorter";
-import {EventTeamPage} from "../event-team/event-team";
-import {TeamSearcher} from "../../util/object-searcher";
+import {TeamSorter, MatchSorter} from "../../util/object-sorter";
+import { EventTeamPage } from "../event-team/event-team";
+import { TeamSearcher } from "../../util/object-searcher";
+import {MatchConverter} from "../../util/string-converter";
 
 @Component({
   selector: 'page-event',
   templateUrl: 'event.html'
 })
 export class EventPage {
+
+  match_sorter: MatchSorter;
+  match_converter: MatchConverter;
 
   team_sorter: TeamSorter;
   team_searcher: TeamSearcher;
@@ -26,6 +30,8 @@ export class EventPage {
   view: any;
 
   constructor(private navCtrl: NavController, private navParams: NavParams) {
+    this.match_sorter = new MatchSorter();
+    this.match_converter = new MatchConverter();
     this.team_sorter = new TeamSorter();
     this.team_searcher = new TeamSearcher();
 
@@ -48,6 +54,7 @@ export class EventPage {
   ionViewWillEnter() {
     this.showStats();
 
+    this.match_sorter.sort(this.event.matches, 0, this.event.matches.length - 1);
     this.team_sorter.sort(this.event.teams, 0, this.event.teams.length - 1);
   }
 
@@ -60,7 +67,7 @@ export class EventPage {
 
   getTeamAndOpen(team_number) {
     let team = this.team_searcher.search(this.event.teams, team_number, 0, this.event.teams.length - 1);
-    console.log(team);
+    this.openEventTeamPage(team);
   }
 
   showStats() {

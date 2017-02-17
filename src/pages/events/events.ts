@@ -7,7 +7,6 @@ import { NavParams, LoadingController, AlertController, NavController } from "io
 import { TBAService } from "../../providers/tba-provider";
 import { ConnectionManager } from "../../util/connection-manager";
 import { EventPage } from "../event/event";
-import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { EventSorter } from "../../util/object-sorter";
 
 @Component({

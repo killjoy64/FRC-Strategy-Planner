@@ -53,7 +53,7 @@ export class StartupPage {
 
     setTimeout(() => {
       this.animateIntro();
-    }, 1000);
+    }, 500);
 
   }
 
