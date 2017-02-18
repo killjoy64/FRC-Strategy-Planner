@@ -2,8 +2,8 @@
  * Created by Kyle Flynn on 1/26/2017.
  */
 
-import { Component, NgZone } from '@angular/core';
-import { NavParams, ActionSheetController } from "ionic-angular";
+import { Component, NgZone, ViewChild } from '@angular/core';
+import { NavParams, ActionSheetController, Content } from "ionic-angular";
 import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { Camera, Entry, PhotoViewer } from "ionic-native";
 import { FileMover, AppDirectory } from "../../util/file-manager";
@@ -15,10 +15,13 @@ import { DomSanitizer } from "@angular/platform-browser";
 })
 export class EventTeamPage {
 
+  @ViewChild(Content) content;
+
   event: any;
   team: any;
 
   base64_string: any;
+  view: string;
 
   constructor(private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone, private sanitizer: DomSanitizer) {
 
@@ -35,11 +38,78 @@ export class EventTeamPage {
     }
 
     this.base64_string = null;
+    this.view = null;
 
   }
 
   ionViewWillEnter() {
     this.resizePhoto();
+  }
+
+  showInfo() {
+    this.toggleButton("info-btn");
+    this.view = 'info';
+  }
+
+  showPitInfo() {
+    this.toggleButton("team-pit-btn");
+    this.view = 'pit';
+  }
+
+  showStats() {
+    this.toggleButton("team-stats-btn");
+    this.view = 'stats';
+  }
+
+  showMatches() {
+    this.toggleButton("team-matches-btn");
+    this.view = 'matches';
+  }
+
+  private clearActiveButtons() {
+    let buttons = document.getElementsByClassName("profile-button");
+
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].classList.remove("active-button");
+    }
+  }
+
+  private toggleButton(id) {
+    let btn = document.getElementById(id);
+    if (btn.classList.contains("active-button")) {
+      this.clearActiveButtons();
+      return false;
+    } else {
+      this.clearActiveButtons();
+      btn.classList.add("active-button");
+      return true;
+    }
+  }
+
+  convert(string) {
+    if (string.indexOf("sponsor") > -1) {
+      return string.substring(0, string.indexOf("sponsor"));
+    } else {
+      return string;
+    }
+  }
+
+  checkScroll(e) {
+    if (e.scrollTop >= 300) {
+      if (document.getElementById("scroll").classList.contains("hidden")) {
+        document.getElementById("scroll").classList.remove("hidden");
+        document.getElementById("scroll").classList.add("visible");
+      }
+    } else {
+      if (document.getElementById("scroll").classList.contains("visible")) {
+        document.getElementById("scroll").classList.remove("visible");
+        document.getElementById("scroll").classList.add("hidden");
+      }
+    }
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop(1200);
   }
 
   resizePhoto() {

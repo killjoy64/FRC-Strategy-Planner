@@ -81,7 +81,50 @@ page-event-team {
   .team-location {
     font-size: 1.6rem;
   }
-
+  .team-profile-buttons {
+    margin-top: 30vh !important;
+    height: 6.5rem;
+  }
+  .profile-button {
+    margin: 0 !important;
+    height: 5.5rem;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+  .profile-button-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ffffff !important;
+    line-height: 135%;
+    padding: 7px;
+  }
+  .team-profile-content {
+    padding: 10px;
+  }
+  .team-content-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+  }
+  .team-content-header span {
+    width: 100%;
+  }
+  .team-content-header-title {
+    font-weight: bold;
+    font-size: 2.0rem;
+  }
+  .team-content-header-subtitle {
+    font-size: 1.4rem;
+  }
+  .active-button {
+    height: 6.3rem;
+  }
   .flex-content {
     display: flex;
     justify-content: center;

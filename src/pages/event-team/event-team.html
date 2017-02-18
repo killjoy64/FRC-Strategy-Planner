@@ -23,4 +23,41 @@
     </div>
   </div>
 
+  <ion-grid class="team-profile-buttons">
+    <ion-row>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="secondary" class="profile-button" (click)="showInfo()" id="info-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-question-circle"></span>
+            <span>Info</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="danger" class="profile-button" (click)="showPitInfo()" id="team-pit-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-cloud"></span>
+            <span>Pit Info</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="orange" class="profile-button" (click)="showStats()" id="team-stats-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-line-chart"></span>
+            <span>Stats</span>
+          </div>
+        </button>
+      </ion-col>
+      <ion-col class="flex-center" width-25>
+        <button ion-button full color="primary" class="profile-button" (click)="showMatches()" id="team-matches-btn">
+          <div class="profile-button-content">
+            <span class="fa fa-2x fa-calendar"></span>
+            <span>Matches</span>
+          </div>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>
