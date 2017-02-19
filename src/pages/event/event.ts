@@ -3,11 +3,11 @@
  */
 
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import {TeamSorter, MatchSorter} from "../../util/object-sorter";
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import { TeamSorter, MatchSorter } from "../../util/object-sorter";
 import { EventTeamPage } from "../event-team/event-team";
 import { TeamSearcher } from "../../util/object-searcher";
-import {MatchConverter} from "../../util/string-converter";
+import { MatchConverter } from "../../util/string-converter";
 
 @Component({
   selector: 'page-event',
@@ -29,7 +29,7 @@ export class EventPage {
 
   view: any;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams) {
+  constructor(private navCtrl: NavController, private navParams: NavParams, private loadCtrl: LoadingController) {
     this.match_sorter = new MatchSorter();
     this.match_converter = new MatchConverter();
     this.team_sorter = new TeamSorter();
@@ -59,9 +59,50 @@ export class EventPage {
   }
 
   openEventTeamPage(team) {
+    let loader = this.loadCtrl.create({
+      content: "Loading Data...",
+      duration: 3000
+    });
+    loader.present();
+
+    let matches = [];
+
+    for (let match of this.event.matches) {
+      for (let i = 0; i < 3; i++) {
+        if (match.alliances.blue.teams[i] == team.key) {
+          matches.push(match);
+        }
+        if (match.alliances.red.teams[i] == team.key) {
+          matches.push(match);
+        }
+      }
+    }
+
+    team.matches = matches;
+
+    if (this.rankings.length > 0 ) {
+
+      let rank_info = null;
+
+      for (let i = 0; i < this.rankings.length; i++) {
+        let goal = parseInt(team.team_number);
+        let curr = parseInt(this.rankings[i].team);
+
+        if (curr == goal) {
+          rank_info = this.rankings[i];
+          break;
+        }
+      }
+
+      team.rank = rank_info;
+      team.rank_info = this.rankings_labels;
+    }
+
     this.navCtrl.push(EventTeamPage, {
       event: this.event.short_name,
       team: team
+    }).then(() => {
+      loader.dismiss();
     });
   }
 

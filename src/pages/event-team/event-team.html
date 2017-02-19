@@ -60,4 +60,66 @@
     </ion-row>
   </ion-grid>
 
+  <div class="team-profile-content" *ngIf="view=='info'">
+
+    <ion-list>
+      <ion-item>
+        <div class="team-content-header-title">{{ team.nickname }}</div>
+        <div class="team-content-header-subtitle" *ngIf="team.motto">"{{ team.motto }}"</div>
+      </ion-item>
+      <ion-item *ngIf="team.rank" text-wrap>
+        <div class="rank-team">Rank {{ team.rank.rank }}. ({{ team.rank.ranking_score }} {{ team.rank_info.ranking_score_label }})</div>
+        <div class="rank-info">
+          <span>{{ team.rank_info.played_label }}: {{ team.rank.played }}</span>
+          <span>{{ team.rank_info.record_label }}: {{ team.rank.record }}</span>
+        </div>
+        <div class="rank-info">
+          <span>{{ team.rank_info.auto_label }}: {{ team.rank.auto }}</span>
+          <span>{{ team.rank_info.scale_challenge_label }}: {{ team.rank.scale_challenge }}</span>
+        </div>
+        <div class="rank-info">
+          <span>{{ team.rank_info.defense_label }}: {{ team.rank.defense }}</span>
+          <span>{{ team.rank_info.goals_label }}: {{ team.rank.goals }}</span>
+        </div>
+      </ion-item>
+      <ion-item>
+        <b>Region:</b> {{ team.region }} ({{ team.locality }})
+      </ion-item>
+      <ion-item>
+        <b>Years in FRC:</b> {{ team.years }}
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  <div class="team-profile-content" *ngIf="view=='matches' && team.matches">
+
+    <ion-list>
+      <ion-item *ngFor="let match of team.matches">
+        <div class="rank-team">{{ match_converter.convert(match) }}</div>
+        <ion-grid>
+          <ion-row>
+            <ion-col item-left>
+              <span *ngFor="let team of match.alliances.red.teams">{{ team.substring(3, team.length) }} </span>
+            </ion-col>
+            <ion-col item-right>
+              <span *ngFor="let team of match.alliances.blue.teams">{{ team.substring(3, team.length) }} </span>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col item-left>
+              <span class="danger" *ngIf="match.score_breakdown">{{ match.score_breakdown.red.totalPoints || match.alliances.red.score }}</span>
+              <span class="danger" *ngIf="!match.score_breakdown">{{ match.alliances.red.score }}</span>
+            </ion-col>
+            <ion-col item-right>
+              <span class="primary" *ngIf="match.score_breakdown">{{ match.score_breakdown.blue.totalPoints || match.alliances.blue.score  }}</span>
+              <span class="primary" *ngIf="!match.score_breakdown">{{ match.alliances.blue.score }}</span>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
 </ion-content>

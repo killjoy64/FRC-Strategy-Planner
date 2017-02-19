@@ -12,6 +12,11 @@ export class TeamSearcher {
 
     this.count++;
 
+    if (low < 0 || mid < 0 || high < 0) {
+      console.log("Did not find...");
+      return null;
+    }
+
     let goal_number = parseInt(goal);
     let high_number = parseInt(teams[high].team_number);
     let low_number = parseInt(teams[low].team_number);
@@ -22,26 +27,23 @@ export class TeamSearcher {
       this.count = 0;
       return teams[high];
     }
-
     if (low_number === goal_number) {
       console.log(this.count + " iterations");
       this.count = 0;
       return teams[low];
     }
-
     if (mid_number === goal_number) {
       console.log(this.count + " iterations");
       this.count = 0;
       return teams[mid];
-    } else if (mid_number < goal_number) {
+    }
+    if (mid_number < goal_number) {
       // our number is in upper half of array
       return this.search(teams, goal_number, mid+1, high);
-    } else if (mid_number > goal_number) {
+    }
+    if (mid_number > goal_number) {
       // our number is in lower half of array
       return this.search(teams, goal_number, low, mid-1);
-    } else {
-      console.log ("did not find");
-      return -1;
     }
 
   }

@@ -8,6 +8,8 @@ import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { Camera, Entry, PhotoViewer } from "ionic-native";
 import { FileMover, AppDirectory } from "../../util/file-manager";
 import { DomSanitizer } from "@angular/platform-browser";
+import { MatchSorter } from "../../util/object-sorter";
+import { MatchConverter } from "../../util/string-converter";
 
 @Component({
   selector: 'page-event-team',
@@ -16,6 +18,8 @@ import { DomSanitizer } from "@angular/platform-browser";
 export class EventTeamPage {
 
   @ViewChild(Content) content;
+
+  match_converter: MatchConverter;
 
   event: any;
   team: any;
@@ -37,13 +41,15 @@ export class EventTeamPage {
       this.team = null;
     }
 
+    this.match_converter = new MatchConverter();
+
     this.base64_string = null;
     this.view = null;
-
   }
 
   ionViewWillEnter() {
     this.resizePhoto();
+    this.showInfo();
   }
 
   showInfo() {
@@ -83,6 +89,16 @@ export class EventTeamPage {
       this.clearActiveButtons();
       btn.classList.add("active-button");
       return true;
+    }
+  }
+
+  checkTeam(team) {
+    let team_string = team.substring(3, team.length);
+
+    if (team_string.indexOf(this.team.team_number + "") > -1) {
+      return true;
+    } else {
+      return false;
     }
   }
 
