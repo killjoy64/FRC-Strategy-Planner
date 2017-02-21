@@ -5,7 +5,7 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
 import {
   NavController, NavParams, Content, ActionSheetController, LoadingController,
-  AlertController
+  AlertController, ModalController
 } from 'ionic-angular';
 import { AwardSorter, EventSorter } from "../../util/object-sorter";
 import { DomSanitizer } from '@angular/platform-browser';
@@ -15,6 +15,7 @@ import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { TBAService } from "../../providers/tba-provider";
 import { ConnectionManager } from "../../util/connection-manager";
 import { EventPage } from "../event/event";
+import { PitModal } from "../../modals/team-pit-modal/team-pit-modal";
 
 @Component({
   selector: 'page-team',
@@ -36,7 +37,7 @@ export class TeamPage {
 
   base64_string: any;
 
-  constructor(public sanitizer: DomSanitizer, private alertCtrl: AlertController, private loadCtrl: LoadingController, private tba: TBAService, private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone) {
+  constructor(public sanitizer: DomSanitizer, private alertCtrl: AlertController, private loadCtrl: LoadingController, private tba: TBAService, private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone, private modalCtrl: ModalController) {
     this.connection = new ConnectionManager();
     this.connection.setLoadController(this.loadCtrl);
     this.connection.setAlertController(this.alertCtrl);
@@ -64,6 +65,16 @@ export class TeamPage {
     });
   }
 
+  openPitModal() {
+    let pitModal = this.modalCtrl.create(PitModal, {
+      team: this.team
+    });
+    pitModal.present();
+    pitModal.onDidDismiss((data) => {
+      console.log(this.team.pit_info);
+    });
+  }
+
   resizePhoto() {
 
     if (this.team.photo_url) {
@@ -88,6 +99,7 @@ export class TeamPage {
           }
         }, 100);
       });
+
     } else {
       let img = document.getElementsByClassName("team-photo-container")[0].querySelector("img");
 

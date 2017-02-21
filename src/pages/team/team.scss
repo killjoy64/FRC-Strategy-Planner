@@ -135,4 +135,10 @@ page-team {
   a:link {
     text-decoration: none;
   }
+  .pit-info {
+    align-items: baseline !important;
+  }
+  .pit-info-right {
+    white-space: normal !important;
+  }
 }

@@ -140,6 +140,8 @@ export class TeamsAndEventsPage {
         eventInfo.awards = data[5];
         eventInfo.points = data[6];
 
+        // TODO - LOOP THROUGH DIRECTORIES AND ASSIGN TEAM METADATA
+
         this.navCtrl.push(EventPage, {
           event: eventInfo
         });
@@ -206,6 +208,13 @@ export class TeamsAndEventsPage {
         FileGetter.read("robots", teamInfo.team_number + ".jpg").then((data) => {
           teamInfo.photo_url = AppDirectory.getPermDir() + "robots/" + teamInfo.team_number + ".jpg";
           DebugLogger.log(LoggerLevel.INFO, "Found robot photo for team " + teamInfo.team_number);
+        }, (err) => {
+          DebugLogger.log(LoggerLevel.ERROR, err.message + " " + err.code);
+        });
+
+        FileGetter.read("pit-scouting", teamInfo.team_number + ".json").then((data:string) => {
+          teamInfo.pit_info = JSON.parse(data);
+          DebugLogger.log(LoggerLevel.INFO, "Found pit scouting file for team " + teamInfo.team_number);
         }, (err) => {
           DebugLogger.log(LoggerLevel.ERROR, err.message + " " + err.code);
         });

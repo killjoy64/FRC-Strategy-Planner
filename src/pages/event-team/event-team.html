@@ -3,10 +3,15 @@
     <ion-title>
       <span>{{ event }} - {{ team.team_number }}</span>
     </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="primary" (click)="openPitModal()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content (ionScroll)="checkScroll($event)">
 
   <div class="team-profile-header">
     <img class="team-photo-bg" src="assets/teams_picture.jpg"/>
@@ -86,7 +91,7 @@
         <b>Region:</b> {{ team.region }} ({{ team.locality }})
       </ion-item>
       <ion-item>
-        <b>Years in FRC:</b> {{ team.years }}
+        <b>Rookie Year:</b> {{ team.rookie_year }}
       </ion-item>
     </ion-list>
 
@@ -121,5 +126,50 @@
     </ion-list>
 
   </div>
+
+  <div class="team-profile-content" *ngIf="view=='pit'">
+
+    <ion-list *ngIf="!team.pit_info">
+      <ion-item text-wrap>
+        <span>No pit data for this team. If you would like to add data, tap the edit icon located on the top right of this page.</span>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="team.pit_info">
+      <ion-item class="pit-info" *ngIf="team.pit_info.drive_train && !team.pit_info.drive_train_other">
+        <ion-label item-left>Drive Train: </ion-label>
+        <ion-label class="pit-info-right" item-right>{{ team.pit_info.drive_train }}</ion-label>
+      </ion-item>
+      <ion-item class="pit-info" *ngIf="team.pit_info.drive_train_other && team.pit_info.drive_train=='Other'">
+        <ion-label item-left>Drive Train: </ion-label>
+        <ion-label class="pit-info-right" item-right>{{ team.pit_info.drive_train_other }}</ion-label>
+      </ion-item>
+      <ion-item class="pit-info" *ngIf="team.pit_info.shoot_capability">
+        <ion-label item-left>Shooter Capability: </ion-label>
+        <ion-label class="pit-info-right" item-right>{{ team.pit_info.shoot_capability }}</ion-label>
+      </ion-item>
+      <ion-item class="pit-info" *ngIf="team.pit_info.gear_capability">
+        <ion-label item-left>Gear Capability: </ion-label>
+        <ion-label class="pit-info-right" item-right>{{ team.pit_info.gear_capability }}</ion-label>
+      </ion-item>
+      <ion-item class="pit-info" *ngIf="team.pit_info.auto_strategy">
+        <ion-label item-left>Auto Strategy: </ion-label>
+        <ion-label class="pit-info-right" item-right>{{ team.pit_info.auto_strategy }}</ion-label>
+      </ion-item>
+      <ion-item class="pit-info" *ngIf="team.pit_info.teleop_strategy">
+        <ion-label item-left>Teleop Strategy: </ion-label>
+        <ion-label class="pit-info-right" item-right>{{ team.pit_info.teleop_strategy }}</ion-label>
+      </ion-item>
+      <ion-item class="pit-info" *ngIf="team.pit_info.additional_comments">
+        <ion-label item-left>Addition Info: </ion-label>
+        <ion-label class="pit-info-right" item-right>{{ team.pit_info.additional_comments }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  <button ion-button icon-only id="event-team-scroll" (click)="scrollToTop()" class="scroll hidden" color="primary">
+    <ion-icon name="arrow-up"></ion-icon>
+  </button>
 
 </ion-content>

@@ -20,6 +20,7 @@ import { LibrariesModal } from '../modals/settings-libraries-modal/settings-libr
 import { LoggerModal } from '../modals/settings-logger-modal/settings-logger-modal';
 import { AccountCreateModal } from '../modals/account-create-modal/account-create-modal';
 import { AccountLoginModal } from '../modals/account-login-modal/account-login-modal';
+import { PitModal } from '../modals/team-pit-modal/team-pit-modal';
 
 const cloudSettings: CloudSettings = {
   'core': {
@@ -46,7 +47,8 @@ enableProdMode();
     LibrariesModal,
     LoggerModal,
     AccountCreateModal,
-    AccountLoginModal
+    AccountLoginModal,
+    PitModal
   ],
   imports: [
     IonicModule.forRoot(FRCSP, {tabsPlacement: 'bottom'}),
@@ -69,7 +71,8 @@ enableProdMode();
     LibrariesModal,
     LoggerModal,
     AccountCreateModal,
-    AccountLoginModal
+    AccountLoginModal,
+    PitModal
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Pit Info - Team {{ team.team_number }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only color="light" (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-label stacked>General</ion-label>
+  <ion-list>
+    <ion-item>
+      <ion-label>Drive Train</ion-label>
+      <ion-select [(ngModel)]="drive_train">
+        <ion-option value="Treads">Treads</ion-option>
+        <ion-option value="Wheels">Wheels</ion-option>
+        <ion-option value="Mecanum">Mecanum</ion-option>
+        <ion-option value="Omni">Omni</ion-option>
+        <ion-option value="Other">Other</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="drive_train == 'Other'">
+      <ion-textarea [(ngModel)]="drive_train_other" id="other_drive_train"  placeholder="Additional info..." rows="1"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label>Shooting</ion-label>
+      <ion-select [(ngModel)]="shoot_capability">
+        <ion-option value="High Goal">High Goal</ion-option>
+        <ion-option value="Low Goal">Low Goal</ion-option>
+        <ion-option value="None">N/A</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Gears</ion-label>
+      <ion-select [(ngModel)]="gear_capability">
+        <ion-option value="Yes">Yes</ion-option>
+        <ion-option value="No">No</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
+  <ion-label stacked>Autonomous</ion-label>
+  <ion-list>
+    <ion-item>
+      <ion-label>Primary Strategy</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-textarea [(ngModel)]="auto_strategy" id="auto_strategy"  placeholder="Autonomous info..." rows="4"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-label stacked>TeleOp</ion-label>
+  <ion-list>
+    <ion-item>
+      <ion-label>Primary Strategy</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-textarea [(ngModel)]="teleop_strategy" id="teleop_strategy"  placeholder="Teleop info..." rows="4"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  <ion-label stacked>Additional Info</ion-label>
+  <ion-list>
+    <ion-item>
+      <ion-textarea [(ngModel)]="additional_comments" placeholder="Additional info about this team" rows="6"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <button ion-button full color="primary" (click)="save()">
+        <span>Save</span>
+      </button>
+    </ion-item>
+    <ion-item>
+      <button ion-button full color="danger" (click)="clear()">
+        <span>Clear</span>
+      </button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

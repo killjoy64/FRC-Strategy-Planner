@@ -3,13 +3,14 @@
  */
 
 import { Component, NgZone, ViewChild } from '@angular/core';
-import { NavParams, ActionSheetController, Content } from "ionic-angular";
+import {NavParams, ActionSheetController, Content, ModalController} from "ionic-angular";
 import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { Camera, Entry, PhotoViewer } from "ionic-native";
 import { FileMover, AppDirectory } from "../../util/file-manager";
 import { DomSanitizer } from "@angular/platform-browser";
 import { MatchSorter } from "../../util/object-sorter";
 import { MatchConverter } from "../../util/string-converter";
+import { PitModal } from "../../modals/team-pit-modal/team-pit-modal";
 
 @Component({
   selector: 'page-event-team',
@@ -27,7 +28,7 @@ export class EventTeamPage {
   base64_string: any;
   view: string;
 
-  constructor(private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone, private sanitizer: DomSanitizer) {
+  constructor(private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone, private sanitizer: DomSanitizer, private modalCtrl: ModalController) {
 
     if (this.navParams.get("event")) {
       this.event = this.navParams.get("event");
@@ -72,6 +73,16 @@ export class EventTeamPage {
     this.view = 'matches';
   }
 
+  openPitModal() {
+    let pitModal = this.modalCtrl.create(PitModal, {
+      team: this.team
+    });
+    pitModal.present();
+    // pitModal.onDidDismiss((data) => {
+    //
+    // });
+  }
+
   private clearActiveButtons() {
     let buttons = document.getElementsByClassName("profile-button");
 
@@ -112,14 +123,14 @@ export class EventTeamPage {
 
   checkScroll(e) {
     if (e.scrollTop >= 300) {
-      if (document.getElementById("scroll").classList.contains("hidden")) {
-        document.getElementById("scroll").classList.remove("hidden");
-        document.getElementById("scroll").classList.add("visible");
+      if (document.getElementById("event-team-scroll").classList.contains("hidden")) {
+        document.getElementById("event-team-scroll").classList.remove("hidden");
+        document.getElementById("event-team-scroll").classList.add("visible");
       }
     } else {
-      if (document.getElementById("scroll").classList.contains("visible")) {
-        document.getElementById("scroll").classList.remove("visible");
-        document.getElementById("scroll").classList.add("hidden");
+      if (document.getElementById("event-team-scroll").classList.contains("visible")) {
+        document.getElementById("event-team-scroll").classList.remove("visible");
+        document.getElementById("event-team-scroll").classList.add("hidden");
       }
     }
   }
