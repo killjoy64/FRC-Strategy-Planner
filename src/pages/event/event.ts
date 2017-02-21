@@ -55,6 +55,10 @@ export class EventPage {
       this.event = null;
     }
 
+    if (this.navParams.get("favorited")) {
+      this.favorite_event = this.navParams.get("favorited");
+    }
+
     this.repopulateRankings();
   }
 

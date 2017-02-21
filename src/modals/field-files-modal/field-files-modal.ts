@@ -23,7 +23,6 @@ export class FieldFilesModal {
   }
 
   ionViewWillEnter() {
-    console.log("load");
     this.strategy_file = null;
   }
 

@@ -4,7 +4,7 @@
 
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { Style } from "../../util/style";
 import { TBAService } from "../../providers/tba-provider";
 import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
@@ -14,6 +14,7 @@ import { EventPage } from "../event/event";
 import { EventsPage } from "../events/events";
 import { Config } from "../../util/config";
 import { FileGetter, AppDirectory } from "../../util/file-manager";
+import { EventFilesModal } from "../../modals/event-files-modal/event-files-modal";
 
 @Component({
   selector: 'page-teams-events',
@@ -36,7 +37,7 @@ export class TeamsAndEventsPage {
   loading_districts: boolean;
   loading_events: boolean;
 
-  constructor(private navCtrl: NavController, private tba: TBAService, private alertCtrl: AlertController, private loadCtrl: LoadingController) {
+  constructor(private navCtrl: NavController, private tba: TBAService, private alertCtrl: AlertController, private loadCtrl: LoadingController, private modalCtrl: ModalController) {
     this.connection = new ConnectionManager();
     this.connection.setAlertController(this.alertCtrl);
     this.connection.setLoadController(this.loadCtrl);
@@ -90,6 +91,29 @@ export class TeamsAndEventsPage {
       document.getElementById("teams_search").style.display = "none";
     });
     Style.translateY("events", 0);
+  }
+
+  openEventFilesModal() {
+    let fileModal = this.modalCtrl.create(EventFilesModal);
+    fileModal.present();
+    fileModal.onDidDismiss((data) => {
+      if (data.file) {
+        this.connection.showLoader("Reading...", 5000);
+        FileGetter.read("events", data.file.name).then((eventData:string) => {
+          let eventInfo = JSON.parse(eventData);
+          this.connection.hideLoader();
+          this.navCtrl.push(EventPage, {
+            event: eventInfo,
+            favorited: true
+          });
+        }).catch((err) => {
+          this.connection.hideLoader().then(() => {
+            this.connection.showAlert("Error", err.message);
+          });
+          DebugLogger.log(LoggerLevel.ERROR, data.file.name + ".json " + err.message + " " + err.code);
+        });
+      }
+    });
   }
 
   getDistricts() {

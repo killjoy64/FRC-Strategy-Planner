@@ -16,6 +16,7 @@ import { EventTeamPage } from '../pages/event-team/event-team';
 import { EventsPage } from '../pages/events/events';
 
 import { FieldFilesModal } from '../modals/field-files-modal/field-files-modal';
+import { EventFilesModal } from '../modals/event-files-modal/event-files-modal';
 import { LibrariesModal } from '../modals/settings-libraries-modal/settings-libraries-modal';
 import { LoggerModal } from '../modals/settings-logger-modal/settings-logger-modal';
 import { AccountCreateModal } from '../modals/account-create-modal/account-create-modal';
@@ -44,6 +45,7 @@ enableProdMode();
     EventTeamPage,
     EventsPage,
     FieldFilesModal,
+    EventFilesModal,
     LibrariesModal,
     LoggerModal,
     AccountCreateModal,
@@ -68,6 +70,7 @@ enableProdMode();
     EventTeamPage,
     EventsPage,
     FieldFilesModal,
+    EventFilesModal,
     LibrariesModal,
     LoggerModal,
     AccountCreateModal,

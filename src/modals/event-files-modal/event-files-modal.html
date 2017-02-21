@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Open a File
+      Open an Event File
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only color="light" (click)="dismiss()">
@@ -13,13 +13,13 @@
 
 <ion-content padding>
 
-  <div *ngIf="!strategy_files">
+  <div *ngIf="!event_files">
     <span>There are currently no strategy files saved to your device.</span>
   </div>
 
-  <div *ngIf="strategy_files">
+  <div *ngIf="event_files">
     <ion-list>
-      <ion-item *ngFor="let file of strategy_files" text-wrap>
+      <ion-item *ngFor="let file of event_files" text-wrap>
         <div class="file-name">{{ file.name }}</div>
         <div class="file-path" *ngIf="!file.modificationTime">Last Modified:</div>
         <div class="file-path" *ngIf="!file.size">Size:</div>
