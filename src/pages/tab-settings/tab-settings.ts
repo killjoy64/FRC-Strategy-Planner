@@ -8,6 +8,7 @@ import { Config } from "../../util/config";
 import { ModalController } from "ionic-angular";
 import { LibrariesModal } from "../../modals/settings-libraries-modal/settings-libraries-modal";
 import {LoggerModal} from "../../modals/settings-logger-modal/settings-logger-modal";
+import {AppDirectory} from "../../util/file-manager";
 
 @Component({
   selector: 'page-settings',
@@ -18,9 +19,13 @@ export class SettingsPage {
   team_number: number;
   version: string;
 
+  auto_save_events: boolean;
+
   constructor(public modalCtrl: ModalController) {
     this.team_number = Config.TEAM_NUMBER;
     this.version = Config.VERSION;
+
+    this.auto_save_events = Config.AUTO_SAVE_EVENT;
 
     if (!Config.IS_BROWSER) {
       window.addEventListener('native.keyboardshow', () => {
@@ -30,6 +35,23 @@ export class SettingsPage {
       window.addEventListener('native.keyboardhide', () => {
         document.body.classList.remove("keyboard-is-open");
       });
+    }
+  }
+
+  ionViewWillLeave() {
+    let should_save = false;
+
+    if (this.team_number != Config.TEAM_NUMBER) {
+      Config.TEAM_NUMBER = this.team_number;
+      should_save = true;
+    }
+    if (this.auto_save_events != Config.AUTO_SAVE_EVENT) {
+      Config.AUTO_SAVE_EVENT = this.auto_save_events;
+      should_save = true;
+    }
+
+    if (should_save) {
+      AppDirectory.saveConfig();
     }
   }
 

@@ -16,6 +16,13 @@
       </ion-item>
     </ion-item-group>
     <ion-item-group>
+      <ion-item-divider color="light">General</ion-item-divider>
+      <ion-item>
+        <ion-label item-left>Autosave Favorited Events</ion-label>
+        <ion-toggle [(ngModel)]="auto_save_events" item-right></ion-toggle>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-group>
       <ion-item-divider color="light">About</ion-item-divider>
       <ion-item>
         <span>Libraries Used</span>

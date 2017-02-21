@@ -3,17 +3,22 @@
  */
 
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import {NavController, NavParams, LoadingController, ToastController} from 'ionic-angular';
 import { TeamSorter, MatchSorter } from "../../util/object-sorter";
 import { EventTeamPage } from "../event-team/event-team";
 import { TeamSearcher } from "../../util/object-searcher";
 import { MatchConverter } from "../../util/string-converter";
+import { Config } from "../../util/config";
+import {FileWriter} from "../../util/file-manager";
+import {LoggerLevel, DebugLogger} from "../../util/debug-logger";
 
 @Component({
   selector: 'page-event',
   templateUrl: 'event.html'
 })
 export class EventPage {
+
+  favorite_event: boolean;
 
   match_sorter: MatchSorter;
   match_converter: MatchConverter;
@@ -29,11 +34,13 @@ export class EventPage {
 
   view: any;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private loadCtrl: LoadingController) {
+  constructor(private navCtrl: NavController, private navParams: NavParams, private loadCtrl: LoadingController, private toastCtrl: ToastController) {
     this.match_sorter = new MatchSorter();
     this.match_converter = new MatchConverter();
     this.team_sorter = new TeamSorter();
     this.team_searcher = new TeamSearcher();
+
+    this.favorite_event = false;
 
     this.rankings = [];
     this.rankings_labels = null;
@@ -53,9 +60,39 @@ export class EventPage {
 
   ionViewWillEnter() {
     this.showStats();
-
     this.match_sorter.sort(this.event.matches, 0, this.event.matches.length - 1);
     this.team_sorter.sort(this.event.teams, 0, this.event.teams.length - 1);
+
+    if (this.favorite_event && Config.AUTO_SAVE_EVENT) {
+      this.saveEvent().then((file) => {
+        this.showToast("Saved event " + this.event.key + ".json");
+      }).catch((err) => {
+        this.showToast(err.message);
+      });
+    }
+  }
+
+  favoriteEvent() {
+    if (!this.favorite_event) {
+      this.favorite_event = true;
+      this.saveEvent().then((file) => {
+        this.showToast("Saved event " + this.event.key + ".json");
+      }).catch((err) => {
+        this.showToast(err.message);
+      });
+    }
+  }
+
+  saveEvent() {
+    return new Promise((resolve, reject) => {
+      FileWriter.writePermFile("events", this.event.key, JSON.stringify(this.event)).then((file) => {
+        DebugLogger.log(LoggerLevel.INFO, "Saved event " + file.name);
+        resolve(file);
+      }).catch((err) => {
+        DebugLogger.log(LoggerLevel.ERROR, this.event.key + ".json: " + err.message + " Code " + err.code);
+        reject(err);
+      });
+    });
   }
 
   openEventTeamPage(team) {
@@ -129,6 +166,16 @@ export class EventPage {
   showMatches() {
     this.toggleButton("matches-btn");
     this.view = 'matches';
+  }
+
+  showToast(message) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      showCloseButton: true,
+      duration: 1500,
+      position: 'bottom',
+    });
+    return toast.present();
   }
 
   private repopulateRankings() {

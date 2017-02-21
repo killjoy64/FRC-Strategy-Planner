@@ -193,6 +193,7 @@ export class AppDirectory {
     File.readAsText(this.config, "config.json").then((data:string) => {
       let configJSON = JSON.parse(data);
       Config.TEAM_NUMBER = configJSON.team_number;
+      Config.AUTO_SAVE_EVENT = configJSON.auto_save_events
     }, (err:FileError) => {
       DebugLogger.log(LoggerLevel.ERROR, err.message);
     });
@@ -200,7 +201,8 @@ export class AppDirectory {
 
   public static saveConfig() {
     let config = {
-      "team_number": Config.TEAM_NUMBER
+      team_number: Config.TEAM_NUMBER,
+      auto_save_events: Config.AUTO_SAVE_EVENT
     };
     File.writeFile(this.config, "config.json", JSON.stringify(config), { replace: true }).then((fileEntry) => {
       DebugLogger.log(LoggerLevel.INFO, "SAVED CONFIG SETTINGS SUCCESSFULLY");

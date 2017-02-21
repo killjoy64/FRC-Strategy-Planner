@@ -21,6 +21,8 @@ export class PitModal {
   teleop_strategy: any;
   additional_comments: any;
 
+  should_save: boolean;
+
   constructor(private viewCtrl: ViewController, private navParams: NavParams, private alertCtrl: AlertController, private toastCtrl: ToastController) {
     this.team = this.navParams.get("team");
 
@@ -41,6 +43,8 @@ export class PitModal {
       this.auto_strategy = null;
       this.teleop_strategy = null;
     }
+
+    this.should_save = false;
   }
 
   dismiss() {
@@ -50,26 +54,51 @@ export class PitModal {
   }
 
   save() {
-    // Save Text!
-    let pitForm = {
-      drive_train: this.drive_train,
-      drive_train_other: this.drive_train_other,
-      shoot_capability: this.shoot_capability,
-      gear_capability: this.gear_capability,
-      auto_strategy: this.auto_strategy,
-      teleop_strategy: this.teleop_strategy,
-      additional_comments: this.additional_comments
-    };
+    if (this.team.pit_info) {
+      if (this.additional_comments != this.team.pit_info.additional_comments) {
+        this.should_save = true;
+      }
+      if (this.drive_train != this.team.pit_info.drive_train) {
+        this.should_save = true;
+      }
+      if (this.drive_train_other != this.team.pit_info.drive_train_other) {
+        this.should_save = true;
+      }
+      if (this.shoot_capability != this.team.pit_info.shoot_capability) {
+        this.should_save = true;
+      }
+      if (this.gear_capability != this.team.pit_info.gear_capability) {
+        this.should_save = true;
+      }
+      if (this.auto_strategy != this.team.pit_info.auto_strategy) {
+        this.should_save = true;
+      }
+      if (this.teleop_strategy != this.team.pit_info.teleop_strategy) {
+        this.should_save = true;
+      }
+    }
 
-    this.team.pit_info = pitForm;
+    if (this.should_save) {
+      let pitForm = {
+        drive_train: this.drive_train,
+        drive_train_other: this.drive_train_other,
+        shoot_capability: this.shoot_capability,
+        gear_capability: this.gear_capability,
+        auto_strategy: this.auto_strategy,
+        teleop_strategy: this.teleop_strategy,
+        additional_comments: this.additional_comments
+      };
 
-    FileWriter.writePermFile("pit-scouting", this.team.team_number + ".json", JSON.stringify(pitForm)).then((file) => {
-      this.showToast("Saved strategy file " + this.team.team_number + ".json");
-      DebugLogger.log(LoggerLevel.INFO, "Saved pit file " + file.name);
-    }).catch((err) => {
-      this.showToast(err.message);
-      DebugLogger.log(LoggerLevel.ERROR, this.team.team_number + ".json: " + err.message + " Code " + err.code);
-    });
+      this.team.pit_info = pitForm;
+
+      FileWriter.writePermFile("pit-scouting", this.team.team_number + ".json", JSON.stringify(pitForm)).then((file) => {
+        this.showToast("Saved strategy file " + this.team.team_number + ".json");
+        DebugLogger.log(LoggerLevel.INFO, "Saved pit file " + file.name);
+      }).catch((err) => {
+        this.showToast(err.message);
+        DebugLogger.log(LoggerLevel.ERROR, this.team.team_number + ".json: " + err.message + " Code " + err.code);
+      });
+    }
 
   }
 
