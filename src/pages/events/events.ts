@@ -8,6 +8,9 @@ import { TBAService } from "../../providers/tba-provider";
 import { ConnectionManager } from "../../util/connection-manager";
 import { EventPage } from "../event/event";
 import { EventSorter } from "../../util/object-sorter";
+import { LoggerLevel, DebugLogger } from "../../util/debug-logger";
+import { FileGetter, AppDirectory } from "../../util/file-manager";
+import { EventFilter } from "../../util/object-filter";
 
 @Component({
   selector: 'page-events',
@@ -19,6 +22,7 @@ export class EventsPage {
   connection: ConnectionManager;
 
   event_sorter: EventSorter;
+  event_filter: EventFilter;
 
   events_year: any;
   events_district: any;
@@ -50,31 +54,45 @@ export class EventsPage {
       this.events = null;
     }
 
-    if (this.events) {
-      this.event_sorter.sort(this.events, 0, this.events.length - 1);
-    }
+    this.event_sorter.sort(this.events, 0, this.events.length - 1);
+    this.event_filter = new EventFilter(this.events);
 
   }
 
   openEventPage(e_key) {
-    this.connection.showLoader("Reaching Database...", 10000);
-    this.tba.requestCompleteEventInfo(e_key).subscribe((data) => {
-      let eventInfo = data[0];
-      eventInfo.teams = data[1];
-      eventInfo.matches = data[2];
-      eventInfo.stats = data[3];
-      eventInfo.ranks = data[4];
-      eventInfo.awards = data[5];
-      eventInfo.points = data[6];
+    this.connection.showLoader("Reaching Database...", 10000).then(() => {
+      this.tba.requestCompleteEventInfo(e_key).subscribe((data) => {
+        let eventInfo = data[0];
+        eventInfo.teams = data[1];
+        eventInfo.matches = data[2];
+        eventInfo.stats = data[3];
+        eventInfo.ranks = data[4];
+        eventInfo.awards = data[5];
+        eventInfo.points = data[6];
 
-      this.connection.hideLoader();
+        for (let i = 0; i < eventInfo.teams.length; i++) {
+          let teamInfo = eventInfo.teams[i];
 
-      this.navCtrl.push(EventPage, {
-        event: eventInfo
-      });
-    }, (err) => {
-      this.connection.hideLoader().then(() => {
-        this.connection.showAlert("Error", "Could not complete request. " + err);
+          FileGetter.read("robots", teamInfo.team_number + ".jpg").then((data) => {
+            teamInfo.photo_url = AppDirectory.getPermDir() + "robots/" + teamInfo.team_number + ".jpg";
+            DebugLogger.log(LoggerLevel.INFO, "Found robot photo for team " + teamInfo.team_number);
+          }, (err) => {});
+
+          FileGetter.read("pit-scouting", teamInfo.team_number + ".json").then((data:string) => {
+            teamInfo.pit_info = JSON.parse(data);
+            DebugLogger.log(LoggerLevel.INFO, "Found pit scouting file for team " + teamInfo.team_number);
+          }, (err) => {});
+        }
+
+        this.connection.hideLoader();
+
+        this.navCtrl.push(EventPage, {
+          event: eventInfo
+        });
+      }, (err) => {
+        this.connection.hideLoader().then(() => {
+          this.connection.showAlert("Error", "Could not complete request. " + err);
+        });
       });
     });
   }

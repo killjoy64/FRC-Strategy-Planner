@@ -56,7 +56,6 @@ export class ConnectionManager {
       this.curLoad = this.loadCtrl.create({
         content: msg,
       });
-      this.curLoad.present();
 
       this.timeoutID = setTimeout(() => {
         clearTimeout(this.timeoutID);
@@ -67,6 +66,15 @@ export class ConnectionManager {
           }
         });
       }, duration);
+
+      return this.curLoad.present();
+
+    } else {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve();
+        }, 500);
+      });
     }
   }
 

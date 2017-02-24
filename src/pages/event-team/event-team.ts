@@ -8,7 +8,6 @@ import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { Camera, Entry, PhotoViewer } from "ionic-native";
 import { FileMover, AppDirectory } from "../../util/file-manager";
 import { DomSanitizer } from "@angular/platform-browser";
-import { MatchSorter } from "../../util/object-sorter";
 import { MatchConverter } from "../../util/string-converter";
 import { PitModal } from "../../modals/team-pit-modal/team-pit-modal";
 

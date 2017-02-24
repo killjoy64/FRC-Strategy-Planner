@@ -18,6 +18,34 @@ export class AwardSorter {
     return items;
   }
 
+  public reverseSort(items, left, right) {
+    let pivot, partitionIndex;
+
+    if (left < right) {
+      pivot = right;
+      partitionIndex = this.reversePartition(items, pivot, left, right);
+
+      this.reverseSort(items, left, partitionIndex - 1);
+      this.reverseSort(items, partitionIndex + 1, right);
+    }
+
+    return items;
+  }
+
+  private reversePartition(items, pivot, left, right) {
+    let pivotValue = items[pivot];
+    let partitionIndex = left;
+
+    for (let i = left; i < right; i++) {
+      if (this.shouldSwap(items[i], pivotValue) == 1) {
+        this.swap(items, i, partitionIndex);
+        partitionIndex++;
+      }
+    }
+    this.swap(items, right, partitionIndex);
+    return partitionIndex;
+  }
+
   private partition(items, pivot, left, right) {
     let pivotValue = items[pivot];
     let partitionIndex = left;
@@ -271,6 +299,34 @@ export class EventSorter {
     }
 
     return items;
+  }
+
+  public reverseSort(items, left, right) {
+    let pivot, partitionIndex;
+
+    if (left < right) {
+      pivot = right;
+      partitionIndex = this.reversePartition(items, pivot, left, right);
+
+      this.reverseSort(items, left, partitionIndex - 1);
+      this.reverseSort(items, partitionIndex + 1, right);
+    }
+
+    return items;
+  }
+
+  private reversePartition(items, pivot, left, right) {
+    let pivotValue = items[pivot];
+    let partitionIndex = left;
+
+    for (let i = left; i < right; i++) {
+      if (this.shouldSwap(items[i], pivotValue) == 1) {
+        this.swap(items, i, partitionIndex);
+        partitionIndex++;
+      }
+    }
+    this.swap(items, right, partitionIndex);
+    return partitionIndex;
   }
 
   private partition(items, pivot, left, right) {

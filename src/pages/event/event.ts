@@ -3,28 +3,36 @@
  */
 
 import { Component } from '@angular/core';
-import {NavController, NavParams, LoadingController, ToastController} from 'ionic-angular';
+import {NavController, NavParams, LoadingController, ToastController, AlertController, Refresher} from 'ionic-angular';
 import { TeamSorter, MatchSorter } from "../../util/object-sorter";
 import { EventTeamPage } from "../event-team/event-team";
 import { TeamSearcher } from "../../util/object-searcher";
 import { MatchConverter } from "../../util/string-converter";
 import { Config } from "../../util/config";
-import {FileWriter} from "../../util/file-manager";
-import {LoggerLevel, DebugLogger} from "../../util/debug-logger";
+import {FileWriter, FileGetter, AppDirectory} from "../../util/file-manager";
+import { LoggerLevel, DebugLogger } from "../../util/debug-logger";
+import { ConnectionManager } from "../../util/connection-manager";
+import { TBAService } from "../../providers/tba-provider";
+import {MatchFilter, TeamFilter} from "../../util/object-filter";
 
 @Component({
   selector: 'page-event',
-  templateUrl: 'event.html'
+  templateUrl: 'event.html',
+  providers: [TBAService]
 })
 export class EventPage {
 
   favorite_event: boolean;
 
+  connection: ConnectionManager;
+
   match_sorter: MatchSorter;
   match_converter: MatchConverter;
+  match_filter: MatchFilter;
 
   team_sorter: TeamSorter;
   team_searcher: TeamSearcher;
+  team_filter: TeamFilter;
 
   event: any;
   rankings: any;
@@ -34,7 +42,11 @@ export class EventPage {
 
   view: any;
 
-  constructor(private navCtrl: NavController, private navParams: NavParams, private loadCtrl: LoadingController, private toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, private navParams: NavParams, private loadCtrl: LoadingController, private toastCtrl: ToastController, private alertCtrl: AlertController, private tba: TBAService) {
+    this.connection = new ConnectionManager();
+    this.connection.setAlertController(this.alertCtrl);
+    this.connection.setLoadController(this.loadCtrl);
+
     this.match_sorter = new MatchSorter();
     this.match_converter = new MatchConverter();
     this.team_sorter = new TeamSorter();
@@ -67,6 +79,9 @@ export class EventPage {
     this.match_sorter.sort(this.event.matches, 0, this.event.matches.length - 1);
     this.team_sorter.sort(this.event.teams, 0, this.event.teams.length - 1);
 
+    this.match_filter = new MatchFilter(this.event.matches);
+    this.team_filter = new TeamFilter(this.event.teams);
+
     if (this.favorite_event && Config.AUTO_SAVE_EVENT) {
       this.saveEvent().then((file) => {
         this.showToast("Saved event " + this.event.key + ".json");
@@ -97,6 +112,55 @@ export class EventPage {
         reject(err);
       });
     });
+  }
+
+  refreshEvent(e: Refresher) {
+    if (this.connection.isConnectionAvailable() || Config.IS_BROWSER) {
+      DebugLogger.log(LoggerLevel.INFO, "Getting event " + this.event.key);
+
+      let timeout = setTimeout(() => {
+        if (e.state != "completing") {
+          e.cancel();
+        }
+      }, 7000);
+
+      this.tba.requestCompleteEventInfo(this.event.key).subscribe((data) => {
+
+        let eventInfo = data[0];
+        eventInfo.teams = data[1];
+        eventInfo.matches = data[2];
+        eventInfo.stats = data[3];
+        eventInfo.ranks = data[4];
+        eventInfo.awards = data[5];
+        eventInfo.points = data[6];
+
+        for (let i = 0; i < eventInfo.teams; i++) {
+          let teamInfo = eventInfo.teams[i];
+
+          FileGetter.read("robots", teamInfo.team_number + ".jpg").then((data) => {
+            teamInfo.photo_url = AppDirectory.getPermDir() + "robots/" + teamInfo.team_number + ".jpg";
+            DebugLogger.log(LoggerLevel.INFO, "Found robot photo for team " + teamInfo.team_number);
+          }, (err) => {});
+
+          FileGetter.read("pit-scouting", teamInfo.team_number + ".json").then((data:string) => {
+            teamInfo.pit_info = JSON.parse(data);
+            DebugLogger.log(LoggerLevel.INFO, "Found pit scouting file for team " + teamInfo.team_number);
+          }, (err) => {});
+        }
+
+        this.match_sorter.sort(eventInfo.matches, 0, eventInfo.matches.length - 1);
+        this.team_sorter.sort(eventInfo.teams, 0, eventInfo.teams.length - 1);
+
+        this.event = eventInfo;
+        DebugLogger.log(LoggerLevel.INFO, "Refreshed event " + this.event.key);
+        e.complete();
+        clearTimeout(timeout);
+      }, (err) => {
+        DebugLogger.log(LoggerLevel.ERROR, "Could not find event " + this.event.key);
+      });
+    } else {
+      e.cancel();
+    }
   }
 
   openEventTeamPage(team) {

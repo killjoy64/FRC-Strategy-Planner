@@ -14,7 +14,14 @@
 
 <ion-content>
 
-  <!-- TODO - ADD PULL TO REFRESH -->
+  <ion-refresher (ionRefresh)="refreshEvent($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh this event"
+      refreshingSpinner="circles"
+      refreshingText="Contacting database...">
+    </ion-refresher-content>
+  </ion-refresher>
 
   <div class="event-profile-header">
     <img class="event-photo-bg" src="assets/events_picture.jpg"/>
@@ -83,6 +90,9 @@
   <div class="event-profile-content" *ngIf="view=='teams'">
 
     <ion-list>
+      <ion-item *ngIf="!show_rankings">
+        <ion-searchbar (ionInput)="team_filter.filterTeams($event)"></ion-searchbar>
+      </ion-item>
       <ion-item>
         <ion-label>Show Rankings</ion-label>
         <ion-toggle [(ngModel)]="show_rankings"></ion-toggle>
@@ -109,10 +119,10 @@
     </ion-list>
 
     <ion-list *ngIf="!show_rankings">
-      <ion-item *ngFor="let team of event.teams">
+      <ion-item *ngFor="let team of team_filter.filtered_teams">
         <ion-thumbnail item-left>
           <img src="assets/option-robots.png" *ngIf="!team.photo_url" />
-          <img src="{{ team.avatar_url }}" *ngIf="team.photo_url" />
+          <img src="{{ team.photo_url }}" *ngIf="team.photo_url"/>
         </ion-thumbnail>
         <h2>FRC Team {{ team.team_number }}</h2>
         <h3>{{ team.nickname }}</h3>

@@ -135,10 +135,18 @@ page-team {
   a:link {
     text-decoration: none;
   }
+  .rank-team {
+    font-size: 1.2em;
+  }
   .pit-info {
     align-items: baseline !important;
   }
   .pit-info-right {
     white-space: normal !important;
+  }
+  .award-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }

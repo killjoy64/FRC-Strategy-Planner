@@ -78,7 +78,7 @@ export class PitModal {
       }
     }
 
-    if (this.should_save) {
+    if (this.should_save || !this.team.pit_info) {
       let pitForm = {
         drive_train: this.drive_train,
         drive_train_other: this.drive_train_other,

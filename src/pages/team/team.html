@@ -95,39 +95,69 @@
 
   <div id="awards-content" class="team-profile-content" *ngIf="view=='awards'">
 
-    <ion-card *ngFor="let award of team.awards">
-      <ion-card-header class="team-content-header">
-        <span class="team-content-header-title">{{ convert(award.name) }}</span>
-        <span class="team-content-header-subtitle">{{ award.year }} - {{ award.event_name }}</span>
-      </ion-card-header>
-      <ion-card-content>
-        <div>
-          Recipients: <span *ngFor="let recipient of award.recipient_list">{{ recipient.team_number }} </span>
-        </div>
-      </ion-card-content>
-    </ion-card>
+    <ion-list>
+      <ion-item *ngFor="let award of team.awards">
+        <div class="rank-team">{{ convert(award.name) }}</div>
+        <ion-thumbnail item-left class="award-icon">
+          <span class="fa fa-4x fa-trophy orange"></span>
+        </ion-thumbnail>
+        <h2>{{ award.year }} - {{ award.event_name }}</h2>
+        <h3>Recipients:</h3>
+        <p><span *ngFor="let recipient of award.recipient_list">{{ recipient.team_number }} </span></p>
+      </ion-item>
+    </ion-list>
+
+    <!--<ion-card *ngFor="let award of team.awards">-->
+      <!--<ion-card-header class="team-content-header">-->
+        <!--<span class="team-content-header-title">{{ convert(award.name) }}</span>-->
+        <!--<span class="team-content-header-subtitle">{{ award.year }} - {{ award.event_name }}</span>-->
+      <!--</ion-card-header>-->
+      <!--<ion-card-content>-->
+        <!--<div>-->
+          <!--Recipients: <span *ngFor="let recipient of award.recipient_list">{{ recipient.team_number }} </span>-->
+        <!--</div>-->
+      <!--</ion-card-content>-->
+    <!--</ion-card>-->
 
   </div>
 
   <div id="events-content" class="team-profile-content" *ngIf="view=='events'">
 
-    <ion-card *ngFor="let event of team.events">
-      <ion-card-header class="team-content-header">
-        <span class="team-content-header-title">{{ event.short_name }} {{ event.event_type_string }} Event</span>
-        <span class="team-content-header-subtitle" *ngIf="event.week">{{ event.year }} - Week {{ event.week }}</span>
-        <span class="team-content-header-subtitle" *ngIf="!event.week">{{ event.year }}</span>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-list>
-          <ion-item>
-            <div>Location: {{ event.location }}</div>
-            <div>Website: <a href="{{ event.website }}">{{ event.website }}</a></div>
-            <div>Date: {{ event.start_date }} - {{ event.end_date }}</div>
-            <button ion-button clear item-right (click)="openEventPage(event.key)">View</button>
-          </ion-item>
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
+    <ion-list *ngFor="let event of team.events">
+      <ion-item>
+        <span class="team-content-header-title">{{ event.short_name }} {{ event.event_type_string }}</span>
+      </ion-item>
+      <ion-item *ngIf="event.week">
+        <span class="team-content-header-subtitle">{{ event.year }} - Week {{ event.week }}</span>
+      </ion-item>
+      <ion-item *ngIf="!event.week">
+        <span class="team-content-header-subtitle">{{ event.year }}</span>
+      </ion-item>
+      <ion-item>
+        <div>Location: {{ event.location }}</div>
+        <div>Website: <a href="{{ event.website }}">{{ event.website }}</a></div>
+        <div>Date: {{ event.start_date }} - {{ event.end_date }}</div>
+        <button ion-button clear item-right (click)="openEventPage(event.key)">View</button>
+      </ion-item>
+    </ion-list>
+
+    <!--<ion-card *ngFor="let event of team.events">-->
+      <!--<ion-card-header class="team-content-header">-->
+        <!--<span class="team-content-header-title">{{ event.short_name }} {{ event.event_type_string }} Event</span>-->
+        <!--<span class="team-content-header-subtitle" *ngIf="event.week">{{ event.year }} - Week {{ event.week }}</span>-->
+        <!--<span class="team-content-header-subtitle" *ngIf="!event.week">{{ event.year }}</span>-->
+      <!--</ion-card-header>-->
+      <!--<ion-card-content>-->
+        <!--<ion-list>-->
+          <!--<ion-item>-->
+            <!--<div>Location: {{ event.location }}</div>-->
+            <!--<div>Website: <a href="{{ event.website }}">{{ event.website }}</a></div>-->
+            <!--<div>Date: {{ event.start_date }} - {{ event.end_date }}</div>-->
+            <!--<button ion-button clear item-right (click)="openEventPage(event.key)">View</button>-->
+          <!--</ion-item>-->
+        <!--</ion-list>-->
+      <!--</ion-card-content>-->
+    <!--</ion-card>-->
 
   </div>
 
