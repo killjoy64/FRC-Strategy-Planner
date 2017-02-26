@@ -13,7 +13,7 @@ import { TeamPage } from "../team/team";
 import { EventPage } from "../event/event";
 import { EventsPage } from "../events/events";
 import { Config } from "../../util/config";
-import { FileGetter, AppDirectory } from "../../util/file-manager";
+import {FileGetter, AppDirectory, FileChecker} from "../../util/file-manager";
 import { EventFilesModal } from "../../modals/event-files-modal/event-files-modal";
 
 @Component({
@@ -41,6 +41,7 @@ export class TeamsAndEventsPage {
     this.connection = new ConnectionManager();
     this.connection.setAlertController(this.alertCtrl);
     this.connection.setLoadController(this.loadCtrl);
+    this.connection.setRequestService(this.tba);
 
     this.team_number = null;
 
@@ -137,7 +138,7 @@ export class TeamsAndEventsPage {
       this.loading_districts = true;
       this.loading_events = true;
       if (this.connection.isConnectionAvailable()) {
-        this.tba.requestEventList(this.event_year).subscribe( (data) => {
+        this.tba.requestEventList(this.event_year).then( (data) => {
           this.events = data;
           this.loading_events = false;
         }, (err) => {
@@ -159,7 +160,7 @@ export class TeamsAndEventsPage {
   getDistrictEvents() {
     if (this.event_year && this.event_district) {
       this.loading_events = true;
-      this.tba.requestDistrictEvents(this.event_year, this.event_district).subscribe( (data) => {
+      this.tba.requestDistrictEvents(this.event_year, this.event_district).then( (data) => {
         this.events = data;
         this.event_key = null;
         this.loading_events = false;
@@ -173,47 +174,50 @@ export class TeamsAndEventsPage {
     if (this.event_year && this.event_key) {
       DebugLogger.log(LoggerLevel.INFO, "Getting event " + this.event_key);
       this.connection.showLoader("Searching...", 10000).then(() => {
-        this.tba.requestCompleteEventInfo(this.event_key).subscribe((data) => {
-          this.connection.hideLoader();
+        FileChecker.check("events", this.event_key + ".json").then((exists) => {
+          this.tba.requestCompleteEventInfo(this.event_key).then((data) => {
+            this.connection.hideLoader();
 
-          let eventInfo = data[0];
-          eventInfo.teams = data[1];
-          eventInfo.matches = data[2];
-          eventInfo.stats = data[3];
-          eventInfo.ranks = data[4];
-          eventInfo.awards = data[5];
-          eventInfo.points = data[6];
+            let eventInfo = data[0];
+            eventInfo.teams = data[1];
+            eventInfo.matches = data[2];
+            eventInfo.stats = data[3];
+            eventInfo.ranks = data[4];
+            eventInfo.awards = data[5];
+            eventInfo.points = data[6];
 
-          for (let i = 0; i < eventInfo.teams.length; i++) {
-            let teamInfo = eventInfo.teams[i];
+            for (let i = 0; i < eventInfo.teams.length; i++) {
+              let teamInfo = eventInfo.teams[i];
 
-            FileGetter.read("robots", teamInfo.team_number + ".jpg").then((data) => {
-              teamInfo.photo_url = AppDirectory.getPermDir() + "robots/" + teamInfo.team_number + ".jpg";
-              DebugLogger.log(LoggerLevel.INFO, "Found robot photo for team " + teamInfo.team_number);
-            }, (err) => {});
+              FileGetter.read("robots", teamInfo.team_number + ".jpg").then((data) => {
+                teamInfo.photo_url = AppDirectory.getPermDir() + "robots/" + teamInfo.team_number + ".jpg";
+                DebugLogger.log(LoggerLevel.INFO, "Found robot photo for team " + teamInfo.team_number);
+              }, (err) => {});
 
-            FileGetter.read("pit-scouting", teamInfo.team_number + ".json").then((data:string) => {
-              teamInfo.pit_info = JSON.parse(data);
-              DebugLogger.log(LoggerLevel.INFO, "Found pit scouting file for team " + teamInfo.team_number);
-            }, (err) => {});
-          }
+              FileGetter.read("pit-scouting", teamInfo.team_number + ".json").then((data:string) => {
+                teamInfo.pit_info = JSON.parse(data);
+                DebugLogger.log(LoggerLevel.INFO, "Found pit scouting file for team " + teamInfo.team_number);
+              }, (err) => {});
+            }
 
-          this.navCtrl.push(EventPage, {
-            event: eventInfo
+            this.navCtrl.push(EventPage, {
+              event: eventInfo,
+              favorited: exists
+            });
+          }, (err) => {
+            this.connection.hideLoader().then(() => {
+              this.connection.showAlert("Error", "Could not find an FRC event of those credentials.");
+            });
+            DebugLogger.log(LoggerLevel.ERROR, "Could not find event " + this.event_key);
           });
-        }, (err) => {
-          this.connection.hideLoader().then(() => {
-            this.connection.showAlert("Error", "Could not find an FRC event of those credentials.");
-          });
-          DebugLogger.log(LoggerLevel.ERROR, "Could not find event " + this.event_key);
-        });
+        })
       });
       return;
     }
     if (this.event_year && this.event_district) {
       DebugLogger.log(LoggerLevel.INFO, "Getting events for year " + this.event_year + " and district " + this.event_district);
       this.connection.showLoader("Searching...", 10000).then(() => {
-        this.tba.requestDistrictEvents(this.event_year, this.event_district).subscribe((data) => {
+        this.tba.requestDistrictEvents(this.event_year, this.event_district).then((data) => {
           this.connection.hideLoader();
 
           this.navCtrl.push(EventsPage, {
@@ -233,7 +237,7 @@ export class TeamsAndEventsPage {
     if (this.event_year) {
       DebugLogger.log(LoggerLevel.INFO, "Getting events for year " + this.event_year);
       this.connection.showLoader("Searching...", 10000).then(() => {
-        this.tba.requestEventList(this.event_year).subscribe((data) => {
+        this.tba.requestEventList(this.event_year).then((data) => {
           this.connection.hideLoader();
 
           this.navCtrl.push(EventsPage, {
@@ -255,7 +259,7 @@ export class TeamsAndEventsPage {
   openTeamPage() {
     if (this.team_number) {
       this.connection.showLoader("Searching...", 10000).then(() => {
-        this.tba.requestCompleteTeamInfo(this.team_number).subscribe((data) => {
+        this.tba.requestCompleteTeamInfo(this.team_number).then((data) => {
           this.connection.hideLoader();
 
           let teamInfo = data[0];

@@ -10,7 +10,7 @@ import {
 import { AwardSorter, EventSorter } from "../../util/object-sorter";
 import { DomSanitizer } from '@angular/platform-browser';
 import { PhotoViewer, Camera, Entry } from "ionic-native";
-import { AppDirectory, FileMover, FileGetter } from "../../util/file-manager";
+import {AppDirectory, FileMover, FileGetter, FileChecker} from "../../util/file-manager";
 import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { TBAService } from "../../providers/tba-provider";
 import { ConnectionManager } from "../../util/connection-manager";
@@ -41,6 +41,7 @@ export class TeamPage {
     this.connection = new ConnectionManager();
     this.connection.setLoadController(this.loadCtrl);
     this.connection.setAlertController(this.alertCtrl);
+    this.connection.setRequestService(this.tba);
 
     this.awardSorter = new AwardSorter();
     this.eventSorter = new EventSorter();
@@ -165,37 +166,40 @@ export class TeamPage {
 
   openEventPage(e_key) {
     this.connection.showLoader("Reaching Database...", 10000).then(() => {
-      this.tba.requestCompleteEventInfo(e_key).subscribe((data) => {
-        let eventInfo = data[0];
-        eventInfo.teams = data[1];
-        eventInfo.matches = data[2];
-        eventInfo.stats = data[3];
-        eventInfo.ranks = data[4];
-        eventInfo.awards = data[5];
-        eventInfo.points = data[6];
+      FileChecker.check("events", e_key + ".json").then((exists) => {
+        this.tba.requestCompleteEventInfo(e_key).then((data) => {
+          let eventInfo = data[0];
+          eventInfo.teams = data[1];
+          eventInfo.matches = data[2];
+          eventInfo.stats = data[3];
+          eventInfo.ranks = data[4];
+          eventInfo.awards = data[5];
+          eventInfo.points = data[6];
 
-        for (let i = 0; i < eventInfo.teams.length; i++) {
-          let teamInfo = eventInfo.teams[i];
+          for (let i = 0; i < eventInfo.teams.length; i++) {
+            let teamInfo = eventInfo.teams[i];
 
-          FileGetter.read("robots", teamInfo.team_number + ".jpg").then((data) => {
-            teamInfo.photo_url = AppDirectory.getPermDir() + "robots/" + teamInfo.team_number + ".jpg";
-            DebugLogger.log(LoggerLevel.INFO, "Found robot photo for team " + teamInfo.team_number);
-          }, (err) => {});
+            FileGetter.read("robots", teamInfo.team_number + ".jpg").then((data) => {
+              teamInfo.photo_url = AppDirectory.getPermDir() + "robots/" + teamInfo.team_number + ".jpg";
+              DebugLogger.log(LoggerLevel.INFO, "Found robot photo for team " + teamInfo.team_number);
+            }, (err) => {});
 
-          FileGetter.read("pit-scouting", teamInfo.team_number + ".json").then((data:string) => {
-            teamInfo.pit_info = JSON.parse(data);
-            DebugLogger.log(LoggerLevel.INFO, "Found pit scouting file for team " + teamInfo.team_number);
-          }, (err) => {});
-        }
+            FileGetter.read("pit-scouting", teamInfo.team_number + ".json").then((data:string) => {
+              teamInfo.pit_info = JSON.parse(data);
+              DebugLogger.log(LoggerLevel.INFO, "Found pit scouting file for team " + teamInfo.team_number);
+            }, (err) => {});
+          }
 
-        this.connection.hideLoader();
+          this.connection.hideLoader();
 
-        this.navCtrl.push(EventPage, {
-          event: eventInfo
-        });
-      }, (err) => {
-        this.connection.hideLoader().then(() => {
-          this.connection.showAlert("Error", "Could not complete request. " + err);
+          this.navCtrl.push(EventPage, {
+            event: eventInfo,
+            favorited: exists
+          });
+        }, (err) => {
+          this.connection.hideLoader().then(() => {
+            this.connection.showAlert("Error", "Could not complete request. " + err);
+          });
         });
       });
     });

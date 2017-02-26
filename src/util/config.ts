@@ -4,9 +4,9 @@
 
 export class Config {
 
-  public static VERSION: string = "3.0.0";
+  public static VERSION: string = "3.0.5";
 
-  public static AUTO_SAVE_EVENT: boolean = false;
+  public static AUTO_SAVE_EVENT: boolean = true;
 
   public static IS_BROWSER: boolean = false;
   public static DEBUG_MODE: boolean = false;

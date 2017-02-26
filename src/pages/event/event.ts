@@ -46,6 +46,7 @@ export class EventPage {
     this.connection = new ConnectionManager();
     this.connection.setAlertController(this.alertCtrl);
     this.connection.setLoadController(this.loadCtrl);
+    this.connection.setRequestService(this.tba);
 
     this.match_sorter = new MatchSorter();
     this.match_converter = new MatchConverter();
@@ -92,7 +93,7 @@ export class EventPage {
   }
 
   favoriteEvent() {
-    if (!this.favorite_event) {
+    if (!this.favorite_event || !Config.AUTO_SAVE_EVENT) {
       this.favorite_event = true;
       this.saveEvent().then((file) => {
         this.showToast("Saved event " + this.event.key + ".json");
@@ -104,7 +105,7 @@ export class EventPage {
 
   saveEvent() {
     return new Promise((resolve, reject) => {
-      FileWriter.writePermFile("events", this.event.key, JSON.stringify(this.event)).then((file) => {
+      FileWriter.writePermFile("events", this.event.key + ".json", JSON.stringify(this.event)).then((file) => {
         DebugLogger.log(LoggerLevel.INFO, "Saved event " + file.name);
         resolve(file);
       }).catch((err) => {
@@ -120,11 +121,12 @@ export class EventPage {
 
       let timeout = setTimeout(() => {
         if (e.state != "completing") {
+          this.tba.cancelRequest();
           e.cancel();
         }
       }, 7000);
 
-      this.tba.requestCompleteEventInfo(this.event.key).subscribe((data) => {
+      this.tba.requestCompleteEventInfo(this.event.key).then((data) => {
 
         let eventInfo = data[0];
         eventInfo.teams = data[1];
@@ -152,7 +154,16 @@ export class EventPage {
         this.team_sorter.sort(eventInfo.teams, 0, eventInfo.teams.length - 1);
 
         this.event = eventInfo;
-        DebugLogger.log(LoggerLevel.INFO, "Refreshed event " + this.event.key);
+
+        if (this.favorite_event && Config.AUTO_SAVE_EVENT && !Config.IS_BROWSER) {
+          this.saveEvent().then((file) => {
+            DebugLogger.log(LoggerLevel.INFO, "Refreshed & autosaved event " + this.event.key);
+          }).catch((err) => {
+            DebugLogger.log(LoggerLevel.INFO, "Error autosaving event " + this.event.key);
+          });
+        } else {
+          DebugLogger.log(LoggerLevel.INFO, "Refreshed event " + this.event.key);
+        }
         e.complete();
         clearTimeout(timeout);
       }, (err) => {

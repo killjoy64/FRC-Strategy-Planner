@@ -5,10 +5,12 @@
 import { Component } from '@angular/core';
 
 import { Config } from "../../util/config";
-import { ModalController } from "ionic-angular";
+import {ModalController, LoadingController, AlertController} from "ionic-angular";
 import { LibrariesModal } from "../../modals/settings-libraries-modal/settings-libraries-modal";
-import {LoggerModal} from "../../modals/settings-logger-modal/settings-logger-modal";
-import {AppDirectory} from "../../util/file-manager";
+import { LoggerModal } from "../../modals/settings-logger-modal/settings-logger-modal";
+import { AppDirectory } from "../../util/file-manager";
+import { Deploy } from "@ionic/cloud-angular";
+import { ConnectionManager } from "../../util/connection-manager";
 
 @Component({
   selector: 'page-settings',
@@ -16,12 +18,18 @@ import {AppDirectory} from "../../util/file-manager";
 })
 export class SettingsPage {
 
+  connection: ConnectionManager;
+
   team_number: number;
   version: string;
 
   auto_save_events: boolean;
 
-  constructor(public modalCtrl: ModalController) {
+  constructor(public modalCtrl: ModalController, private deploy: Deploy, private loadCtrl: LoadingController, private alertCtrl: AlertController) {
+    this.connection = new ConnectionManager();
+    this.connection.setAlertController(this.alertCtrl);
+    this.connection.setLoadController(this.loadCtrl);
+
     this.team_number = Config.TEAM_NUMBER;
     this.version = Config.VERSION;
 
@@ -56,7 +64,69 @@ export class SettingsPage {
   }
 
   checkForUpdate() {
+    this.connection.showLoader("Contacting update server...", 5000).then(() => {
+      this.deploy.check().then((snapshotAvailable: boolean) => {
+        this.connection.hideLoader().then(() => {
+          if (snapshotAvailable) {
+            let alert = this.alertCtrl.create({
+              title: 'Update Available',
+              message: 'Would you like to download?',
+              buttons: [
+                {
+                  text: 'No',
+                  role: 'cancel',
+                  handler: () => {
+                  }
+                },
+                {
+                  text: 'Yes',
+                  handler: () => {
+                    this.applyUpdate();
+                  }
+                }
+              ]
+            });
+            alert.present();
+          } else {
+            this.connection.showAlert("FRCSP Update Service", "No update found. Currently the latest version!");
+          }
+        })
+      });
+    }).catch((err) => {
+      this.connection.hideLoader().then(() => {
+        this.connection.showAlert("Network Error", "Error contacting update service. Are you connected to the internet?");
+      });
+    });
+  }
 
+  applyUpdate() {
+    this.connection.showLoader("Downloading update...", 5000).then(() => {
+      this.deploy.download().then(() => {
+        this.deploy.extract(() => {
+          this.connection.hideLoader().then(() => {
+            let alert = this.alertCtrl.create({
+              title: 'Update Downloaded',
+              message: 'A restart of your device is required to complete deployment. Would you like to do this now?',
+              buttons: [
+                {
+                  text: 'Later',
+                  role: 'cancel',
+                  handler: () => {}
+                },
+                {
+                  text: 'Apply Now',
+                  role: 'cancel',
+                  handler: () => {
+                    this.deploy.load();
+                  }
+                }
+              ]
+            });
+            alert.present();
+          })
+        });
+      });
+    });
   }
 
   openLibraries() {

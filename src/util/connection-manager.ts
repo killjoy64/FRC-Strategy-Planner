@@ -4,6 +4,7 @@
 
 import { LoadingController, Loading, AlertController } from 'ionic-angular';
 import { Network } from 'ionic-native';
+import { TBAService } from "../providers/tba-provider";
 
 export class ConnectionManager {
 
@@ -16,13 +17,16 @@ export class ConnectionManager {
   // Define the alert controller. We may not need it in some cases, so it's not in the constructor.
   alertCtrl: AlertController;
 
+  // Define the request service. We may not need it in some cases, so it's not in the constructor.
+  tba: TBAService;
+
   curLoad: Loading;
 
   // Maintains the current timeout ID.
   timeoutID: number;
 
   constructor() {
-    this.timeout = 5;
+    this.timeout = 7;
 
     this.loadCtrl = null;
     this.alertCtrl = null;
@@ -38,6 +42,11 @@ export class ConnectionManager {
   // Method to set the alert controller if we ever need it.
   setAlertController(alertController: AlertController) {
     this.alertCtrl = alertController;
+  }
+
+  // Method to set the request service if we ever need it.
+  setRequestService(tbaService: TBAService) {
+    this.tba = tbaService;
   }
 
   // Sets the new value for the connection timeout.
@@ -61,6 +70,9 @@ export class ConnectionManager {
         clearTimeout(this.timeoutID);
         this.timeoutID = null;
         this.curLoad.dismiss().then(() => {
+          if (this.tba) {
+            this.tba.cancelRequest();
+          }
           if (this.alertCtrl) {
             this.showAlert("Error", "Connection timed out. Are you connected to the internet?");
           }
@@ -81,6 +93,9 @@ export class ConnectionManager {
   hideLoader() {
     if (this.loadCtrl && this.timeoutID) {
       clearTimeout(this.timeoutID);
+      if (this.tba) {
+        this.tba.cancelRequest();
+      }
       return this.curLoad.dismiss();
     }
   }

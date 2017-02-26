@@ -9,6 +9,24 @@ import { Config } from "./config";
 /* Once cordova.js is invoked, this variable will actually mean something */
 declare var cordova: any;
 
+export class FileChecker {
+
+  public static check(location, file) {
+    return new Promise((resolve, reject) => {
+      if (Config.IS_BROWSER) {
+        resolve(false);
+      } else {
+        File.checkFile(AppDirectory.getPermDir() + location + "/", file).then((exists) => {
+          resolve(exists);
+        }, (err) => {
+          resolve(false);
+        });
+      }
+    });
+  }
+
+}
+
 export class FileMover {
 
   public static move(old_dir, new_dir, old_file_name, new_file_name) {
@@ -165,7 +183,8 @@ export class AppDirectory {
         DebugLogger.log(LoggerLevel.WARN, "CONFIG NOT FOUND - CREATING CONFIG");
 
         let config = {
-          "team_number": Config.TEAM_NUMBER
+          team_number: Config.TEAM_NUMBER,
+          auto_save_events: Config.AUTO_SAVE_EVENT
         };
 
         File.writeFile(this.config, "config.json", JSON.stringify(config), []).then((fileEntry) => {
@@ -178,7 +197,8 @@ export class AppDirectory {
       DebugLogger.log(LoggerLevel.INFO, "CONFIG NOT FOUND - CREATING CONFIG");
 
       let config = {
-        "team_number": Config.TEAM_NUMBER
+        team_number: Config.TEAM_NUMBER,
+        auto_save_events: Config.AUTO_SAVE_EVENT
       };
 
       File.writeFile(this.config, "config.json", JSON.stringify(config), []).then((fileEntry) => {
