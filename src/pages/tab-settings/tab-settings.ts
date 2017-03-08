@@ -99,10 +99,12 @@ export class SettingsPage {
     });
   }
 
+  // TODO - Add progress handler to extract & deploy (p: number) on extract & deploy
+
   applyUpdate() {
-    this.connection.showLoader("Downloading update...", 5000).then(() => {
+    this.connection.showLoader("Downloading update...", 15000).then(() => {
       this.deploy.download().then(() => {
-        this.deploy.extract(() => {
+        this.deploy.extract().then(() => {
           this.connection.hideLoader().then(() => {
             let alert = this.alertCtrl.create({
               title: 'Update Downloaded',
@@ -124,6 +126,19 @@ export class SettingsPage {
             });
             alert.present();
           })
+        }).catch((err) => {
+          let alert = this.alertCtrl.create({
+            title: 'Error',
+            message: 'There was an error extracting the package: ' + err,
+            buttons: [
+              {
+                text: 'Ok',
+                role: 'cancel',
+                handler: () => {}
+              }
+            ]
+          });
+          alert.present();
         });
       });
     });

@@ -4,7 +4,7 @@
 
 export class Config {
 
-  public static VERSION: string = "3.0.5";
+  public static VERSION: string = "3.0.7";
 
   public static AUTO_SAVE_EVENT: boolean = true;
 

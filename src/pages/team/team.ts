@@ -5,12 +5,12 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
 import {
   NavController, NavParams, Content, ActionSheetController, LoadingController,
-  AlertController, ModalController
+  AlertController, ModalController, Platform
 } from 'ionic-angular';
 import { AwardSorter, EventSorter } from "../../util/object-sorter";
 import { DomSanitizer } from '@angular/platform-browser';
 import { PhotoViewer, Camera, Entry } from "ionic-native";
-import {AppDirectory, FileMover, FileGetter, FileChecker} from "../../util/file-manager";
+import { AppDirectory, FileMover, FileGetter, FileChecker } from "../../util/file-manager";
 import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { TBAService } from "../../providers/tba-provider";
 import { ConnectionManager } from "../../util/connection-manager";
@@ -37,7 +37,7 @@ export class TeamPage {
 
   base64_string: any;
 
-  constructor(public sanitizer: DomSanitizer, private alertCtrl: AlertController, private loadCtrl: LoadingController, private tba: TBAService, private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone, private modalCtrl: ModalController) {
+  constructor(public sanitizer: DomSanitizer, private alertCtrl: AlertController, private loadCtrl: LoadingController, private tba: TBAService, private navCtrl: NavController, private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone, private modalCtrl: ModalController, private platform: Platform) {
     this.connection = new ConnectionManager();
     this.connection.setLoadController(this.loadCtrl);
     this.connection.setAlertController(this.alertCtrl);
@@ -297,8 +297,10 @@ export class TeamPage {
   getPicture() {
     let self = this;
 
+    let destinationType = this.platform.is("ios") ? Camera.DestinationType.NATIVE_URI: Camera.DestinationType.FILE_URI;
+
     Camera.getPicture({
-      destinationType: Camera.DestinationType.FILE_URI,
+      destinationType: destinationType,
       correctOrientation: true,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
       saveToPhotoAlbum: false,
@@ -336,8 +338,10 @@ export class TeamPage {
   takePicture() {
     let self = this;
 
+    let destinationType = this.platform.is("ios") ? Camera.DestinationType.NATIVE_URI: Camera.DestinationType.FILE_URI;
+
     Camera.getPicture({
-      destinationType: Camera.DestinationType.FILE_URI,
+      destinationType: destinationType,
       correctOrientation: true,
       saveToPhotoAlbum: false,
       quality: 100,
@@ -347,20 +351,30 @@ export class TeamPage {
       self.team.photo_url = null;
 
       let currentName = imageData.replace(/^.*[\\\/]/, '');
-      FileMover.move(AppDirectory.getTempDir(), AppDirectory.getPermDir(), currentName, "robots/" + self.team.team_number + ".jpg").then((data:Entry) => {
-        // self.team_photo = AppDirectory.getPermDir() + "robots/" + self.team.team_number + ".jpg";
-
+      DebugLogger.log(LoggerLevel.INFO, "Renamed " + imageData + " to " + currentName);
+      if (this.platform.is("ios")) {
         this.zone.run(() => {
-          self.sanitizer.bypassSecurityTrustUrl(data.toURL());
-          self.team.photo_url = data.toURL();
-          document.getElementsByClassName("team-photo-container")[0].querySelector("img").src = data.toURL();
-          DebugLogger.log(LoggerLevel.INFO, "Successfully moved file " + self.team.photo_url);
+          self.sanitizer.bypassSecurityTrustUrl(imageData);
+          self.team.photo_url = imageData;
+          document.getElementsByClassName("team-photo-container")[0].querySelector("img").src = imageData;
+          DebugLogger.log(LoggerLevel.INFO, "Successfully saved team image " + self.team.photo_url);
         });
 
         this.resizePhoto();
-      }).catch((err) => {
-        DebugLogger.log(LoggerLevel.ERROR, self.team.team_number + ".jpg " + err.message + " " + err.code);
-      });
+      } else {
+        FileMover.move(AppDirectory.getTempDir(), AppDirectory.getPermDir(), currentName, "robots/" + self.team.team_number + ".jpg").then((data:Entry) => {
+          this.zone.run(() => {
+            self.sanitizer.bypassSecurityTrustUrl(data.toURL());
+            self.team.photo_url = data.toURL();
+            document.getElementsByClassName("team-photo-container")[0].querySelector("img").src = data.toURL();
+            DebugLogger.log(LoggerLevel.INFO, "Successfully moved file " + self.team.photo_url);
+          });
+
+          this.resizePhoto();
+        }).catch((err) => {
+          DebugLogger.log(LoggerLevel.ERROR, self.team.team_number + ".jpg " + err.message + " " + err.code);
+        });
+      }
     }, (err) => {
       if (!self.team.photo_url) {
         self.team.photo_url = null;

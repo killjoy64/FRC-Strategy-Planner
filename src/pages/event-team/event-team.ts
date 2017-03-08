@@ -3,7 +3,7 @@
  */
 
 import { Component, NgZone, ViewChild } from '@angular/core';
-import {NavParams, ActionSheetController, Content, ModalController} from "ionic-angular";
+import { NavParams, ActionSheetController, Content, ModalController, Platform } from "ionic-angular";
 import { DebugLogger, LoggerLevel } from "../../util/debug-logger";
 import { Camera, Entry, PhotoViewer } from "ionic-native";
 import { FileMover, AppDirectory } from "../../util/file-manager";
@@ -27,7 +27,7 @@ export class EventTeamPage {
   base64_string: any;
   view: string;
 
-  constructor(private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone, private sanitizer: DomSanitizer, private modalCtrl: ModalController) {
+  constructor(private navParams: NavParams, private actionCtrl: ActionSheetController, private zone: NgZone, private sanitizer: DomSanitizer, private modalCtrl: ModalController, private platform: Platform) {
 
     if (this.navParams.get("event")) {
       this.event = this.navParams.get("event");
@@ -231,8 +231,10 @@ export class EventTeamPage {
   getPicture() {
     let self = this;
 
+    let destinationType = this.platform.is("ios") ? Camera.DestinationType.NATIVE_URI: Camera.DestinationType.FILE_URI;
+
     Camera.getPicture({
-      destinationType: Camera.DestinationType.FILE_URI,
+      destinationType: destinationType,
       correctOrientation: true,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
       saveToPhotoAlbum: false,
@@ -270,8 +272,10 @@ export class EventTeamPage {
   takePicture() {
     let self = this;
 
+    let destinationType = this.platform.is("ios") ? Camera.DestinationType.NATIVE_URI: Camera.DestinationType.FILE_URI;
+
     Camera.getPicture({
-      destinationType: Camera.DestinationType.FILE_URI,
+      destinationType: destinationType,
       correctOrientation: true,
       saveToPhotoAlbum: false,
       quality: 100,
@@ -281,20 +285,30 @@ export class EventTeamPage {
       self.team.photo_url = null;
 
       let currentName = imageData.replace(/^.*[\\\/]/, '');
-      FileMover.move(AppDirectory.getTempDir(), AppDirectory.getPermDir(), currentName, "robots/" + self.team.team_number + ".jpg").then((data:Entry) => {
-        // self.team_photo = AppDirectory.getPermDir() + "robots/" + self.team.team_number + ".jpg";
-
+      DebugLogger.log(LoggerLevel.INFO, "Renamed " + imageData + " to " + currentName);
+      if (this.platform.is("ios")) {
         this.zone.run(() => {
-          self.sanitizer.bypassSecurityTrustUrl(data.toURL());
-          self.team.photo_url = data.toURL();
-          document.getElementsByClassName("team-photo-container")[0].querySelector("img").src = data.toURL();
-          DebugLogger.log(LoggerLevel.INFO, "Successfully moved file " + self.team.photo_url);
+          self.sanitizer.bypassSecurityTrustUrl(imageData);
+          self.team.photo_url = imageData;
+          document.getElementsByClassName("team-photo-container")[0].querySelector("img").src = imageData;
+          DebugLogger.log(LoggerLevel.INFO, "Successfully saved team image " + self.team.photo_url);
         });
 
         this.resizePhoto();
-      }).catch((err) => {
-        DebugLogger.log(LoggerLevel.ERROR, self.team.team_number + ".jpg " + err.message + " " + err.code);
-      });
+      } else {
+        FileMover.move(AppDirectory.getTempDir(), AppDirectory.getPermDir(), currentName, "robots/" + self.team.team_number + ".jpg").then((data:Entry) => {
+          this.zone.run(() => {
+            self.sanitizer.bypassSecurityTrustUrl(data.toURL());
+            self.team.photo_url = data.toURL();
+            document.getElementsByClassName("team-photo-container")[0].querySelector("img").src = data.toURL();
+            DebugLogger.log(LoggerLevel.INFO, "Successfully moved file " + self.team.photo_url);
+          });
+
+          this.resizePhoto();
+        }).catch((err) => {
+          DebugLogger.log(LoggerLevel.ERROR, self.team.team_number + ".jpg " + err.message + " " + err.code);
+        });
+      }
     }, (err) => {
       if (!self.team.photo_url) {
         self.team.photo_url = null;

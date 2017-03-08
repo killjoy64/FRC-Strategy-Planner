@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="tech.kyleflynn.frcsp" version="3.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="tech.kyleflynn.frcsp" version="3.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>FRC Strategy Planner</name>
   <description>Revolutionary Strategy App for FRC Teams</description>
   <author email="kyle@stacktracemusic.com" href="http://kyleflynn.tech/">Kyle Flynn</author>
@@ -73,7 +73,6 @@
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.1"/>
   <plugin name="cordova-plugin-file" spec="~4.3.1"/>
   <plugin name="cordova-plugin-compat" spec="~1.1.0"/>
-  <plugin name="cordova-plugin-camera" spec="~2.3.1"/>
   <plugin name="com-sarriaroman-photoviewer" spec="~1.1.10"/>
   <plugin name="ionic-plugin-deploy" spec="~0.6.5"/>
   <plugin name="ionic-plugin-keyboard" spec="~2.2.1"/>
@@ -84,6 +83,10 @@
     <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect"/>
     <variable name="XWALK_MODE" value="embedded"/>
     <variable name="XWALK_MULTIPLEAPK" value="true"/>
+  </plugin>
+  <plugin name="cordova-plugin-camera" spec="~2.3.1">
+    <variable name="CAMERA_USAGE_DESCRIPTION" value="Take pictures of robots"/>
+    <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value="Locate pictures of robots"/>
   </plugin>
   <icon src="resources\android\icon\drawable-xhdpi-icon.png"/>
 </widget>
