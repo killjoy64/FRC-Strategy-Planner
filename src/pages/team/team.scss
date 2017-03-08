@@ -74,6 +74,10 @@ page-team {
     flex-direction: column;
     color: #ffffff;
   }
+  .profile-grid {
+    width: 100vw;
+    height: 30vh;
+  }
   .team-nickname {
     font-size: 3.5rem;
   }
@@ -125,12 +129,13 @@ page-team {
     height: 6.3rem;
   }
   .flex-content {
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 30vh;
   }
   a:link {
     text-decoration: none;

@@ -126,12 +126,13 @@ page-event-team {
     height: 6.3rem;
   }
   .flex-content {
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 30vh;
   }
   .rank-team {
     font-size: 1.2em;

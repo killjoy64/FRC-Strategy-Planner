@@ -81,10 +81,10 @@
     </div>
     <div class="palette-content">
       <div class="field-item-row">
-        <div class="field-item" (click)="setObject($event)">
+        <div class="field-item" tappable (click)="setObject($event)">
           <img src="assets/objects/2017/gear.png"/>
         </div>
-        <div class="field-item" (click)="setObject($event)">
+        <div class="field-item" tappable (click)="setObject($event)">
           <img src="assets/objects/2017/wiffle_ball.png"/>
         </div>
       </div>
@@ -110,24 +110,24 @@
       </div>
       <div id="manual-robots">
         <div class="robot-row">
-          <div class="robot" (click)="setTeam(teams[0], $event)" *ngIf="teams[0]">
+          <div class="robot" tappable (click)="setTeam(teams[0], $event)" *ngIf="teams[0]">
             {{ teams[0].team_number }}
           </div>
-          <div class="robot" (click)="setTeam(teams[1], $event)" *ngIf="teams[1]">
+          <div class="robot" tappable (click)="setTeam(teams[1], $event)" *ngIf="teams[1]">
             {{ teams[1].team_number }}
           </div>
-          <div class="robot" (click)="setTeam(teams[2], $event)" *ngIf="teams[2]">
+          <div class="robot" tappable (click)="setTeam(teams[2], $event)" *ngIf="teams[2]">
             {{ teams[2].team_number }}
           </div>
         </div>
         <div class="robot-row">
-          <div class="robot" (click)="setTeam(teams[3], $event)" *ngIf="teams[3]">
+          <div class="robot" tappable (click)="setTeam(teams[3], $event)" *ngIf="teams[3]">
             {{ teams[3].team_number }}
           </div>
-          <div class="robot" (click)="setTeam(teams[4], $event)" *ngIf="teams[4]">
+          <div class="robot" tappable (click)="setTeam(teams[4], $event)" *ngIf="teams[4]">
             {{ teams[4].team_number }}
           </div>
-          <div class="robot" (click)="setTeam(teams[5], $event)" *ngIf="teams[5]">
+          <div class="robot" tappable (click)="setTeam(teams[5], $event)" *ngIf="teams[5]">
             {{ teams[5].team_number }}
           </div>
         </div>
